@@ -8,13 +8,13 @@ def checkJoueur(joueur,dx,dy):
     newX = joueur.position[1] + dx
     newY = joueur.position[2] + dy
     
-    if not checkCase(joueur.position[0],newX+1/4,newY-1/4):
+    if not checkCase(joueur.position[0],newX+joueur.hitbox[0],newY+joueur.hitbox[2]):
         return False
-    if not checkCase(joueur.position[0],newX+1/4,newY+1/4):
+    if not checkCase(joueur.position[0],newX+joueur.hitbox[0],newY+joueur.hitbox[3]):
         return False
-    if not checkCase(joueur.position[0],newX-1/4,newY+1/4):
+    if not checkCase(joueur.position[0],newX+joueur.hitbox[1],newY+joueur.hitbox[3]):
         return False
-    if not checkCase(joueur.position[0],newX-1/4,newY-1/4):
+    if not checkCase(joueur.position[0],newX+joueur.hitbox[1],newY+joueur.hitbox[2]):
         return False
     return True
 

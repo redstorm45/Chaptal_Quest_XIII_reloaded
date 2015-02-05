@@ -4,7 +4,9 @@ from pygame.locals import *
 import map
 import dessin
 import joueur
+import ennemi
 import math
+import ia
 
 
 #charge la map
@@ -13,15 +15,19 @@ map.theMap = map.map()
 #charge les sprites
 dessin.loadAllSprites()
 
-#defini un joueur
-player = joueur.Joueur()
+#defini un joueur et ennemi
+player = joueur.Joueur(2,2)
+listEnnemis = []
+for i in range(2):
+    for j in range(2):
+        listEnnemis.append( ennemi.Ennemi(4+i,4+j) )
 
 #vitesse du déplacement
 speed = 1/16
-speedDiag = speed/math.sqrt(2)
+speedDiag = speed
 
 #crée la fenetre
-fenetre = pygame.display.set_mode( (1024,680) )
+fenetre = pygame.display.set_mode( (8*64,8*64) )
 pygame.display.set_caption("Chaptal Quest XIII - reloaded")
 
 clock = pygame.time.Clock()
@@ -30,8 +36,11 @@ running = True
 while running:
     #dessin
     regionAffichee = player.position[0]
+    dessin.centerOffset(player)
     dessin.drawRegion(fenetre,regionAffichee)
     dessin.drawPlayer(fenetre,player)
+    for e in listEnnemis:
+        dessin.drawPlayer(fenetre,e)
     pygame.display.flip()
     for event in pygame.event.get():
         #quitte le programme
@@ -62,11 +71,11 @@ while running:
         player.mouvement( speed ,  0 )
     elif listPressed[K_UP]:
         player.mouvement( 0 , -speed )
-    print(player.position)
     #IA
-    """
-    à faire
-    """
+    for e in listEnnemis:
+        if ia.agro(player.position,e.position):
+            ia.trajectoire(player.position,e)
+        
     #clock
     clock.tick(60)
 

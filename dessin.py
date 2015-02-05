@@ -1,8 +1,11 @@
 import map
+import ennemi
 from os import chdir
 import pygame
 
 SPRITE_SIZE = 64
+xOffset = 0
+yOffset = 0
 
 sprites = {}
 
@@ -19,19 +22,40 @@ def loadAllSprites():
     sprites["mur"]["HD"] = pygame.image.load("mur_angle_droite_haut.bmp")
     sprites["plancher"]  = pygame.image.load("plancher.bmp")
     sprites["joueur"]    = pygame.image.load("perso.png")
+    sprites["ennemi"]    = pygame.image.load("ennemi2.png")
     
+def centerOffset(player):
+    global xOffset
+    global yOffset
+    
+    reg = map.theMap.regionList[ player.position[0] ]
+    
+    xOffset = 4*64 - player.position[1]*64
+    yOffset = 4*64 - player.position[2]*64
+    
+    if reg.width - player.position[1] < 4:
+        xOffset = -(reg.width-8)*64
+    if player.position[1] < 4:
+        xOffset = 0
+    if reg.height - player.position[2] < 4:
+        yOffset = -(reg.height-8)*64
+    if player.position[2] < 4:
+        yOffset = 0
+    
+
 
 def drawRegion(fenetre,regionName):
     #recupère le tableau
     region = map.theMap.regionList[regionName]
     #dessine les sols
+    fenetre.fill( (0,0,0) )
     for x in range( region.width ):
         for y in range( region.height ):
             drawCase(fenetre,region,x,y)
 
 def drawCase(fenetre,region,x,y):
-    xEcran = x * SPRITE_SIZE  + 200
-    yEcran = y * SPRITE_SIZE  + 100
+    xEcran = x * SPRITE_SIZE  + xOffset
+    yEcran = y * SPRITE_SIZE  + yOffset
     
     if region.at(x,y) == 1:
         fenetre.blit(sprites["plancher"] , (xEcran,yEcran))
@@ -54,8 +78,11 @@ def drawCase(fenetre,region,x,y):
 
 def drawPlayer(fenetre,player):
     x,y = player.position[1] , player.position[2]
-    xEcran = (x-0.5) * SPRITE_SIZE  + 200
-    yEcran = (y-0.5) * SPRITE_SIZE  + 100
+    xEcran = (x-0.5) * SPRITE_SIZE  + xOffset
+    yEcran = (y-0.5) * SPRITE_SIZE  + yOffset
     
-    fenetre.blit(sprites["joueur"], (xEcran,yEcran))
+    if isinstance( player, ennemi.Ennemi ):
+        fenetre.blit(sprites["ennemi"], (xEcran,yEcran))
+    else:
+        fenetre.blit(sprites["joueur"], (xEcran,yEcran))
     
