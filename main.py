@@ -18,16 +18,17 @@ dessin.loadAllSprites()
 #defini un joueur et ennemi
 player = joueur.Joueur(2,2)
 listEnnemis = []
+
 for i in range(2):
     for j in range(2):
-        listEnnemis.append( ennemi.Ennemi(4+i,4+j) )
+        listEnnemis.append( ennemi.Ennemi(4+i,4+j+2) )
 
 #vitesse du déplacement
 speed = 1/16
 speedDiag = speed
 
 #crée la fenetre
-fenetre = pygame.display.set_mode( (8*64,8*64) )
+fenetre = pygame.display.set_mode( (dessin.SCR_WIDTH*64,dessin.SCR_HEIGHT*64) )
 pygame.display.set_caption("Chaptal Quest XIII - reloaded")
 
 clock = pygame.time.Clock()
@@ -42,6 +43,7 @@ while running:
     for e in listEnnemis:
         dessin.drawPlayer(fenetre,e)
     pygame.display.flip()
+    #"evenements
     for event in pygame.event.get():
         #quitte le programme
         if event.type == QUIT:
@@ -71,6 +73,8 @@ while running:
         player.mouvement( speed ,  0 )
     elif listPressed[K_UP]:
         player.mouvement( 0 , -speed )
+    else:
+        player.mouvement( 0 , 0 )
     #IA
     for e in listEnnemis:
         if ia.agro(player.position,e.position):

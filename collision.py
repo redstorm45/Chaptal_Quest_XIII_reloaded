@@ -20,6 +20,6 @@ def checkJoueur(joueur,dx,dy):
 
 #retourne False si la position (x,y) contient une case non accessible
 def checkCase(regionName,x,y):
-    if map.theMap.regionList[regionName].data[ int(x) ][ int(y) ] in collideList:
+    if map.theMap.regionList[regionName].at( int(x) , int(y) ) in collideList:
         return False
     return True

@@ -4,10 +4,20 @@ from os import chdir
 import pygame
 
 SPRITE_SIZE = 64
+SCR_WIDTH   = 20
+SCR_HEIGHT  = 10
+
 xOffset = 0
 yOffset = 0
 
 sprites = {}
+
+#charge les sprites animés d'un personnage
+def loadAnimSprite(spriteName):
+    sprite = []
+    for i in range(8):
+        sprite.append(pygame.image.load(spriteName+str(i+1)+".png"))
+    sprites[spriteName] = sprite
 
 def loadAllSprites():
     chdir("C:/Users/Pierre/Dropbox/Informatique/Projet/Chaptal_Quest_XIII_reloaded/sprites")
@@ -22,7 +32,10 @@ def loadAllSprites():
     sprites["mur"]["HD"] = pygame.image.load("mur_angle_droite_haut.bmp")
     sprites["plancher"]  = pygame.image.load("plancher.bmp")
     sprites["joueur"]    = pygame.image.load("perso.png")
-    sprites["ennemi"]    = pygame.image.load("ennemi2.png")
+    
+    loadAnimSprite( "gobelin" )
+    
+    sprites["ennemi"]    = pygame.image.load("ennemi.png")
     
 def centerOffset(player):
     global xOffset
@@ -30,16 +43,16 @@ def centerOffset(player):
     
     reg = map.theMap.regionList[ player.position[0] ]
     
-    xOffset = 4*64 - player.position[1]*64
-    yOffset = 4*64 - player.position[2]*64
+    xOffset = ((SCR_WIDTH /2) - player.position[1] )*SPRITE_SIZE
+    yOffset = ((SCR_HEIGHT/2) - player.position[2] )*SPRITE_SIZE
     
-    if reg.width - player.position[1] < 4:
-        xOffset = -(reg.width-8)*64
-    if player.position[1] < 4:
+    if reg.width - player.position[1] < (SCR_WIDTH /2):
+        xOffset = -(reg.width-SCR_WIDTH)*SPRITE_SIZE
+    if player.position[1] < (SCR_WIDTH /2):
         xOffset = 0
-    if reg.height - player.position[2] < 4:
-        yOffset = -(reg.height-8)*64
-    if player.position[2] < 4:
+    if reg.height - player.position[2] < (SCR_HEIGHT /2):
+        yOffset = -(reg.height-SCR_HEIGHT)*SPRITE_SIZE
+    if player.position[2] < (SCR_HEIGHT /2):
         yOffset = 0
     
 
@@ -81,8 +94,5 @@ def drawPlayer(fenetre,player):
     xEcran = (x-0.5) * SPRITE_SIZE  + xOffset
     yEcran = (y-0.5) * SPRITE_SIZE  + yOffset
     
-    if isinstance( player, ennemi.Ennemi ):
-        fenetre.blit(sprites["ennemi"], (xEcran,yEcran))
-    else:
-        fenetre.blit(sprites["joueur"], (xEcran,yEcran))
+    fenetre.blit(sprites[player.spriteName][player.direction-1], (xEcran,yEcran))
     
