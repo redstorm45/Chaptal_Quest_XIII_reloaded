@@ -1,6 +1,6 @@
 import map
 import ennemi
-from os import chdir
+import os
 import pygame
 
 SPRITE_SIZE = 64
@@ -20,18 +20,23 @@ def loadAnimSprite(spriteName):
     sprites[spriteName] = sprite
 
 def loadAllSprites():
-    chdir("C:/Users/Pierre/Dropbox/Informatique/Projet/Chaptal_Quest_XIII_reloaded/sprites")
+    workDir = os.getcwd()
+    os.chdir(workDir+"/sprites")
     sprites["mur"]={}
-    sprites["mur"]["H"]  = pygame.image.load("mur_haut.bmp")
-    sprites["mur"]["HG"] = pygame.image.load("mur_angle_gauche_haut.bmp")
-    sprites["mur"]["G"]  = pygame.image.load("mur_gauche.bmp")
-    sprites["mur"]["BG"] = pygame.image.load("mur_angle_gauche_bas.bmp")
-    sprites["mur"]["B"]  = pygame.image.load("mur_bas.bmp")
-    sprites["mur"]["BD"] = pygame.image.load("mur_angle_droite_bas.bmp")
-    sprites["mur"]["D"]  = pygame.image.load("mur_droite.bmp")
-    sprites["mur"]["HD"] = pygame.image.load("mur_angle_droite_haut.bmp")
-    sprites["plancher"]  = pygame.image.load("plancher.bmp")
-    sprites["joueur"]    = pygame.image.load("perso.png")
+    sprites["mur"]["H"]   = pygame.image.load("mur_haut.bmp")
+    sprites["mur"]["HG"]  = pygame.image.load("mur_angle_gauche_haut.bmp")
+    sprites["mur"]["HG2"] = pygame.image.load("mur_angle2_gauche_haut.bmp")
+    sprites["mur"]["G"]   = pygame.image.load("mur_gauche.bmp")
+    sprites["mur"]["BG"]  = pygame.image.load("mur_angle_gauche_bas.bmp")
+    sprites["mur"]["BG2"] = pygame.image.load("mur_angle2_gauche_bas.bmp")
+    sprites["mur"]["B"]   = pygame.image.load("mur_bas.bmp")
+    sprites["mur"]["BD"]  = pygame.image.load("mur_angle_droite_bas.bmp")
+    sprites["mur"]["BD2"] = pygame.image.load("mur_angle2_droite_bas.bmp")
+    sprites["mur"]["D"]   = pygame.image.load("mur_droite.bmp")
+    sprites["mur"]["HD"]  = pygame.image.load("mur_angle_droite_haut.bmp")
+    sprites["mur"]["HD2"] = pygame.image.load("mur_angle2_droite_haut.bmp")
+    sprites["plancher"]   = pygame.image.load("plancher.bmp")
+    sprites["joueur"]     = pygame.image.load("perso.png")
     
     loadAnimSprite( "gobelin" )
     
@@ -88,6 +93,14 @@ def drawCase(fenetre,region,x,y):
         fenetre.blit(sprites["mur"]["D"] , (xEcran,yEcran))
     elif region.at(x,y) == 9:
         fenetre.blit(sprites["mur"]["HD"], (xEcran,yEcran))
+    elif region.at(x,y) == 10:
+        fenetre.blit(sprites["mur"]["HG2"] , (xEcran,yEcran))
+    elif region.at(x,y) == 11:
+        fenetre.blit(sprites["mur"]["BG2"] , (xEcran,yEcran))
+    elif region.at(x,y) == 12:
+        fenetre.blit(sprites["mur"]["BD2"] , (xEcran,yEcran))
+    elif region.at(x,y) == 13:
+        fenetre.blit(sprites["mur"]["HD2"] , (xEcran,yEcran))
 
 def drawPlayer(fenetre,player):
     x,y = player.position[1] , player.position[2]

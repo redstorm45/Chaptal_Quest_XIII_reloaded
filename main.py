@@ -20,7 +20,7 @@ dessin.loadAllSprites()
 player = joueur.Joueur(2,2)
 listEnnemis = []
 
-
+listEnnemis.append( ennemi.Ennemi(5,5))
 
 
 #vitesse du déplacement
