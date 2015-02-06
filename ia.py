@@ -38,6 +38,13 @@ def trajectoire(positionJoueur, ennemi):
     ennemi.mouvement(mvtX,mvtY)
     
     return(positionIA)
+
+def attackIA(joueur,ennemi):
+    positionIA = ennemi.position
+    positionJoueur = joueur.position
+    d = (positionIA[1] - positionJoueur[1])**2 +  (positionIA[2] - positionJoueur[2])**2
+    if d < dmin **2:
+        joueur.hp = joueur.hp - ennemi.dammage
     
     
     

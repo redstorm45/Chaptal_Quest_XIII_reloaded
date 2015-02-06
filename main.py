@@ -80,7 +80,12 @@ while running:
         if ia.agro(player.position,e.position):
             ia.trajectoire(player.position,e)
         
+        ia.attackIA(player,e)
+        print(player.hp)
+        
     #clock
+    if player.hp <= 0:
+        running = 0
     clock.tick(60)
 
 pygame.quit()
