@@ -1,3 +1,11 @@
+"""
+
+Classe de de base d'une entitée
+
+défini les propriétées communes aux joueurs et ennemis
+
+"""
+
 import collision
 
 class JoueurBase:

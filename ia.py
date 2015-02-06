@@ -1,3 +1,10 @@
+"""
+
+Fichier de gestion de l'ia,
+commun à tous les ennemis
+
+"""
+
 import collision
 from math import exp
 
@@ -5,7 +12,7 @@ speed = 1/32
 dmin = 0.5
 dmax = 3
 
-
+#test si une IA doit aller vers le joueur
 def agro(positionJoueur,positionIA):
     d = (positionIA[1] - positionJoueur[1])**2 +  (positionIA[2] - positionJoueur[2])**2
     if  d < dmax**2 and d> dmin**2: #on regarde si l'ennemi est dans la zone d'agro
@@ -13,7 +20,7 @@ def agro(positionJoueur,positionIA):
     else:
         return(False)
     
-
+#effectue un mouvement en direction du joueur
 def trajectoire(positionJoueur, ennemi):
     positionIA = ennemi.position
     mvtX , mvtY = 0,0
@@ -40,6 +47,7 @@ def trajectoire(positionJoueur, ennemi):
     
     return(positionIA)
 
+#effectue l'attaque d'une IA sur le joueur à distance suffisante
 def attackIA(joueur,ennemi):
     positionIA = ennemi.position
     positionJoueur = joueur.position

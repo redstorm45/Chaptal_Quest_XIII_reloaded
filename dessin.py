@@ -1,3 +1,14 @@
+"""
+
+Fichier de gestion du dessin et des sprites
+
+à faire:
+  - augmenter le nombre de sprites
+  - ajouter le scrolling de map, pour ne dessiner les sprites que de
+    quelques cases plus loins que la taille de l'écran
+    
+"""
+
 import map
 import ennemi
 import os
@@ -12,36 +23,40 @@ yOffset = 0
 
 sprites = {}
 
+#charge un sprite seul
+def getLoaded(name):
+    return pygame.image.load(name).convert()
+
 #charge les sprites animés d'un personnage
 def loadAnimSprite(spriteName):
     sprite = []
     for i in range(8):
-        sprite.append(pygame.image.load(spriteName+str(i+1)+".png"))
+        sprite.append(getLoaded(spriteName+str(i+1)+".png"))
     sprites[spriteName] = sprite
 
+#charge tous les sprites utilisés dans le jeu en mémoire
 def loadAllSprites():
     workDir = os.getcwd()
     os.chdir(workDir+"/sprites")
     sprites["mur"]={}
-    sprites["mur"]["H"]   = pygame.image.load("mur_haut.bmp")
-    sprites["mur"]["HG"]  = pygame.image.load("mur_angle_gauche_haut.bmp")
-    sprites["mur"]["HG2"] = pygame.image.load("mur_angle2_gauche_haut.bmp")
-    sprites["mur"]["G"]   = pygame.image.load("mur_gauche.bmp")
-    sprites["mur"]["BG"]  = pygame.image.load("mur_angle_gauche_bas.bmp")
-    sprites["mur"]["BG2"] = pygame.image.load("mur_angle2_gauche_bas.bmp")
-    sprites["mur"]["B"]   = pygame.image.load("mur_bas.bmp")
-    sprites["mur"]["BD"]  = pygame.image.load("mur_angle_droite_bas.bmp")
-    sprites["mur"]["BD2"] = pygame.image.load("mur_angle2_droite_bas.bmp")
-    sprites["mur"]["D"]   = pygame.image.load("mur_droite.bmp")
-    sprites["mur"]["HD"]  = pygame.image.load("mur_angle_droite_haut.bmp")
-    sprites["mur"]["HD2"] = pygame.image.load("mur_angle2_droite_haut.bmp")
-    sprites["plancher"]   = pygame.image.load("plancher.bmp")
-    sprites["joueur"]     = pygame.image.load("perso.png")
+    sprites["mur"]["H"]   = getLoaded("mur_haut.bmp")
+    sprites["mur"]["HG"]  = getLoaded("mur_angle_gauche_haut.bmp")
+    sprites["mur"]["HG2"] = getLoaded("mur_angle2_gauche_haut.bmp")
+    sprites["mur"]["G"]   = getLoaded("mur_gauche.bmp")
+    sprites["mur"]["BG"]  = getLoaded("mur_angle_gauche_bas.bmp")
+    sprites["mur"]["BG2"] = getLoaded("mur_angle2_gauche_bas.bmp")
+    sprites["mur"]["B"]   = getLoaded("mur_bas.bmp")
+    sprites["mur"]["BD"]  = getLoaded("mur_angle_droite_bas.bmp")
+    sprites["mur"]["BD2"] = getLoaded("mur_angle2_droite_bas.bmp")
+    sprites["mur"]["D"]   = getLoaded("mur_droite.bmp")
+    sprites["mur"]["HD"]  = getLoaded("mur_angle_droite_haut.bmp")
+    sprites["mur"]["HD2"] = getLoaded("mur_angle2_droite_haut.bmp")
+    sprites["plancher"]   = getLoaded("plancher.bmp")
+    sprites["joueur"]     = getLoaded("perso.png")
     
     loadAnimSprite( "gobelin" )
     
-    sprites["ennemi"]    = pygame.image.load("ennemi.png")
-    
+#gère le décalage de l'écran à partir de la position du joueur
 def centerOffset(player):
     global xOffset
     global yOffset
@@ -60,8 +75,7 @@ def centerOffset(player):
     if player.position[2] < (SCR_HEIGHT /2):
         yOffset = 0
     
-
-
+#dessine une région entière
 def drawRegion(fenetre,regionName):
     #recupère le tableau
     region = map.theMap.regionList[regionName]
@@ -71,12 +85,15 @@ def drawRegion(fenetre,regionName):
         for y in range( region.height ):
             drawCase(fenetre,region,x,y)
 
+#dessine un sprite seul d'une case
 def drawCase(fenetre,region,x,y):
     xEcran = x * SPRITE_SIZE  + xOffset
     yEcran = y * SPRITE_SIZE  + yOffset
     
+    #sols
     if region.at(x,y) == 1:
         fenetre.blit(sprites["plancher"] , (xEcran,yEcran))
+    #murs
     elif region.at(x,y) == 2:
         fenetre.blit(sprites["mur"]["H"] , (xEcran,yEcran))
     elif region.at(x,y) == 3:
@@ -102,6 +119,7 @@ def drawCase(fenetre,region,x,y):
     elif region.at(x,y) == 13:
         fenetre.blit(sprites["mur"]["HD2"] , (xEcran,yEcran))
 
+#dessine le sprite d'un object JoueurBase
 def drawPlayer(fenetre,player):
     x,y = player.position[1] , player.position[2]
     xEcran = (x-0.5) * SPRITE_SIZE  + xOffset

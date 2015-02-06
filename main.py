@@ -1,3 +1,10 @@
+"""
+
+Fichier principal du programme
+Il gère les évènements, et la fenêtre
+
+"""
+
 import pygame
 from pygame.locals import *
 
@@ -31,8 +38,10 @@ speedDiag = speed
 fenetre = pygame.display.set_mode( (dessin.SCR_WIDTH*64,dessin.SCR_HEIGHT*64) )
 pygame.display.set_caption("Chaptal Quest XIII - reloaded")
 
+#initialisation de l'horloge
 clock = pygame.time.Clock()
 
+#main loop
 running = True
 while running:
     #dessin
@@ -75,7 +84,6 @@ while running:
         player.mouvement( 0 , -speed )
     elif listPressed[K_SPACE]:
         attackJoueur.attack(player,listEnnemis)
-        
     else:
         player.mouvement( 0 , 0 )
     #IA
@@ -87,10 +95,7 @@ while running:
         
         ia.attackIA(player,e)
         
-        print(e.hp)
-        
     #clock
-    
     clock.tick(60)
 
 pygame.quit()

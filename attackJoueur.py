@@ -1,5 +1,11 @@
-from math import exp
+"""
 
+Fichier de gestion des attaques de joueur à ennemi
+et d'ennemi à joueur
+
+"""
+
+from math import exp
 
 
 def attack(joueur,ennemi):

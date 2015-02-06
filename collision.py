@@ -1,3 +1,10 @@
+"""
+
+Fichier de gestion des collisions,
+pour toute entitée sur la carte
+
+"""
+
 import map
 
 #liste des sprites qui entrainent une collision

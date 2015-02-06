@@ -1,9 +1,16 @@
+"""
+
+Classe de de base d'un joueur
+
+défini les propriétées de tout les joueurs
+
+"""
+
 import collision
 import math
 import joueurBase
 
 class Joueur(joueurBase.JoueurBase):
-    
     def __init__(self,x,y):
         self.name       = ""
         self.position   = ["base",x,y]
