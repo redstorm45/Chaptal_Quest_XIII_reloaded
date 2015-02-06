@@ -1,6 +1,6 @@
 
-import joueur
+import joueurBase
 
-class Ennemi(joueur.Joueur):
+class Ennemi(joueurBase.JoueurBase):
     pass
     
