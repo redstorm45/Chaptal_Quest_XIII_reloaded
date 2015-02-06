@@ -1,7 +1,7 @@
 import map
 
 #liste des sprites qui entrainent une collision
-collideList = [ 2,3,4,5,6,7,8,9 ] #murs standards
+collideList = [ 2,3,4,5,6,7,8,9,10,11,12,13 ] #murs standards
 
 #retourne True si le mouvement est possible
 def checkJoueur(joueur,dx,dy):

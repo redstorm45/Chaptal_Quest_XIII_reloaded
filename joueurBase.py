@@ -4,7 +4,7 @@ class JoueurBase:
     def __init__(self,x,y):
         self.name       = ""
         self.position   = ["base",x,y]
-        self.hitbox     = [ -1/4 , 1/4 , -1/4 , 1/4 ]  # xmin , xmax , ymin , ymax
+        self.hitbox     = [ -0.25 , 0.25 , -0.2 , 0.3 ]  # xmin , xmax , ymin , ymax
         self.spriteName = "gobelin"
         self.direction  = 1
         self.lvl = 1
