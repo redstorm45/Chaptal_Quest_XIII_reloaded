@@ -1,6 +1,6 @@
 import map
 import ennemi
-import os
+from os import chdir
 import pygame
 
 SPRITE_SIZE = 64
@@ -20,8 +20,7 @@ def loadAnimSprite(spriteName):
     sprites[spriteName] = sprite
 
 def loadAllSprites():
-    workDir = os.getcwd()
-    os.chdir(workDir+"/sprites")
+    chdir("C:/Users/Pierre/Dropbox/Informatique/Projet/Chaptal_Quest_XIII_reloaded/sprites")
     sprites["mur"]={}
     sprites["mur"]["H"]  = pygame.image.load("mur_haut.bmp")
     sprites["mur"]["HG"] = pygame.image.load("mur_angle_gauche_haut.bmp")
