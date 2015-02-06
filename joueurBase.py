@@ -1,7 +1,7 @@
-
+import collision
 
 class JoueurBase:
-    def __init__(self):
+    def __init__(self,x,y):
         self.name       = ""
         self.position   = ["base",x,y]
         self.hitbox     = [ -1/4 , 1/4 , -1/4 , 1/4 ]  # xmin , xmax , ymin , ymax
