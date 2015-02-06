@@ -1,4 +1,5 @@
 import collision
+from math import exp
 
 speed = 1/32
 dmin = 0.5
@@ -44,7 +45,7 @@ def attackIA(joueur,ennemi):
     positionJoueur = joueur.position
     d = (positionIA[1] - positionJoueur[1])**2 +  (positionIA[2] - positionJoueur[2])**2
     if d < dmin **2:
-        joueur.hp = joueur.hp - ennemi.dammage
+        joueur.hp = joueur.hp - (ennemi.dammage*exp(-joueur.armure/300))
     
     
     

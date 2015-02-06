@@ -10,6 +10,7 @@ class JoueurBase:
         self.lvl = 1
         self.hp = 100 * self.lvl
         self.dammage = 5
+        self.armure = 100
         
     #mouvement de x cases vers la droite
     # et de y cases vers le bas

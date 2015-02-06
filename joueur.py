@@ -13,5 +13,6 @@ class Joueur(joueurBase.JoueurBase):
         self.lvl = 1
         self.hp = 100 * self.lvl
         self.dammage = 5
+        self.armure = 100
     
             
