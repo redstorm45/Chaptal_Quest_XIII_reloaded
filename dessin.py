@@ -51,7 +51,7 @@ def loadAllSprites():
     sprites["mur"]["D"]   = getLoaded("mur_droite.bmp")
     sprites["mur"]["HD"]  = getLoaded("mur_angle_droite_haut.bmp")
     sprites["mur"]["HD2"] = getLoaded("mur_angle2_droite_haut.bmp")
-    sprites["plancher"]   = getLoaded("plancher.bmp")
+    sprites["plancher"]   = getLoaded("beton.png")
     sprites["joueur"]     = getLoaded("perso.png")
     
     loadAnimSprite( "gobelin" )
@@ -63,17 +63,26 @@ def centerOffset(player):
     
     reg = map.theMap.regionList[ player.position[0] ]
     
-    xOffset = ((SCR_WIDTH /2) - player.position[1] )*SPRITE_SIZE
-    yOffset = ((SCR_HEIGHT/2) - player.position[2] )*SPRITE_SIZE
-    
-    if reg.width - player.position[1] < (SCR_WIDTH /2):
-        xOffset = -(reg.width-SCR_WIDTH)*SPRITE_SIZE
-    if player.position[1] < (SCR_WIDTH /2):
-        xOffset = 0
-    if reg.height - player.position[2] < (SCR_HEIGHT /2):
-        yOffset = -(reg.height-SCR_HEIGHT)*SPRITE_SIZE
-    if player.position[2] < (SCR_HEIGHT /2):
-        yOffset = 0
+    #centrage si taille supèrieure à celle de l'écran
+    #selon x
+    if SCR_WIDTH > reg.width:
+        xOffset = (SCR_WIDTH - reg.width)*SPRITE_SIZE/2
+    else:
+        xOffset = ((SCR_WIDTH /2) - player.position[1] )*SPRITE_SIZE
+        if reg.width - player.position[1] < (SCR_WIDTH /2):
+            xOffset = -(reg.width-SCR_WIDTH)*SPRITE_SIZE
+        if player.position[1] < (SCR_WIDTH /2):
+            xOffset = 0
+            
+    #selon y
+    if SCR_HEIGHT > reg.height:
+        yOffset = (SCR_HEIGHT - reg.height)*SPRITE_SIZE/2
+    else:
+        yOffset = ((SCR_HEIGHT/2) - player.position[2] )*SPRITE_SIZE
+        if reg.height - player.position[2] < (SCR_HEIGHT /2):
+            yOffset = -(reg.height-SCR_HEIGHT)*SPRITE_SIZE
+        if player.position[2] < (SCR_HEIGHT /2):
+            yOffset = 0
     
 #dessine une région entière
 def drawRegion(fenetre,regionName):

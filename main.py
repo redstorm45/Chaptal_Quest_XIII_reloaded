@@ -17,26 +17,32 @@ import ia
 import attackJoueur
 
 
-#charge la map
-map.theMap = map.map()
-
-#charge les sprites
-dessin.loadAllSprites()
-
 #defini un joueur et ennemi
 player = joueur.Joueur(2,2)
 listEnnemis = []
 
 listEnnemis.append( ennemi.Ennemi(5,5))
 
-
 #vitesse du déplacement
 speed = 1/16
 speedDiag = speed
 
 #crée la fenetre
-fenetre = pygame.display.set_mode( (dessin.SCR_WIDTH*64,dessin.SCR_HEIGHT*64) )
+fenetre = pygame.display.set_mode( (0,0) , FULLSCREEN )
 pygame.display.set_caption("Chaptal Quest XIII - reloaded")
+
+while not pygame.display.get_init():
+    pass
+
+#initialise l'affichage avec la taille de l'écran
+dessin.SCR_WIDTH  = fenetre.get_width()  / dessin.SPRITE_SIZE
+dessin.SCR_HEIGHT = fenetre.get_height() / dessin.SPRITE_SIZE
+
+#charge la map
+map.theMap = map.map()
+
+#charge les sprites
+dessin.loadAllSprites()
 
 #initialisation de l'horloge
 clock = pygame.time.Clock()
@@ -59,6 +65,8 @@ while running:
             running = False
         #appui sur une touche
         if event.type == KEYDOWN:
+            if event.key == K_ESCAPE:
+                running = False
             if event.key == K_a:
                 pass
         """
