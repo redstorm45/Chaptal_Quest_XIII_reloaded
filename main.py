@@ -7,6 +7,7 @@ import joueur
 import ennemi
 import math
 import ia
+import attackJoueur
 
 
 #charge la map
@@ -19,9 +20,8 @@ dessin.loadAllSprites()
 player = joueur.Joueur(2,2)
 listEnnemis = []
 
-for i in range(2):
-    for j in range(2):
-        listEnnemis.append( ennemi.Ennemi(4+i,4+j+2) )
+
+
 
 #vitesse du déplacement
 speed = 1/16
@@ -73,19 +73,24 @@ while running:
         player.mouvement( speed ,  0 )
     elif listPressed[K_UP]:
         player.mouvement( 0 , -speed )
+    elif listPressed[K_SPACE]:
+        attackJoueur.attack(player,listEnnemis)
+        
     else:
         player.mouvement( 0 , 0 )
     #IA
     for e in listEnnemis:
+        if e.hp < 0:
+            listEnnemis.remove(e)
         if ia.agro(player.position,e.position):
             ia.trajectoire(player.position,e)
         
         ia.attackIA(player,e)
-        print(player.hp)
+        
+        print(e.hp)
         
     #clock
-    if player.hp <= 0:
-        running = 0
+    
     clock.tick(60)
 
 pygame.quit()
