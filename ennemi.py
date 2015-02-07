@@ -19,6 +19,7 @@ class Ennemi:
         self.position[1] = int(self.position[1])
         self.position[2] = int(self.position[2])
         self.spriteName = str(self.spriteName[0])
+        self.anim       = 0 
     
      
      

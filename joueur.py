@@ -21,5 +21,6 @@ class Joueur(joueurBase.JoueurBase):
         self.hp = 100 * self.lvl
         self.dammage = 5
         self.armure = 100
+        self.anim = 0
     
             
