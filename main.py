@@ -21,14 +21,12 @@ import attackJoueur
 player = joueur.Joueur(2,2)
 listEnnemis = []
 
-listEnnemis.append( ennemi.Ennemi(5,5))
-
 #vitesse du déplacement
 speed = 1/16
 speedDiag = speed
 
 #crée la fenetre
-fenetre = pygame.display.set_mode( (0,0) , FULLSCREEN )
+fenetre = pygame.display.set_mode( (0,0)  )
 pygame.display.set_caption("Chaptal Quest XIII - reloaded")
 
 while not pygame.display.get_init():
@@ -94,6 +92,7 @@ while running:
         attackJoueur.attack(player,listEnnemis)
     else:
         player.mouvement( 0 , 0 )
+    player.anim += 0.28
     #IA
     for e in listEnnemis:
         if e.hp < 0:
