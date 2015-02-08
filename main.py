@@ -10,35 +10,30 @@ from pygame.locals import *
 
 import map
 import dessin
-import joueur
-import ennemi
+import game
 import math
-import ia
 import attackJoueur
 import keybinding
 
-
-#defini un joueur et ennemi
-player = joueur.Joueur(2,2)
-listEnnemis = []
-
-#vitesse du déplacement
-speed = 1/16
-speedDiag = speed
+#definition des différents états du jeu
+ETAT_MENU    =  1  #menu
+ETAT_GAME    =  2  #en jeu
+ETAT_OVERLAY =  3  #en jeu, avec overlay pour quitter,sauvegarder
+ETAT_OPT     =  4  #ecran d'options
 
 #crée la fenetre
+pygame.init()
 fenetre = pygame.display.set_mode( (0,0)  ) #add ", FULLSCREEN" argument for fullscreen mode
 pygame.display.set_caption("Chaptal Quest XIII - reloaded")
 
 while not pygame.display.get_init():
     pass
 
-#initialise l'affichage avec la taille de l'écran
-dessin.SCR_WIDTH  = fenetre.get_width()  / dessin.SPRITE_SIZE
-dessin.SCR_HEIGHT = fenetre.get_height() / dessin.SPRITE_SIZE
-
 #charge la map
 map.theMap = map.map()
+
+#initialise l'affichage avec la taille de l'écran
+dessin.initDraw(fenetre)
 
 #charge les sprites
 dessin.loadAllSprites()
@@ -46,18 +41,22 @@ dessin.loadAllSprites()
 #initialisation de l'horloge
 clock = pygame.time.Clock()
 
+#initialisation de l'état avant entrée dans la boucle
+state = ETAT_GAME
+
 #main loop
 running = True
 while running:
-    #dessin
-    regionAffichee = player.position[0]
-    dessin.centerOffset(player)
-    dessin.drawRegion(fenetre,regionAffichee)
-    dessin.drawPlayer(fenetre,player)
-    for e in listEnnemis:
-        dessin.drawPlayer(fenetre,e)
+    #  ***  dessin  ***
+    fenetre.fill( (0,0,0) )
+    if state == ETAT_GAME:
+        game.draw(fenetre)
+    elif state == ETAT_OVERLAY:
+        game.draw(fenetre)
+        dessin.drawOverlay(fenetre)
     pygame.display.flip()
-    #"evenements
+    
+    #  ***  evenements  ***
     for event in pygame.event.get():
         #quitte le programme
         if event.type == QUIT:
@@ -65,45 +64,23 @@ while running:
         #appui sur une touche
         if event.type == KEYDOWN:
             if event.key == K_ESCAPE:
-                running = False
+                if state == ETAT_GAME:
+                    state = ETAT_OVERLAY
+                else:
+                    running = False
             if event.key == K_a:
                 pass
-        """
-        different deplacement et capacité
-        """
+            """
+            different deplacement et capacité
+            """
     #gestion des déplacements
-    listPressed = pygame.key.get_pressed()
-    if keybinding.areKeysActive(["LEFT","UP"],listPressed):
-        player.mouvement( -speedDiag , -speedDiag )
-    elif keybinding.areKeysActive(["LEFT","DOWN"],listPressed):
-        player.mouvement( -speedDiag ,  speedDiag )
-    elif keybinding.areKeysActive(["RIGHT","DOWN"],listPressed):
-        player.mouvement(  speedDiag ,  speedDiag )
-    elif keybinding.areKeysActive(["RIGHT","UP"],listPressed):
-        player.mouvement(  speedDiag , -speedDiag )
-    elif keybinding.isKeyActive( "LEFT" , listPressed ):
-        player.mouvement( -speed , 0 )
-    elif keybinding.isKeyActive( "DOWN" , listPressed ):
-        player.mouvement( 0 ,  speed )
-    elif keybinding.isKeyActive( "RIGHT" , listPressed ):
-        player.mouvement( speed ,  0 )
-    elif keybinding.isKeyActive( "UP" , listPressed ):
-        player.mouvement( 0 , -speed )
-    else:
-        player.mouvement( 0 , 0 )
-        
-    if keybinding.isKeyActive( "ATTACK" , listPressed ):
-        attackJoueur.attack(player,listEnnemis)
-    player.anim += 0.28
-    #IA
-    for e in listEnnemis:
-        if e.hp < 0:
-            listEnnemis.remove(e)
-        if ia.agro(player.position,e.position):
-            ia.trajectoire(player.position,e)
-        
-        ia.attackIA(player,e)
-        
+    if state == ETAT_GAME:
+        listPressed = pygame.key.get_pressed()
+        game.actionKeys(listPressed)
+    
+    #  ***  update général  ***
+    if state == ETAT_GAME:
+        game.tick()
     #clock
     clock.tick(60)
 

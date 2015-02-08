@@ -13,8 +13,8 @@ import map
 import ennemi
 import os
 import pygame
+import option as opt
 
-SPRITE_SIZE = 64
 SCR_WIDTH   = 20
 SCR_HEIGHT  = 10
 
@@ -22,6 +22,28 @@ xOffset = 0
 yOffset = 0
 
 sprites = {}
+
+menuFont = None
+
+overlayBack = None
+overlayFront = None
+
+def initDraw(fenetre):
+    #taille de l'écran
+    global SCR_WIDTH , SCR_HEIGHT
+    
+    SCR_WIDTH  = fenetre.get_width()  / opt.SPRITE_SIZE
+    SCR_HEIGHT = fenetre.get_height() / opt.SPRITE_SIZE
+    
+    #polices
+    menuFont = pygame.font.Font(None,32)
+    
+    #écran overlay
+    global overlayBack , overlayFront
+    
+    overlayBack = pygame.Surface( ( fenetre.get_width(),fenetre.get_height()) )
+    overlayBack.fill( (128,128,128) )
+    overlayBack.set_alpha(128)
 
 #charge un sprite seul
 def getLoaded(name):
@@ -56,6 +78,7 @@ def loadAllSprites():
     sprites["mur"]["HD2"] = getLoaded("mur_angle2_droite_haut.bmp")
     sprites["plancher"]   = getLoaded("beton.png")
     sprites["joueur"]     = getLoaded("perso.png")
+    #sprites["pause"]      = getLoaded("pause.png")
     
     loadAnimSprite( "gobelin" )
     
@@ -69,38 +92,42 @@ def centerOffset(player):
     #centrage si taille supèrieure à celle de l'écran
     #selon x
     if SCR_WIDTH > reg.width:
-        xOffset = (SCR_WIDTH - reg.width)*SPRITE_SIZE/2
+        xOffset = (SCR_WIDTH - reg.width)*opt.SPRITE_SIZE/2
     else:
-        xOffset = ((SCR_WIDTH /2) - player.position[1] )*SPRITE_SIZE
+        xOffset = ((SCR_WIDTH /2) - player.position[1] )*opt.SPRITE_SIZE
         if reg.width - player.position[1] < (SCR_WIDTH /2):
-            xOffset = -(reg.width-SCR_WIDTH)*SPRITE_SIZE
+            xOffset = -(reg.width-SCR_WIDTH)*opt.SPRITE_SIZE
         if player.position[1] < (SCR_WIDTH /2):
             xOffset = 0
             
     #selon y
     if SCR_HEIGHT > reg.height:
-        yOffset = (SCR_HEIGHT - reg.height)*SPRITE_SIZE/2
+        yOffset = (SCR_HEIGHT - reg.height)*opt.SPRITE_SIZE/2
     else:
-        yOffset = ((SCR_HEIGHT/2) - player.position[2] )*SPRITE_SIZE
+        yOffset = ((SCR_HEIGHT/2) - player.position[2] )*opt.SPRITE_SIZE
         if reg.height - player.position[2] < (SCR_HEIGHT /2):
-            yOffset = -(reg.height-SCR_HEIGHT)*SPRITE_SIZE
+            yOffset = -(reg.height-SCR_HEIGHT)*opt.SPRITE_SIZE
         if player.position[2] < (SCR_HEIGHT /2):
             yOffset = 0
+
+def drawOverlay(fenetre):
+    fenetre.blit( overlayBack , (0,0) )
     
+    #fenetre.blit( sprites["pause"] , (int(SCR_WIDTH*opt.SPRITE_SIZE/2)- 100 , 100 ) )
+
 #dessine une région entière
 def drawRegion(fenetre,regionName):
     #recupère le tableau
     region = map.theMap.regionList[regionName]
     #dessine les sols
-    fenetre.fill( (0,0,0) )
     for x in range( region.width ):
         for y in range( region.height ):
             drawCase(fenetre,region,x,y)
 
 #dessine un sprite seul d'une case
 def drawCase(fenetre,region,x,y):
-    xEcran = x * SPRITE_SIZE  + xOffset
-    yEcran = y * SPRITE_SIZE  + yOffset
+    xEcran = x * opt.SPRITE_SIZE  + xOffset
+    yEcran = y * opt.SPRITE_SIZE  + yOffset
     
     #sols
     if region.at(x,y) == 1:
@@ -134,8 +161,8 @@ def drawCase(fenetre,region,x,y):
 #dessine le sprite d'un object JoueurBase
 def drawPlayer(fenetre,player):
     x,y = player.position[1] , player.position[2]
-    xEcran = (x-0.5) * SPRITE_SIZE  + xOffset
-    yEcran = (y-0.5) * SPRITE_SIZE  + yOffset
+    xEcran = (x-0.5) * opt.SPRITE_SIZE  + xOffset
+    yEcran = (y-0.5) * opt.SPRITE_SIZE  + yOffset
     
     if player.direction == 4:
         fenetre.blit(sprites[player.spriteName + "D"][int(player.anim)%8], (xEcran,yEcran))
