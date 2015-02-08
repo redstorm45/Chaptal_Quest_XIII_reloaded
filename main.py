@@ -15,6 +15,7 @@ import ennemi
 import math
 import ia
 import attackJoueur
+import keybinding
 
 
 #defini un joueur et ennemi
@@ -26,7 +27,7 @@ speed = 1/16
 speedDiag = speed
 
 #crée la fenetre
-fenetre = pygame.display.set_mode( (0,0)  )
+fenetre = pygame.display.set_mode( (0,0)  ) #add ", FULLSCREEN" argument for fullscreen mode
 pygame.display.set_caption("Chaptal Quest XIII - reloaded")
 
 while not pygame.display.get_init():
@@ -72,26 +73,27 @@ while running:
         """
     #gestion des déplacements
     listPressed = pygame.key.get_pressed()
-    if listPressed[K_LEFT] and listPressed[K_UP]:
+    if keybinding.areKeysActive(["LEFT","UP"],listPressed):
         player.mouvement( -speedDiag , -speedDiag )
-    elif listPressed[K_LEFT] and listPressed[K_DOWN]:
+    elif keybinding.areKeysActive(["LEFT","DOWN"],listPressed):
         player.mouvement( -speedDiag ,  speedDiag )
-    elif listPressed[K_RIGHT] and listPressed[K_DOWN]:
+    elif keybinding.areKeysActive(["RIGHT","DOWN"],listPressed):
         player.mouvement(  speedDiag ,  speedDiag )
-    elif listPressed[K_RIGHT] and listPressed[K_UP]:
+    elif keybinding.areKeysActive(["RIGHT","UP"],listPressed):
         player.mouvement(  speedDiag , -speedDiag )
-    elif listPressed[K_LEFT]:
+    elif keybinding.isKeyActive( "LEFT" , listPressed ):
         player.mouvement( -speed , 0 )
-    elif listPressed[K_DOWN]:
+    elif keybinding.isKeyActive( "DOWN" , listPressed ):
         player.mouvement( 0 ,  speed )
-    elif listPressed[K_RIGHT]:
+    elif keybinding.isKeyActive( "RIGHT" , listPressed ):
         player.mouvement( speed ,  0 )
-    elif listPressed[K_UP]:
+    elif keybinding.isKeyActive( "UP" , listPressed ):
         player.mouvement( 0 , -speed )
-    elif listPressed[K_SPACE]:
-        attackJoueur.attack(player,listEnnemis)
     else:
         player.mouvement( 0 , 0 )
+        
+    if keybinding.isKeyActive( "ATTACK" , listPressed ):
+        attackJoueur.attack(player,listEnnemis)
     player.anim += 0.28
     #IA
     for e in listEnnemis:
