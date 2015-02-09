@@ -1,14 +1,17 @@
 import collision
+import os
 
 
 class Ennemi:
     
-    def __init__(self,name):
+    def __init__(self,name,position):
         
         self.name = name
    
-        file = open("C:/programmation/CHAPTAL_QUEST/Chaptal_Quest_XIII_reloaded-master/ennemi/" + name + ".txt")
-        self.position   = file.readline().strip().split(";")
+        workDir = os.getcwd()
+        os.chdir(workDir)
+        file = open( "ennemi/" + name + ".txt")
+        self.position   = position
         self.spriteName = file.readline().strip().split(";")
         self.direction  = int(file.readline().strip().split(";")[0])
         self.lvl        = int(file.readline().strip().split(";")[0])

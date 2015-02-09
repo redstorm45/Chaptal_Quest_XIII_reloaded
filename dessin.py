@@ -47,22 +47,24 @@ def initDraw(fenetre):
 
 #charge un sprite seul
 def getLoaded(name):
-    return pygame.image.load(name).convert()
+    s = pygame.image.load("sprites/"+name).convert()
+    s.set_colorkey((255,255,255))
+    return s
 
 #charge les sprites animés d'un personnage
 def loadAnimSprite(spriteName):
     sprite = []
-    sprited = []
+    sprited , spriteg = [] , []
     for i in range(8):
         sprited.append(getLoaded(spriteName + "D" + str(i)+".png"))
+        spriteg.append(getLoaded(spriteName + "G" + str(i)+".png"))
         sprite.append(getLoaded(spriteName + str(i+1)+".png"))
     sprites[spriteName] = sprite
     sprites[spriteName + "D"] = sprited
+    sprites[spriteName + "G"] = spriteg
 
 #charge tous les sprites utilisés dans le jeu en mémoire
 def loadAllSprites():
-    workDir = os.getcwd()
-    os.chdir(workDir+"/sprites")
     sprites["mur"]={}
     sprites["mur"]["H"]   = getLoaded("mur_haut.bmp")
     sprites["mur"]["HG"]  = getLoaded("mur_angle_gauche_haut.bmp")
@@ -166,6 +168,8 @@ def drawPlayer(fenetre,player):
     
     if player.direction == 4:
         fenetre.blit(sprites[player.spriteName + "D"][int(player.anim)%8], (xEcran,yEcran))
+    elif player.direction == 8:
+        fenetre.blit(sprites[player.spriteName + "G"][int(player.anim)%8], (xEcran,yEcran))
     else:
         fenetre.blit(sprites[player.spriteName][player.direction-1], (xEcran,yEcran))
     

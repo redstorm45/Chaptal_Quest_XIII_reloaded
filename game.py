@@ -9,11 +9,19 @@ import dessin
 import keybinding
 import joueur
 import ennemi
+import map
+import ia
 import option as opt
 
-#defini un joueur et ennemi
+#defini un joueur
 player = joueur.Joueur(2,2)
-listEnnemis = []
+
+#initialisation du jeu (création des ennemis)
+def init():
+    for k in map.theMap.regionList.keys():
+        r = map.theMap.regionList[k]
+        for e in r.ennemiBaseList:
+            r.ennemiList.append( ennemi.Ennemi( e[0] , [ k , e[1] , e[2] ] ) )
 
 #dessin de la scène
 def draw(fenetre):
@@ -23,7 +31,7 @@ def draw(fenetre):
     dessin.centerOffset(player)
     dessin.drawRegion(fenetre,regionAffichee)
     dessin.drawPlayer(fenetre,player)
-    for e in listEnnemis:
+    for e in map.theMap.regionList[ player.position[0] ].ennemiList:
         dessin.drawPlayer(fenetre,e)
 
 #touches de mouvement
@@ -54,9 +62,9 @@ def actionKeys(listPressed):
 
 #evenement de mise à jour (ia et animations)    
 def tick():
-    player.anim += 0.28
+    player.anim += 0.2
     #IA
-    for e in listEnnemis:
+    for e in map.theMap.regionList[ player.position[0] ].ennemiList:
         if e.hp < 0:
             listEnnemis.remove(e)
         if ia.agro(player.position,e.position):

@@ -7,6 +7,7 @@ défini les propriétées de tout les joueurs
 """
 
 import collision
+import map
 import math
 import joueurBase
 
@@ -23,4 +24,11 @@ class Joueur(joueurBase.JoueurBase):
         self.armure = 100
         self.anim = 0
     
+    def mouvement(self,x,y):
+        #mouvement normal
+        super( Joueur , self ).mouvement(x,y)
+        #test de téléportation
+        t = map.theMap.regionList[ self.position[0] ].teleportAt( self.position[1],self.position[2] )
+        if t:
+            self.position = [ t[0] , t[1] , t[2] ]
             

@@ -32,11 +32,12 @@ while not pygame.display.get_init():
 #charge la map
 map.theMap = map.map()
 
-#initialise l'affichage avec la taille de l'écran
-dessin.initDraw(fenetre)
+#charge les ennemis sur la map
+game.init()
 
-#charge les sprites
+#initialise l'affichage avec la taille de l'écran
 dessin.loadAllSprites()
+dessin.initDraw(fenetre)
 
 #initialisation de l'horloge
 clock = pygame.time.Clock()
@@ -68,6 +69,9 @@ while running:
                     state = ETAT_OVERLAY
                 else:
                     running = False
+            if event.key == K_RETURN:
+                if state == ETAT_OVERLAY:
+                    state = ETAT_GAME
             if event.key == K_a:
                 pass
             """
