@@ -11,6 +11,7 @@ from math import exp
 speed = 1/32
 dmin = 0.5
 dmax = 3
+dattack = 0.75
 
 #test si une IA doit aller vers le joueur
 def agro(positionJoueur,positionIA):
@@ -52,8 +53,10 @@ def attackIA(joueur,ennemi):
     positionIA = ennemi.position
     positionJoueur = joueur.position
     d = (positionIA[1] - positionJoueur[1])**2 +  (positionIA[2] - positionJoueur[2])**2
-    if d < dmin **2:
+    if d < dattack **2 and ennemi.attackTimer == 0:
         joueur.hp = joueur.hp - (ennemi.dammage*exp(-joueur.armure/300))
+        ennemi.attackTimer = 1
+        
     
     
     

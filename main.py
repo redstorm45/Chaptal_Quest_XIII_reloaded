@@ -12,7 +12,6 @@ import map
 import dessin
 import game
 import math
-import attackJoueur
 import keybinding
 
 #definition des différents états du jeu
@@ -23,7 +22,7 @@ ETAT_OPT     =  4  #ecran d'options
 
 #crée la fenetre
 pygame.init()
-fenetre = pygame.display.set_mode( (0,0)  ) #add ", FULLSCREEN" argument for fullscreen mode
+fenetre = pygame.display.set_mode( (0,0) ) #add ", FULLSCREEN" argument for fullscreen mode
 pygame.display.set_caption("Chaptal Quest XIII - reloaded")
 
 while not pygame.display.get_init():

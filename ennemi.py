@@ -23,6 +23,7 @@ class Ennemi:
         self.position[2] = int(self.position[2])
         self.spriteName = str(self.spriteName[0])
         self.anim       = 0 
+        self.attackTimer = 0
     
      
      

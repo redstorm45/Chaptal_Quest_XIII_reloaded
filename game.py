@@ -12,6 +12,7 @@ import ennemi
 import map
 import ia
 import option as opt
+import attackJoueur
 
 #defini un joueur
 player = joueur.Joueur(2,2)
@@ -58,19 +59,29 @@ def actionKeys(listPressed):
         player.mouvement( 0 , 0 )
     
     if keybinding.isKeyActive( "ATTACK" , listPressed ):
-        attackJoueur.attack(player,listEnnemis)
+        if player.attackTimer == 0:
+            attackJoueur.attack(player,map.theMap.regionList[player.position[0]].ennemiList)
+            player.attackTimer = 1
+        else:
+            player.attackTimer = max( 0, player.attackTimer - 1/16)
 
 #evenement de mise à jour (ia et animations)    
 def tick():
-    player.anim += 0.2
+    player.anim += 0.25
     #IA
     for e in map.theMap.regionList[ player.position[0] ].ennemiList:
         if e.hp < 0:
-            listEnnemis.remove(e)
+            map.theMap.regionList[ player.position[0] ].ennemiList.remove(e)
         if ia.agro(player.position,e.position):
             ia.trajectoire(player.position,e)
+            e.anim += 0.25
+        else:
+            e.anim = 0
         
-        ia.attackIA(player,e)
+        if e.attackTimer == 0:
+            ia.attackIA(player,e)
+        else:
+            e.attackTimer = max( 0, e.attackTimer - 1/16)
         
     
     

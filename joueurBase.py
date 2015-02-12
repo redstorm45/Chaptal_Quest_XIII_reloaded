@@ -20,6 +20,7 @@ class JoueurBase:
         self.dammage = 5
         self.armure = 100
         self.anim = 0
+        self.attackTimer = 0
         
     #mouvement de x cases vers la droite
     # et de y cases vers le bas

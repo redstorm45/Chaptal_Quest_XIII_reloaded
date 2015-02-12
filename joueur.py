@@ -20,9 +20,10 @@ class Joueur(joueurBase.JoueurBase):
         self.direction  = 1
         self.lvl = 1
         self.hp = 100 * self.lvl
-        self.dammage = 5
+        self.dammage = 20
         self.armure = 100
         self.anim = 0
+        self.attackTimer = 0
     
     def mouvement(self,x,y):
         #mouvement normal

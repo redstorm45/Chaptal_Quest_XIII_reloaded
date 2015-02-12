@@ -173,3 +173,6 @@ def drawPlayer(fenetre,player):
     else:
         fenetre.blit(sprites[player.spriteName][player.direction-1], (xEcran,yEcran))
     
+    #affiche la vie au dessus du sprite
+    pygame.draw.rect( fenetre , (255,0,0) , (xEcran,yEcran-10,64,10) )
+    pygame.draw.rect( fenetre , (0,255,0) , (xEcran,yEcran-10,64*player.hp/(100*player.lvl),10) )
