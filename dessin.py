@@ -13,10 +13,11 @@ import map
 import ennemi
 import os
 import pygame
+import mouse
 import option as opt
 
-SCR_WIDTH   = 20
-SCR_HEIGHT  = 10
+SCR_WIDTH   = 20   #largeur de l'écran (en termes de nombre de cases)
+SCR_HEIGHT  = 10   #hauteur de l'écran
 
 xOffset = 0
 yOffset = 0
@@ -24,9 +25,11 @@ yOffset = 0
 sprites = {}
 
 menuFont = None
+buttonFont = None
 
 overlayBack = None
-overlayFront = None
+overlayTitle = None
+overlayButtons = {}
 
 def initDraw(fenetre):
     #taille de l'écran
@@ -36,14 +39,22 @@ def initDraw(fenetre):
     SCR_HEIGHT = fenetre.get_height() / opt.SPRITE_SIZE
     
     #polices
-    menuFont = pygame.font.Font(None,32)
+    menuFont = pygame.font.SysFont("vinerhanditc",92)
+    buttonFont = pygame.font.SysFont("chillernormal",72)
     
     #écran overlay
-    global overlayBack , overlayFront
+    global overlayBack , overlayTitle , overlayButtons
     
     overlayBack = pygame.Surface( ( fenetre.get_width(),fenetre.get_height()) )
     overlayBack.fill( (128,128,128) )
-    overlayBack.set_alpha(128)
+    overlayBack.set_alpha(150)
+    
+    overlayTitle = menuFont.render("PAUSE",True,(250,20,20))
+    
+    overlayButtons = mouse.boutons["overlay"]
+    overlayButtons["quitter"].surf     = buttonFont.render("Quitter"     ,True,(20,20,20))
+    overlayButtons["menu"].surf        = buttonFont.render("Menu"        ,True,(20,20,20))
+    overlayButtons["sauvegarder"].surf = buttonFont.render("Sauvegarder" ,True,(20,20,20))
 
 #charge un sprite seul
 def getLoaded(name):
@@ -80,7 +91,6 @@ def loadAllSprites():
     sprites["mur"]["HD2"] = getLoaded("mur_angle2_droite_haut.bmp")
     sprites["plancher"]   = getLoaded("beton.png")
     sprites["joueur"]     = getLoaded("perso.png")
-    #sprites["pause"]      = getLoaded("pause.png")
     
     loadAnimSprite( "gobelin" )
     
@@ -112,10 +122,14 @@ def centerOffset(player):
         if player.position[2] < (SCR_HEIGHT /2):
             yOffset = 0
 
+def drawMenu(fenetre):
+    fenetre.fill( (0,0,0) )
+
 def drawOverlay(fenetre):
     fenetre.blit( overlayBack , (0,0) )
-    
-    #fenetre.blit( sprites["pause"] , (int(SCR_WIDTH*opt.SPRITE_SIZE/2)- 100 , 100 ) )
+    fenetre.blit( overlayTitle , (int(SCR_WIDTH*opt.SPRITE_SIZE/2-overlayTitle.get_width()/2),0) )
+    for k in overlayButtons.keys():
+        fenetre.blit( overlayButtons[k].surf , (overlayButtons[k].pX , overlayButtons[k].pY) )
 
 #dessine une région entière
 def drawRegion(fenetre,regionName):

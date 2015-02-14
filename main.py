@@ -13,6 +13,7 @@ import dessin
 import game
 import math
 import keybinding
+import mouse
 
 #definition des différents états du jeu
 ETAT_MENU    =  1  #menu
@@ -34,6 +35,9 @@ map.theMap = map.map()
 #charge les ennemis sur la map
 game.init()
 
+#initialise les boutons
+mouse.init(fenetre.get_width(),fenetre.get_height())
+
 #initialise l'affichage avec la taille de l'écran
 dessin.loadAllSprites()
 dessin.initDraw(fenetre)
@@ -51,6 +55,8 @@ while running:
     fenetre.fill( (0,0,0) )
     if state == ETAT_GAME:
         game.draw(fenetre)
+    elif state == ETAT_MENU:
+        dessin.drawMenu(fenetre)
     elif state == ETAT_OVERLAY:
         game.draw(fenetre)
         dessin.drawOverlay(fenetre)
@@ -66,6 +72,8 @@ while running:
             if event.key == K_ESCAPE:
                 if state == ETAT_GAME:
                     state = ETAT_OVERLAY
+                elif state == ETAT_OVERLAY:
+                    state = ETAT_GAME
                 else:
                     running = False
             if event.key == K_RETURN:
@@ -73,6 +81,16 @@ while running:
                     state = ETAT_GAME
             if event.key == K_a:
                 pass
+        if event.type == MOUSEBUTTONDOWN:
+            if event.button == 1:#bouton gauche
+                if state == ETAT_OVERLAY:
+                    x,y = event.pos
+                    b = mouse.getBoutonAt("overlay",x,y)
+                    if b:
+                        if b.name == "quitter":
+                            running = False
+                        elif b.name == "menu":
+                            state = ETAT_MENU
             """
             different deplacement et capacité
             """

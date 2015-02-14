@@ -17,8 +17,9 @@ import attackJoueur
 #defini un joueur
 player = joueur.Joueur(2,2)
 
-#initialisation du jeu (création des ennemis)
+#initialisation du jeu
 def init():
+    #création des ennemis sur la map
     for k in map.theMap.regionList.keys():
         r = map.theMap.regionList[k]
         for e in r.ennemiBaseList:
@@ -77,6 +78,7 @@ def tick():
             e.anim += 0.25
         else:
             e.anim = 0
+            e.mouvement(0,0)
         
         if e.attackTimer == 0:
             ia.attackIA(player,e)
