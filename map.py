@@ -9,15 +9,38 @@ qui sont chacune identifiées par un nom
 #variable contenant la carte utilisée tout au long du jeu
 theMap = None
 
+#défini une zone d'évenement
+class EventReg:
+    
+    def __init__(self,line):
+        line = line.strip().split(":")
+        #points A et B de la zone (angles)
+        position = line[0].split(",")
+        self.pA  = [ int(position[0]) , int(position[1]) ]
+        self.pB  = [ int(position[2]) , int(position[3]) ]
+        #type d'évenement
+        info = line[1].split(",")
+        if info[0] == "t": #point de téléport
+            self.type = "teleport"
+            self.dest = [ info[1],int(info[2]) , int(info[3]) ]
+        if info[0] == "q": #découverte de quete
+            self.type = "quest"
+            self.q    = int(info[1])
+    
+    #si l'evenement s'active
+    def activate(self,x,y):
+        return  x>=self.pA[0] and x<= self.pB[0] and y>=self.pA[1] and y<= self.pB[1]
+    
+
 #defini un tableau de cases
-class region:
+class Region:
     
     def __init__(self,name):
         self.name           = name #nom de la région
         self.data           = None #données de sprite
         self.ennemiBaseList = []   #position de spawn des ennemis
         self.ennemiList     = []   #liste des ennemis sur la carte
-        self.teleportList   = []   #liste des points de changements de région
+        self.eventList      = []   #liste des points d'évenements
         
         #chargement de la base de la région
         try:
@@ -42,23 +65,21 @@ class region:
             for l in fileEnnemi:
                 lineEnnemi = l.strip().split(",")
                 self.ennemiBaseList.append( [ lineEnnemi[2] , int(lineEnnemi[0]) , int(lineEnnemi[1]) ] )
-        except Exception as e:
-            print( e )
-        else:
-            fileEnnemi.close()
-            
-        #chargement des points de transports
-        try:
-            fileLink = open("map/"+name+"_link.txt")
-            for line in fileLink:
-                infoLine = line.strip().split(",")
-                posOrigin = ( int(infoLine[0]),int(infoLine[1]) )
-                posDest   = ( infoLine[2],int(infoLine[3]),int(infoLine[4]) )
-                self.teleportList.append( [ posOrigin , posDest ] )
         except:
             pass
         else:
-            fileLink.close()
+            fileEnnemi.close()
+            
+        #chargement des points d'évenements
+        try:
+            fileEvent = open("map/"+name+"_event.txt")
+            for line in fileEvent:
+                self.eventList.append( EventReg(line) )
+        except:
+            pass
+        else:
+            fileEvent.close()
+        print("loaded region:",self.name)
     
     #donne la case à un certain endroit
     def at(self,x,y):
@@ -69,18 +90,20 @@ class region:
         except:
             return 20
     
-    def teleportAt(self,x,y):
-        for i in self.teleportList:
-            if i[0] == (int(x),int(y)):
-                return i[1]
-        return None
+    def eventAt(self,x,y,type=None):
+        l = []
+        for i in self.eventList:
+            if i.activate(int(x),int(y)):
+                if (not type) or type==i.type:
+                    l.append(i)
+        return l
 
 #defini l'ensemble des régions
-class map:
+class Map:
     
     def __init__(self):
         self.regionList = {}
-        #self.regionList["test"] = region("test")
-        self.regionList["base"]    = region("base")
-        self.regionList["atelier"] = region("atelier")
+        self.regionList["salle66"] = Region("salle66")
+        self.regionList["base"]    = Region("base")
+        self.regionList["atelier"] = Region("atelier")
     

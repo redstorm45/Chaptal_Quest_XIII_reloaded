@@ -11,6 +11,7 @@ import joueur
 import ennemi
 import map
 import ia
+import quete
 import option as opt
 import attackJoueur
 
@@ -24,6 +25,10 @@ def init():
         r = map.theMap.regionList[k]
         for e in r.ennemiBaseList:
             r.ennemiList.append( ennemi.Ennemi( e[0] , [ k , e[1] , e[2] ] ) )
+        
+    #chargement des quêtes
+    quete.loadQuetes()
+    quete.refreshActive()
 
 #dessin de la scène
 def draw(fenetre):

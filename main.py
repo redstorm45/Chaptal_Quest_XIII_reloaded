@@ -30,7 +30,7 @@ while not pygame.display.get_init():
     pass
 
 #charge la map
-map.theMap = map.map()
+map.theMap = map.Map()
 
 #charge les ennemis sur la map
 game.init()
