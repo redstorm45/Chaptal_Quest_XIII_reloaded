@@ -27,9 +27,15 @@ sprites = {}
 menuFont = None
 buttonFont = None
 
+menuBack = None
+menuTitle = None
+menuButtons = {}
+
 overlayBack = None
 overlayTitle = None
 overlayButtons = {}
+
+overlayQuit = None
 
 def initDraw(fenetre):
     #taille de l'écran
@@ -55,6 +61,49 @@ def initDraw(fenetre):
     overlayButtons["quitter"].surf     = buttonFont.render("Quitter"     ,True,(20,20,20))
     overlayButtons["menu"].surf        = buttonFont.render("Menu"        ,True,(20,20,20))
     overlayButtons["sauvegarder"].surf = buttonFont.render("Sauvegarder" ,True,(20,20,20))
+    
+    #validation de quittage de l'overlay
+    global overlayQuit
+    overlayQuit = pygame.Surface( ( fenetre.get_width()//1.5,fenetre.get_height()//2) )
+    overlayQuit.fill( (230,230,230) )
+    textOverlayQuit = renderMultiLine(buttonFont,"Êtes-vous sûr de vouloir quitter\nsans sauvegarder?\nOUI            NON",30,(10,10,10),(230,230,230))
+    xPos = (overlayQuit.get_width()-textOverlayQuit.get_width())//2
+    yPos = (overlayQuit.get_height()-textOverlayQuit.get_height())//2
+    overlayQuit.blit( textOverlayQuit, (xPos,yPos) )
+    
+    #overlayQuit.set_alpha(180)
+    
+    #écran de menu
+    global menuBack , menuTitle , menuButtons
+    menuBack = pygame.Surface( ( fenetre.get_width(),fenetre.get_height()) )
+    menuBack.fill( (0,0,0) )
+    
+    menuTitle = menuFont.render("MENU",True,(250,20,20))
+    
+    menuButtons = mouse.boutons["menu"]
+    menuButtons["quitter"].surf = buttonFont.render("Quitter" ,True,(240,240,240))
+    menuButtons["nouveau"].surf = buttonFont.render("Nouveau" ,True,(240,240,240))
+    menuButtons["charger"].surf = buttonFont.render("Charger" ,True,(240,240,240))
+
+#dessine un texte sur plusieurs lignes
+def renderMultiLine(font,text,spacing,color,backColor):
+    #crée les différentes surfaces
+    lines = text.split("\n")
+    surfaces = []
+    totHeight,maxWidth = 0,0
+    for t in lines:
+        s = font.render(t,True,color)
+        totHeight += s.get_height()
+        maxWidth = max( maxWidth,s.get_width() )
+        surfaces.append(s)
+    #blitte les surfaces sur une seule surface commune
+    totSurf = pygame.Surface( (maxWidth,totHeight+(len(lines)-1)*spacing) )
+    totSurf.fill(backColor)
+    h = 0
+    for s in surfaces:
+        totSurf.blit( s , ( (maxWidth-s.get_width())//2 , h ) )
+        h += s.get_height()+spacing
+    return totSurf
 
 #charge un sprite seul
 def getLoaded(name):
@@ -123,13 +172,23 @@ def centerOffset(player):
             yOffset = 0
 
 def drawMenu(fenetre):
-    fenetre.fill( (0,0,0) )
+    fenetre.blit( menuBack , (0,0) )
+    fenetre.blit( menuTitle , (int(SCR_WIDTH*opt.SPRITE_SIZE/2-menuTitle.get_width()/2),0) )
+    for k in menuButtons.keys():
+        fenetre.blit( menuButtons[k].surf , (menuButtons[k].pX , menuButtons[k].pY) )
 
 def drawOverlay(fenetre):
     fenetre.blit( overlayBack , (0,0) )
     fenetre.blit( overlayTitle , (int(SCR_WIDTH*opt.SPRITE_SIZE/2-overlayTitle.get_width()/2),0) )
     for k in overlayButtons.keys():
         fenetre.blit( overlayButtons[k].surf , (overlayButtons[k].pX , overlayButtons[k].pY) )
+
+def drawOverlayQuit(fenetre):
+    xPos = (fenetre.get_width()-overlayQuit.get_width())//2
+    yPos = (fenetre.get_height()-overlayQuit.get_height())//2
+    fenetre.blit( overlayQuit , (xPos,yPos) )
+    
+    scrW,scrH = fenetre.get_width(),fenetre.get_height()
 
 #dessine une région entière
 def drawRegion(fenetre,regionName):

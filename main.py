@@ -16,10 +16,12 @@ import keybinding
 import mouse
 
 #definition des différents états du jeu
-ETAT_MENU    =  1  #menu
-ETAT_GAME    =  2  #en jeu
-ETAT_OVERLAY =  3  #en jeu, avec overlay pour quitter,sauvegarder
-ETAT_OPT     =  4  #ecran d'options
+ETAT_MENU     =  1  #menu
+ETAT_GAME     =  2  #en jeu
+ETAT_OVERLAY  =  3  #en jeu, avec overlay pour quitter,sauvegarder
+ETAT_OVERLAY_Q = 4  #validation avant de quitter le jeu
+ETAT_OPT      =  4  #ecran d'options
+ETAT_NOUVEAU  =  5  #lancement de partie (selection de filière)
 
 #crée la fenetre
 pygame.init()
@@ -60,6 +62,10 @@ while running:
     elif state == ETAT_OVERLAY:
         game.draw(fenetre)
         dessin.drawOverlay(fenetre)
+    elif state == ETAT_OVERLAY_Q:
+        game.draw(fenetre)
+        dessin.drawOverlay(fenetre)
+        dessin.drawOverlayQuit(fenetre)
     pygame.display.flip()
     
     #  ***  evenements  ***
@@ -88,9 +94,25 @@ while running:
                     b = mouse.getBoutonAt("overlay",x,y)
                     if b:
                         if b.name == "quitter":
-                            running = False
+                            state = ETAT_OVERLAY_Q
                         elif b.name == "menu":
                             state = ETAT_MENU
+                if state == ETAT_OVERLAY_Q:
+                    x,y = event.pos
+                    b = mouse.getBoutonAt("overlayQ",x,y)
+                    if b:
+                        if b.name == "non":
+                            state = ETAT_OVERLAY
+                        elif b.name == "oui":
+                            running = False
+                elif state == ETAT_MENU:
+                    x,y = event.pos
+                    b = mouse.getBoutonAt("menu",x,y)
+                    if b:
+                        if b.name == "quitter":
+                            running = False
+                        elif b.name == "nouveau":
+                            state = ETAT_NOUVEAU
             """
             different deplacement et capacité
             """
