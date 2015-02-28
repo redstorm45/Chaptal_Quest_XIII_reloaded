@@ -11,11 +11,12 @@ import map
 import math
 import joueurBase
 import quete
+import option as opt
 
 class Joueur(joueurBase.JoueurBase):
     def __init__(self,x,y):
         self.name       = ""
-        self.position   = ["salle66",x,y]
+        self.position   = ["salle/1.V1.1",x,y]
         self.hitbox     = [ -0.25 , 0.25 , -0.1 , 0.4 ]  # xmin , xmax , ymin , ymax
         self.spriteName = "gobelin"
         self.direction  = 1
@@ -32,9 +33,11 @@ class Joueur(joueurBase.JoueurBase):
         #test de téléportation
         t = map.theMap.regionList[ self.position[0] ].eventAt( self.position[1],self.position[2],"teleport" )
         if t:
-            print("teleport",self.position)
+            if opt.debugMode:
+                print("teleport",self.position)
             self.position = t[0].dest.copy()
-            print("teleport2",self.position)
+            if opt.debugMode:
+                print("teleport2",self.position)
         #test de quete
         qList = map.theMap.regionList[ self.position[0] ].eventAt( self.position[1],self.position[2],"quest" )
         for qNum in qList:

@@ -14,6 +14,8 @@ import game
 import math
 import keybinding
 import mouse
+import option
+import debug
 
 #definition des différents états du jeu
 ETAT_MENU     =  1  #menu
@@ -25,7 +27,7 @@ ETAT_NOUVEAU  =  5  #lancement de partie (selection de filière)
 
 #crée la fenetre
 pygame.init()
-fenetre = pygame.display.set_mode( (0,0) ) #add ", FULLSCREEN" argument for fullscreen mode
+fenetre = pygame.display.set_mode( (1000,600) ) #add ", FULLSCREEN" argument for fullscreen mode
 pygame.display.set_caption("Chaptal Quest XIII - reloaded")
 
 while not pygame.display.get_init():
@@ -97,7 +99,7 @@ while running:
                             state = ETAT_OVERLAY_Q
                         elif b.name == "menu":
                             state = ETAT_MENU
-                if state == ETAT_OVERLAY_Q:
+                elif state == ETAT_OVERLAY_Q:
                     x,y = event.pos
                     b = mouse.getBoutonAt("overlayQ",x,y)
                     if b:
@@ -113,6 +115,10 @@ while running:
                             running = False
                         elif b.name == "nouveau":
                             state = ETAT_NOUVEAU
+                elif state == ETAT_GAME and option.debugMode:
+                    x,y = event.pos
+                    debug.caseSel = list( debug.getCellAt(x,y) )
+                    print("click en",debug.caseSel)
             """
             different deplacement et capacité
             """

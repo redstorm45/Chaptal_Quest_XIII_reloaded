@@ -103,7 +103,35 @@ class Map:
     
     def __init__(self):
         self.regionList = {}
-        self.regionList["salle66"] = Region("salle66")
+        self.regionList["salle/1.V1.1"] = Region("salle/1.V1.1")
+        self.regionList["salle/1.V1.2"] = Region("salle/1.V1.2")
+        self.regionList["salle/1.V1.3"] = Region("salle/1.V1.3")
+        self.regionList["salle/1.V1.4"] = Region("salle/1.V1.4")
+        
+        self.regionList["salle/2.V1.1"] = Region("salle/2.V1.1")
+        self.regionList["salle/2.V1.2"] = Region("salle/2.V1.2")
+        self.regionList["salle/2.V1.3"] = Region("salle/2.V1.3")
+        self.regionList["salle/2.V1.4"] = Region("salle/2.V1.4")
+        
+        self.regionList["couloir/1.V1"]  = Region("couloir/1.V1")
+        self.regionList["couloir/1.V1N"] = Region("couloir/1.V1N")
+        self.regionList["couloir/2.V1"]  = Region("couloir/2.V1")
+        
+        self.regionList["escalier/2.7"] = Region("escalier/2.7")
+        self.regionList["escalier/1.7"] = Region("escalier/1.7")
+        self.regionList["escalier/0.7"] = Region("escalier/0.7")
+        self.regionList["escalier/0_5.7"] = Region("escalier/0_5.7")
         self.regionList["base"]    = Region("base")
         self.regionList["atelier"] = Region("atelier")
-    
+
+
+
+
+
+
+
+
+
+
+
+

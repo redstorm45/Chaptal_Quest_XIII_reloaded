@@ -13,6 +13,8 @@ speedDiag = speed
 #taille des sprites
 SPRITE_SIZE = 64
 
+#○mode de débogguage
+debugMode = True
 
 
 
