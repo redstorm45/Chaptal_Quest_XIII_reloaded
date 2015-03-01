@@ -39,6 +39,8 @@ overlayButtons = {}
 
 overlayQuit = None
 
+newGameBack = None
+
 def initDraw(fenetre):
     #taille de l'écran
     global SCR_WIDTH , SCR_HEIGHT
@@ -86,6 +88,11 @@ def initDraw(fenetre):
     menuButtons["quitter"].surf = buttonFont.render("Quitter" ,True,(240,240,240))
     menuButtons["nouveau"].surf = buttonFont.render("Nouveau" ,True,(240,240,240))
     menuButtons["charger"].surf = buttonFont.render("Charger" ,True,(240,240,240))
+    
+    #écran de nouveau jeu
+    global newGameBack
+    newGameBack = pygame.Surface( ( fenetre.get_width(),fenetre.get_height()) )
+    newGameBack.fill( (0,0,0) )
 
 #dessine un texte sur plusieurs lignes
 def renderMultiLine(font,text,spacing,color,backColor):
@@ -232,6 +239,9 @@ def drawOverlayQuit(fenetre):
     fenetre.blit( overlayQuit , (xPos,yPos) )
     
     scrW,scrH = fenetre.get_width(),fenetre.get_height()
+
+def drawNewGame(fenetre):
+    fenetre.blit( newGameBack, (0,0) )
 
 #dessine une région entière
 def drawRegion(fenetre,regionName):

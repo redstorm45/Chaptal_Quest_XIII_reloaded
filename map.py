@@ -118,9 +118,10 @@ class Map:
         self.regionList["couloir/2.V1"]  = Region("couloir/2.V1")
         
         self.regionList["escalier/2.7"] = Region("escalier/2.7")
+        self.regionList["escalier/1_5.7"] = Region("escalier/1_5.7")
         self.regionList["escalier/1.7"] = Region("escalier/1.7")
-        self.regionList["escalier/0.7"] = Region("escalier/0.7")
         self.regionList["escalier/0_5.7"] = Region("escalier/0_5.7")
+        self.regionList["escalier/0.7"] = Region("escalier/0.7")
         self.regionList["base"]    = Region("base")
         self.regionList["atelier"] = Region("atelier")
 
