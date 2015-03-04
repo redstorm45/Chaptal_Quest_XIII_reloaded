@@ -23,7 +23,14 @@ class Bouton:
             return True
         return False
 
+class TextEdit(Bouton):
+    
+    def __init__(self,position,size,name,text):
+        super(TextEdit,self).__init__(position,size,name)
+        self.text = text
+
 boutons = {}
+tEdits  = {}
 
 def init(scrW,scrH):
     #création des boutons
@@ -35,6 +42,9 @@ def init(scrW,scrH):
     addBoutCenter("menu"    ,"quitter"     ,int(scrW*0.5) , int(scrH*0.7)  , 190,75 )
     addBoutCenter("overlayQ","oui"         ,int(scrW*0.4) , int(scrH*0.65) , 100,50 )
     addBoutCenter("overlayQ","non"         ,int(scrW*0.6) , int(scrH*0.65) , 100,50 )
+    #création des etideurs de textes
+    tEdits["nouveau"] = {}
+    tEdits["
 
 #ajoute un bouton, (x,y) en haut à gauche
 def addBout(win,name,x,y,w,h):

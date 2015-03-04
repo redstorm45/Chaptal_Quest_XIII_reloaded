@@ -61,6 +61,8 @@ while running:
         game.draw(fenetre)
     elif state == ETAT_MENU:
         dessin.drawMenu(fenetre)
+    elif state == ETAT_NOUVEAU:
+        dessin.drawNewGame(fenetre)
     elif state == ETAT_OVERLAY:
         game.draw(fenetre)
         dessin.drawOverlay(fenetre)
