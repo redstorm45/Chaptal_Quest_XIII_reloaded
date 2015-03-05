@@ -16,18 +16,23 @@ import keybinding
 import mouse
 import option
 import debug
+import save
 
 #definition des différents états du jeu
 ETAT_MENU     =  1  #menu
 ETAT_GAME     =  2  #en jeu
 ETAT_OVERLAY  =  3  #en jeu, avec overlay pour quitter,sauvegarder
 ETAT_OVERLAY_Q = 4  #validation avant de quitter le jeu
-ETAT_OPT      =  4  #ecran d'options
-ETAT_NOUVEAU  =  5  #lancement de partie (selection de filière)
+ETAT_OVERLAY_M = 5  #validation avant de revenir au menu
+ETAT_OPT      =  6  #ecran d'options
+ETAT_NOUVEAU  =  7  #lancement de partie (selection de filière)
 
 #crée la fenetre
 pygame.init()
-fenetre = pygame.display.set_mode( (1000,600) ) #add ", FULLSCREEN" argument for fullscreen mode
+if option.debugMode:
+    fenetre = pygame.display.set_mode( (0,0) )
+else:
+    fenetre = pygame.display.set_mode( (0,0),FULLSCREEN )
 pygame.display.set_caption("Chaptal Quest XIII - reloaded")
 
 while not pygame.display.get_init():
@@ -50,7 +55,7 @@ dessin.initDraw(fenetre)
 clock = pygame.time.Clock()
 
 #initialisation de l'état avant entrée dans la boucle
-state = ETAT_GAME
+state = ETAT_MENU
 
 #main loop
 running = True
@@ -70,6 +75,10 @@ while running:
         game.draw(fenetre)
         dessin.drawOverlay(fenetre)
         dessin.drawOverlayQuit(fenetre)
+    elif state == ETAT_OVERLAY_M:
+        game.draw(fenetre)
+        dessin.drawOverlay(fenetre)
+        dessin.drawOverlayMenu(fenetre)
     pygame.display.flip()
     
     #  ***  evenements  ***
@@ -88,42 +97,52 @@ while running:
                     running = False
             if event.key == K_RETURN:
                 if state == ETAT_OVERLAY:
-                    state = ETAT_GAME
+                    state = ETAT_OVERLAY_M
             if event.key == K_a:
                 pass
+            """
+            different deplacement
+            """
         if event.type == MOUSEBUTTONDOWN:
             if event.button == 1:#bouton gauche
-                if state == ETAT_OVERLAY:
-                    x,y = event.pos
-                    b = mouse.getBoutonAt("overlay",x,y)
-                    if b:
-                        if b.name == "quitter":
-                            state = ETAT_OVERLAY_Q
-                        elif b.name == "menu":
-                            state = ETAT_MENU
-                elif state == ETAT_OVERLAY_Q:
-                    x,y = event.pos
-                    b = mouse.getBoutonAt("overlayQ",x,y)
-                    if b:
-                        if b.name == "non":
-                            state = ETAT_OVERLAY
-                        elif b.name == "oui":
-                            running = False
-                elif state == ETAT_MENU:
-                    x,y = event.pos
+                x,y = event.pos
+                if state == ETAT_MENU:
                     b = mouse.getBoutonAt("menu",x,y)
                     if b:
                         if b.name == "quitter":
                             running = False
                         elif b.name == "nouveau":
                             state = ETAT_NOUVEAU
+                elif state == ETAT_NOUVEAU:
+                    save.create("test")
+                    save.load("test",game.player)
+                    state = ETAT_GAME
+                elif state == ETAT_OVERLAY:
+                    b = mouse.getBoutonAt("overlay",x,y)
+                    if b:
+                        if b.name == "quitter":
+                            state = ETAT_OVERLAY_Q
+                        elif b.name == "menu":
+                            state = ETAT_OVERLAY_M
+                        elif b.name == "sauvegarder":
+                            save.save( game.player )
+                elif state == ETAT_OVERLAY_Q:
+                    b = mouse.getBoutonAt("overlayQ",x,y)
+                    if b:
+                        if b.name == "non":
+                            state = ETAT_OVERLAY
+                        elif b.name == "oui":
+                            running = False
+                elif state == ETAT_OVERLAY_M:
+                    b = mouse.getBoutonAt("overlayM",x,y)
+                    if b:
+                        if b.name == "non":
+                            state = ETAT_OVERLAY
+                        elif b.name == "oui":
+                            state = ETAT_MENU
                 elif state == ETAT_GAME and option.debugMode:
-                    x,y = event.pos
                     debug.caseSel = list( debug.getCellAt(x,y) )
                     print("click en",debug.caseSel)
-            """
-            different deplacement et capacité
-            """
     #gestion des déplacements
     if state == ETAT_GAME:
         listPressed = pygame.key.get_pressed()

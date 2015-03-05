@@ -26,19 +26,29 @@ yOffset = 0
 
 sprites = {}
 
+#polices
 menuFont = None
-buttonFont = None
+buttonFontS = None
+buttonFontM = None
+buttonFontL = None
 
+#surfaces du menu
 menuBack = None
 menuTitle = None
 menuButtons = {}
 
+#surfaces de l'overlay en jeu
 overlayBack = None
 overlayTitle = None
 overlayButtons = {}
 
+#surface de validation de quitter
 overlayQuit = None
 
+#surface de validation de retour au menu
+overlayMenu = None
+
+#surfaces de l'écran de nouvelle partie
 newGameBack = None
 
 def initDraw(fenetre):
@@ -49,8 +59,11 @@ def initDraw(fenetre):
     SCR_HEIGHT = fenetre.get_height() / opt.SPRITE_SIZE
     
     #polices
-    menuFont = pygame.font.SysFont("vinerhanditc",92)
-    buttonFont = pygame.font.SysFont("chillernormal",72)
+    global menuFont,buttonFontS,buttonFontM,buttonFontL
+    menuFont = pygame.font.SysFont("vinerhanditc",120)
+    buttonFontS = pygame.font.SysFont("chillernormal",72)
+    buttonFontM = pygame.font.SysFont("chillernormal",92)
+    buttonFontL = pygame.font.SysFont("chillernormal",120)
     
     #écran overlay
     global overlayBack , overlayTitle , overlayButtons
@@ -62,20 +75,27 @@ def initDraw(fenetre):
     overlayTitle = menuFont.render("PAUSE",True,(250,20,20))
     
     overlayButtons = mouse.boutons["overlay"]
-    overlayButtons["quitter"].surf     = buttonFont.render("Quitter"     ,True,(20,20,20))
-    overlayButtons["menu"].surf        = buttonFont.render("Menu"        ,True,(20,20,20))
-    overlayButtons["sauvegarder"].surf = buttonFont.render("Sauvegarder" ,True,(20,20,20))
+    overlayButtons["quitter"].surf     = buttonFontM.render("Quitter"     ,True,(20,20,20))
+    overlayButtons["menu"].surf        = buttonFontM.render("Menu"        ,True,(20,20,20))
+    overlayButtons["sauvegarder"].surf = buttonFontM.render("Sauvegarder" ,True,(20,20,20))
     
-    #validation de quittage de l'overlay
+    #validation de quittage de l'overlay et du jeu
     global overlayQuit
     overlayQuit = pygame.Surface( ( max( fenetre.get_width()//1.5 , 900 ), max( fenetre.get_height()//2, 300) ) )
     overlayQuit.fill( (230,230,230) )
-    textOverlayQuit = renderMultiLine(buttonFont,"Êtes-vous sûr de vouloir quitter?\nLes changements non sauvegardés\nseront perdus\nOUI            NON",30,(10,10,10),(230,230,230))
+    textOverlayQuit = renderMultiLine(buttonFontS,"Êtes-vous sûr de vouloir quitter?\nLes changements non sauvegardés\nseront perdus\nOUI            NON",30,(10,10,10),(230,230,230))
     xPos = (overlayQuit.get_width()-textOverlayQuit.get_width())//2
     yPos = (overlayQuit.get_height()-textOverlayQuit.get_height())//2
     overlayQuit.blit( textOverlayQuit, (xPos,yPos) )
     
-    #overlayQuit.set_alpha(180)
+    #validation de quittage de l'overlay vers le menu
+    global overlayMenu
+    overlayMenu = pygame.Surface( ( max( fenetre.get_width()//1.5 , 900 ), max( fenetre.get_height()//2, 300) ) )
+    overlayMenu.fill( (230,230,230) )
+    textOverlayMenu = renderMultiLine(buttonFontS,"Êtes-vous sûr de vouloir retourner au menu?\nLes changements non sauvegardés\nseront perdus\nOUI            NON",30,(10,10,10),(230,230,230))
+    xPos = (overlayMenu.get_width()-textOverlayMenu.get_width())//2
+    yPos = (overlayMenu.get_height()-textOverlayMenu.get_height())//2
+    overlayMenu.blit( textOverlayMenu, (xPos,yPos) )
     
     #écran de menu
     global menuBack , menuTitle , menuButtons
@@ -85,9 +105,9 @@ def initDraw(fenetre):
     menuTitle = menuFont.render("MENU",True,(250,20,20))
     
     menuButtons = mouse.boutons["menu"]
-    menuButtons["quitter"].surf = buttonFont.render("Quitter" ,True,(240,240,240))
-    menuButtons["nouveau"].surf = buttonFont.render("Nouveau" ,True,(240,240,240))
-    menuButtons["charger"].surf = buttonFont.render("Charger" ,True,(240,240,240))
+    menuButtons["quitter"].surf = buttonFontM.render("Quitter" ,True,(240,240,240))
+    menuButtons["nouveau"].surf = buttonFontM.render("Nouveau" ,True,(240,240,240))
+    menuButtons["charger"].surf = buttonFontM.render("Charger" ,True,(240,240,240))
     
     #écran de nouveau jeu
     global newGameBack
@@ -237,9 +257,12 @@ def drawOverlayQuit(fenetre):
     xPos = (fenetre.get_width()-overlayQuit.get_width())//2
     yPos = (fenetre.get_height()-overlayQuit.get_height())//2
     fenetre.blit( overlayQuit , (xPos,yPos) )
-    
-    scrW,scrH = fenetre.get_width(),fenetre.get_height()
 
+def drawOverlayMenu(fenetre):
+    xPos = (fenetre.get_width()-overlayMenu.get_width())//2
+    yPos = (fenetre.get_height()-overlayMenu.get_height())//2
+    fenetre.blit( overlayMenu , (xPos,yPos) )
+    
 def drawNewGame(fenetre):
     fenetre.blit( newGameBack, (0,0) )
 
