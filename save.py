@@ -33,7 +33,7 @@ def create(name):
         saveFile.write("salle/2.V1.1,2,2\n") #position
     except:
         return False
-    finally:
+    else:
         saveFile.close()
     return True
 
@@ -53,7 +53,7 @@ def load(name,player):
             player.position[2] = float(player.position[2])
         except Exception as e:
             return False
-        finally:
+        else:
             saveFile.close()
     if option.debugMode:
         print("game loaded!")
@@ -67,7 +67,7 @@ def save(player):
         saveFile.write(player.position[0]+","+str(player.position[1])+","+str(player.position[2])) #position
     except:
         return False
-    finally:
+    else:
         saveFile.close()
     if option.debugMode:
         print("game saved!")

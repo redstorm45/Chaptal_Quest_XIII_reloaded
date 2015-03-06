@@ -1,0 +1,6 @@
+overlay
+confirmQ
+Êtes-vous sûr de vouloir quitter?
+Les changements non sauvegardés
+seront perdus
+OUI            NON

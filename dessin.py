@@ -6,7 +6,60 @@ Fichier de gestion du dessin et des sprites
   - augmenter le nombre de sprites
   - ajouter le scrolling de map, pour ne dessiner les sprites que de
     quelques cases plus loins que la taille de l'écran
-    
+
+
+Liste des sprites:
+
+1   : beton
+2   : mur std haut
+3   : mur std haut-gauche intérieur
+4   : mur std gauche
+5   : mur std bas-gauche intérieur
+6   : mur std bas
+7   : mur std bas-droite intérieur
+8   : mur std droite
+9   : mur std haut-droite intérieur
+10  : mur std haut-gauche extérieur
+11  : mur std bas-gauche extérieur
+12  : mur std bas-droite extérieur
+13  : mur std haut-droite extérieur
+14  : mur escalier haut
+15  : mur escalier gauche
+16  : mur escalier bas
+17  : mur escalier droite
+18  : planches de bloquage
+19  : tapis central
+20  : escalier vers le haut, partie gauche
+21  : escalier vers le haut, partie droite
+22  : escalier vers le haut, partie centrale
+23  : fin de tapis vers le haut, partie gauche
+24  : fin de tapis vers le haut, partie droite
+25  : fin de tapis vers le haut, partie centrale
+26  : tapis vers le haut
+
+30  : escalier vers la gauche, partie gauche
+31  : escalier vers la gauche, partie droite
+32  : escalier vers la gauche, partie centrale
+33  : fin de tapis vers la gauche, partie gauche
+34  : fin de tapis vers la gauche, partie droite
+35  : fin de tapis vers la gauche, partie centrale
+36  : tapis vers la gauche
+
+40  : escalier vers le bas, partie gauche
+41  : escalier vers le bas, partie droite
+42  : escalier vers le bas, partie centrale
+43  : fin de tapis vers le bas, partie gauche
+44  : fin de tapis vers le bas, partie droite
+45  : fin de tapis vers le bas, partie centrale
+46  : tapis vers le bas
+
+50  : escalier vers la droite, partie gauche
+51  : escalier vers la droite, partie droite
+52  : escalier vers la droite, partie centrale
+53  : fin de tapis vers la droite, partie gauche
+54  : fin de tapis vers la droite, partie droite
+55  : fin de tapis vers la droite, partie centrale
+56  : tapis vers la droite
 """
 
 import map
@@ -17,6 +70,7 @@ import mouse
 import option
 import debug
 import option as opt
+import texte
 
 SCR_WIDTH   = 20   #largeur de l'écran (en termes de nombre de cases)
 SCR_HEIGHT  = 10   #hauteur de l'écran
@@ -28,6 +82,7 @@ sprites = {}
 
 #polices
 menuFont = None
+buttonFontXS = None
 buttonFontS = None
 buttonFontM = None
 buttonFontL = None
@@ -41,6 +96,7 @@ menuButtons = {}
 overlayBack = None
 overlayTitle = None
 overlayButtons = {}
+overlaySaved = False
 
 #surface de validation de quitter
 overlayQuit = None
@@ -50,6 +106,17 @@ overlayMenu = None
 
 #surfaces de l'écran de nouvelle partie
 newGameBack = None
+newGameTitle = None
+newGameButtons = {}
+newGameInfo = {}
+newGameSelectedInfo = "PTSI"
+
+#surface avant de quitter
+quitSurf = None
+quitPython = None
+quitPygame = None
+quitChaptal = None
+quitTxt = {}
 
 def initDraw(fenetre):
     #taille de l'écran
@@ -59,8 +126,9 @@ def initDraw(fenetre):
     SCR_HEIGHT = fenetre.get_height() / opt.SPRITE_SIZE
     
     #polices
-    global menuFont,buttonFontS,buttonFontM,buttonFontL
+    global menuFont , buttonFontXS , buttonFontS , buttonFontM , buttonFontL
     menuFont = pygame.font.SysFont("vinerhanditc",120)
+    buttonFontXS= pygame.font.SysFont("chillernormal",52)
     buttonFontS = pygame.font.SysFont("chillernormal",72)
     buttonFontM = pygame.font.SysFont("chillernormal",92)
     buttonFontL = pygame.font.SysFont("chillernormal",120)
@@ -75,15 +143,16 @@ def initDraw(fenetre):
     overlayTitle = menuFont.render("PAUSE",True,(250,20,20))
     
     overlayButtons = mouse.boutons["overlay"]
-    overlayButtons["quitter"].surf     = buttonFontM.render("Quitter"     ,True,(20,20,20))
-    overlayButtons["menu"].surf        = buttonFontM.render("Menu"        ,True,(20,20,20))
-    overlayButtons["sauvegarder"].surf = buttonFontM.render("Sauvegarder" ,True,(20,20,20))
+    overlayButtons["quitter"].surf      = buttonFontM.render("Quitter"     ,True,(20 ,20 ,20))
+    overlayButtons["menu"].surf         = buttonFontM.render("Menu"        ,True,(20 ,20 ,20))
+    overlayButtons["sauvegarder"].surf  = buttonFontM.render("Sauvegarder" ,True,(20 ,20 ,20))
+    overlayButtons["sauvegarder"].surf2 = buttonFontM.render("Sauvegarder" ,True,(60 ,60 ,60))
     
     #validation de quittage de l'overlay et du jeu
     global overlayQuit
     overlayQuit = pygame.Surface( ( max( fenetre.get_width()//1.5 , 900 ), max( fenetre.get_height()//2, 300) ) )
     overlayQuit.fill( (230,230,230) )
-    textOverlayQuit = renderMultiLine(buttonFontS,"Êtes-vous sûr de vouloir quitter?\nLes changements non sauvegardés\nseront perdus\nOUI            NON",30,(10,10,10),(230,230,230))
+    textOverlayQuit = renderMultiLine(buttonFontS,texte.getTexte("overlay","confirmQ"),30,(10,10,10),(230,230,230))
     xPos = (overlayQuit.get_width()-textOverlayQuit.get_width())//2
     yPos = (overlayQuit.get_height()-textOverlayQuit.get_height())//2
     overlayQuit.blit( textOverlayQuit, (xPos,yPos) )
@@ -92,7 +161,7 @@ def initDraw(fenetre):
     global overlayMenu
     overlayMenu = pygame.Surface( ( max( fenetre.get_width()//1.5 , 900 ), max( fenetre.get_height()//2, 300) ) )
     overlayMenu.fill( (230,230,230) )
-    textOverlayMenu = renderMultiLine(buttonFontS,"Êtes-vous sûr de vouloir retourner au menu?\nLes changements non sauvegardés\nseront perdus\nOUI            NON",30,(10,10,10),(230,230,230))
+    textOverlayMenu = renderMultiLine(buttonFontS,texte.getTexte("overlay","confirmM"),30,(10,10,10),(230,230,230))
     xPos = (overlayMenu.get_width()-textOverlayMenu.get_width())//2
     yPos = (overlayMenu.get_height()-textOverlayMenu.get_height())//2
     overlayMenu.blit( textOverlayMenu, (xPos,yPos) )
@@ -107,12 +176,36 @@ def initDraw(fenetre):
     menuButtons = mouse.boutons["menu"]
     menuButtons["quitter"].surf = buttonFontM.render("Quitter" ,True,(240,240,240))
     menuButtons["nouveau"].surf = buttonFontM.render("Nouveau" ,True,(240,240,240))
+    menuButtons["option"].surf  = buttonFontM.render("Options" ,True,(240,240,240))
     menuButtons["charger"].surf = buttonFontM.render("Charger" ,True,(240,240,240))
     
     #écran de nouveau jeu
-    global newGameBack
+    global newGameBack , newGameTitle , newGameButtons , newGameInfo
     newGameBack = pygame.Surface( ( fenetre.get_width(),fenetre.get_height()) )
     newGameBack.fill( (0,0,0) )
+    
+    newGameTitle = buttonFontM.render("Choisissez votre classe",True,(240,240,240))
+    newGameButtons = mouse.boutons["nouveau"]
+    newGameButtons["PTSI"].setSurfCenterTop( buttonFontM.render("PTSI" ,True,(240,240,240)) )
+    newGameButtons["PTSI"].surf2 = buttonFontM.render("PTSI" ,True,(120,120,120))
+    newGameButtons["MPSI"].setSurfCenterTop( buttonFontM.render("MPSI" ,True,(240,240,240)) )
+    newGameButtons["MPSI"].surf2 = buttonFontM.render("MPSI" ,True,(120,120,120))
+    newGameButtons["PCSI"].setSurfCenterTop( buttonFontM.render("PCSI" ,True,(240,240,240)) )
+    newGameButtons["PCSI"].surf2 = buttonFontM.render("PCSI" ,True,(120,120,120))
+    newGameButtons["commencer"].setSurfCenterTop( buttonFontM.render("C'est parti!" ,True,(240,240,240)) )
+    
+    newGameInfo["PTSI"] = renderMultiLine(buttonFontS,texte.getTexte("nouveau","PTSI"),30,(240,240,240),(0,0,0) )
+    newGameInfo["PCSI"] = renderMultiLine(buttonFontS,texte.getTexte("nouveau","PCSI"),30,(240,240,240),(0,0,0) )
+    newGameInfo["MPSI"] = renderMultiLine(buttonFontS,texte.getTexte("nouveau","MPSI"),30,(240,240,240),(0,0,0) )
+    
+    #écran de sortie
+    global quitSurf , quitPython , quitPygame , quitChaptal , quitTxt
+    quitSurf = pygame.Surface( ( fenetre.get_width(),fenetre.get_height()) )
+    quitSurf.fill( (0,0,0) )
+    quitTxt["Chaptal"] = renderMultiLine(buttonFontXS,texte.getTexte("quit","chaptal"),30,(240,240,240),(0,0,0) )
+    quitTxt["Python"]  = renderMultiLine(buttonFontXS,texte.getTexte("quit","python") ,30,(240,240,240),(0,0,0) )
+    quitPython = getLoaded("python.jpg",False)
+    quitPygame = getLoaded("pygame.png",False)
 
 #dessine un texte sur plusieurs lignes
 def renderMultiLine(font,text,spacing,color,backColor):
@@ -135,9 +228,10 @@ def renderMultiLine(font,text,spacing,color,backColor):
     return totSurf
 
 #charge un sprite seul
-def getLoaded(name):
+def getLoaded(name,makeAlpha=True):
     s = pygame.image.load("sprites/"+name).convert()
-    s.set_colorkey((255,255,255))
+    if makeAlpha:
+        s.set_colorkey((255,255,255))
     return s
 
 #charge les sprites animés d'un personnage
@@ -251,7 +345,10 @@ def drawOverlay(fenetre):
     fenetre.blit( overlayBack , (0,0) )
     fenetre.blit( overlayTitle , (int(SCR_WIDTH*opt.SPRITE_SIZE/2-overlayTitle.get_width()/2),0) )
     for k in overlayButtons.keys():
-        fenetre.blit( overlayButtons[k].surf , (overlayButtons[k].pX , overlayButtons[k].pY) )
+        if k == "sauvegarder" and overlaySaved:
+            fenetre.blit( overlayButtons[k].surf2 , (overlayButtons[k].pX , overlayButtons[k].pY) )
+        else:
+            fenetre.blit( overlayButtons[k].surf , (overlayButtons[k].pX , overlayButtons[k].pY) )
 
 def drawOverlayQuit(fenetre):
     xPos = (fenetre.get_width()-overlayQuit.get_width())//2
@@ -265,6 +362,21 @@ def drawOverlayMenu(fenetre):
     
 def drawNewGame(fenetre):
     fenetre.blit( newGameBack, (0,0) )
+    fenetre.blit( newGameTitle , (int(SCR_WIDTH*opt.SPRITE_SIZE/2-newGameTitle.get_width()/2),20) )
+    for k in newGameButtons.keys():
+        if k == newGameSelectedInfo or k=="commencer":
+            fenetre.blit( newGameButtons[k].surf , (newGameButtons[k].pX , newGameButtons[k].pY) )
+        else:
+            fenetre.blit( newGameButtons[k].surf2 , (newGameButtons[k].pX , newGameButtons[k].pY) )
+    infoTxt = newGameInfo[newGameSelectedInfo]
+    fenetre.blit( infoTxt , (int(SCR_WIDTH*opt.SPRITE_SIZE/2-infoTxt.get_width()/2) ,int(SCR_HEIGHT*opt.SPRITE_SIZE*0.45) ) )
+
+def drawQuit(fenetre):
+    fenetre.blit( quitSurf , (0,0) )
+    fenetre.blit( quitTxt["Chaptal"] , (600,100) )
+    fenetre.blit( quitTxt["Python"]  , (100,500) )
+    fenetre.blit( quitPython, (800,400) )
+    fenetre.blit( quitPygame, (800,600) )
 
 #dessine une région entière
 def drawRegion(fenetre,regionName):

@@ -14,10 +14,39 @@ class Bouton:
         self.size = size
         self.width,self.height = size
         self.surf = None
+        self.surf2 = None
     
     def __repr__(self):
         return "bouton["+str(self.pX)+","+str(self.pY)+","+str(self.pX+self.width)+","+str(self.pY+self.height)
     
+    #change la surface et met à jour la position pour se centrer
+    def setSurfCenter(self,surf):
+        self.surf = surf
+        
+        xCenter = self.pX + self.width//2
+        yCenter = self.pY + self.height//2
+        
+        newX = xCenter - surf.get_width()//2
+        newY = yCenter - surf.get_height()//2
+        
+        self.pX,self.pY = newX,newY
+        self.pos = newX,newY
+        self.width,self.height = surf.get_width(),surf.get_height()
+        self.size = self.width,self.height
+    
+    #change la surface et met à jour la position pour se centrer sur l'axe horizontal
+    def setSurfCenterTop(self,surf):
+        self.surf = surf
+        
+        xCenter = self.pX + self.width//2
+        
+        newX = xCenter - surf.get_width()//2
+        
+        self.pX = newX
+        self.pos = newX,self.pY
+        self.width = surf.get_width()
+        self.size = self.width,self.height
+        
     def inBouton(self,x,y):
         if self.pX<x and x<self.pX+self.width and self.pY<y and y<self.pY+self.height:
             return True
@@ -37,13 +66,18 @@ def init(scrW,scrH):
     addBoutCenter("overlay" ,"menu"        ,int(scrW*0.5) , int(scrH*0.3)  , 150,75 )
     addBoutCenter("overlay" ,"sauvegarder" ,int(scrW*0.5) , int(scrH*0.5)  , 320,75 )
     addBoutCenter("overlay" ,"quitter"     ,int(scrW*0.5) , int(scrH*0.7)  , 190,75 )
-    addBoutCenter("menu"    ,"nouveau"     ,int(scrW*0.5) , int(scrH*0.3)  , 200,75 )
-    addBoutCenter("menu"    ,"charger"     ,int(scrW*0.5) , int(scrH*0.5)  , 200,75 )
-    addBoutCenter("menu"    ,"quitter"     ,int(scrW*0.5) , int(scrH*0.7)  , 190,75 )
+    addBoutCenter("menu"    ,"nouveau"     ,int(scrW*0.5) , int(scrH*0.3)  , 260,75 )
+    addBoutCenter("menu"    ,"charger"     ,int(scrW*0.5) , int(scrH*0.45) , 260,75 )
+    addBoutCenter("menu"    ,"option"      ,int(scrW*0.5) , int(scrH*0.60) , 260,75 )
+    addBoutCenter("menu"    ,"quitter"     ,int(scrW*0.5) , int(scrH*0.75) , 230,75 )
     addBoutCenter("overlayQ","oui"         ,int(scrW*0.4) , int(scrH*0.65) , 100,50 )
     addBoutCenter("overlayQ","non"         ,int(scrW*0.6) , int(scrH*0.65) , 100,50 )
     addBoutCenter("overlayM","oui"         ,int(scrW*0.4) , int(scrH*0.65) , 100,50 )
     addBoutCenter("overlayM","non"         ,int(scrW*0.6) , int(scrH*0.65) , 100,50 )
+    addBoutCenter("nouveau" ,"PTSI"        ,int(scrW*0.3) , int(scrH*0.3)  , 260,75 )
+    addBoutCenter("nouveau" ,"MPSI"        ,int(scrW*0.5) , int(scrH*0.3)  , 260,75 )
+    addBoutCenter("nouveau" ,"PCSI"        ,int(scrW*0.7) , int(scrH*0.3)  , 230,75 )
+    addBoutCenter("nouveau" ,"commencer"   ,int(scrW*0.5) , int(scrH*0.9)  , 260,75 )
     #création des etideurs de textes
     tEdits["nouveau"] = {}
 

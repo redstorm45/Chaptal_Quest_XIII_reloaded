@@ -7,6 +7,8 @@ les quêtes sont identifiées par un id, càd un nombre
 
 """
 
+import option
+
 listeQuetes = []
 listeQuetesActives = []
 
@@ -38,7 +40,7 @@ class Quete:
     
     #donne une représentation de l'object sous forme de string
     def __repr__(self):
-        return str(self.id)+" "+self.name+":\n"+self.info+str(self.required)
+        return str(self.id)+" "+self.name+":"+self.info+str(self.required)+"\n"
         
     #donne la prochaine ligne qui n'est pas commentée
     def getNextLine(self,f):
@@ -70,8 +72,9 @@ def loadQuetes():
             listeQuetes.append(q)
         else:
             break
-    print("loaded",i,"quests")
-    print(listeQuetes)
+    if option.debugMode:
+        print("loaded",i,"quests")
+        print(listeQuetes)
 
 #donne une quete par son id
 def getQuete(id):

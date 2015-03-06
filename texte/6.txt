@@ -1,0 +1,4 @@
+quit
+python
+Chaptal Quest est codé en Python
+et utilise Pygame

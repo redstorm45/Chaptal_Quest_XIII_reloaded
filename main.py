@@ -17,15 +17,17 @@ import mouse
 import option
 import debug
 import save
+import texte
 
 #definition des différents états du jeu
-ETAT_MENU     =  1  #menu
-ETAT_GAME     =  2  #en jeu
-ETAT_OVERLAY  =  3  #en jeu, avec overlay pour quitter,sauvegarder
+ETAT_MENU      = 1  #menu
+ETAT_GAME      = 2  #en jeu
+ETAT_OVERLAY   = 3  #en jeu, avec overlay pour quitter,sauvegarder
 ETAT_OVERLAY_Q = 4  #validation avant de quitter le jeu
 ETAT_OVERLAY_M = 5  #validation avant de revenir au menu
-ETAT_OPT      =  6  #ecran d'options
-ETAT_NOUVEAU  =  7  #lancement de partie (selection de filière)
+ETAT_OPTION    = 6  #ecran d'options
+ETAT_NOUVEAU   = 7  #lancement de partie (selection de filière)
+ETAT_QUIT      = 8  #fin du programme
 
 #crée la fenetre
 pygame.init()
@@ -43,6 +45,9 @@ map.theMap = map.Map()
 
 #charge les ennemis sur la map
 game.init()
+
+#charge les textes
+texte.loadTextes()
 
 #initialise les boutons
 mouse.init(fenetre.get_width(),fenetre.get_height())
@@ -79,6 +84,8 @@ while running:
         game.draw(fenetre)
         dessin.drawOverlay(fenetre)
         dessin.drawOverlayMenu(fenetre)
+    elif state == ETAT_QUIT:
+        dessin.drawQuit(fenetre)
     pygame.display.flip()
     
     #  ***  evenements  ***
@@ -89,11 +96,16 @@ while running:
         #appui sur une touche
         if event.type == KEYDOWN:
             if event.key == K_ESCAPE:
-                if state == ETAT_GAME:
+                if state in [ETAT_GAME,ETAT_OVERLAY_M,ETAT_OVERLAY_Q]:
                     state = ETAT_OVERLAY
                 elif state == ETAT_OVERLAY:
+                    dessin.overlaySaved = False
                     state = ETAT_GAME
-                else:
+                elif state == ETAT_MENU:
+                    state = ETAT_QUIT
+                elif state in [ETAT_NOUVEAU,ETAT_OPTION]:
+                    state = ETAT_MENU
+                elif state == ETAT_QUIT:
                     running = False
             if event.key == K_RETURN:
                 if state == ETAT_OVERLAY:
@@ -110,29 +122,49 @@ while running:
                     b = mouse.getBoutonAt("menu",x,y)
                     if b:
                         if b.name == "quitter":
-                            running = False
+                            state = ETAT_QUIT
                         elif b.name == "nouveau":
                             state = ETAT_NOUVEAU
+                        elif b.name == "option":
+                            state = ETAT_OPTION
                 elif state == ETAT_NOUVEAU:
-                    save.create("test")
-                    save.load("test",game.player)
-                    state = ETAT_GAME
+                    b = mouse.getBoutonAt("nouveau",x,y)
+                    if b:
+                        if b.name == "PTSI":
+                            dessin.newGameSelectedInfo = "PTSI"
+                        elif b.name == "PCSI":
+                            dessin.newGameSelectedInfo = "PCSI"
+                        elif b.name == "MPSI":
+                            dessin.newGameSelectedInfo = "MPSI"
+                        elif b.name == "commencer":
+                            game.player.classe = dessin.newGameSelectedInfo
+                            save.create("test")
+                            save.load("test",game.player)
+                            dessin.overlaySaved = False
+                            state = ETAT_GAME
                 elif state == ETAT_OVERLAY:
                     b = mouse.getBoutonAt("overlay",x,y)
                     if b:
                         if b.name == "quitter":
-                            state = ETAT_OVERLAY_Q
+                            if dessin.overlaySaved:
+                                state = ETAT_QUIT
+                            else:
+                                state = ETAT_OVERLAY_Q
                         elif b.name == "menu":
-                            state = ETAT_OVERLAY_M
-                        elif b.name == "sauvegarder":
+                            if dessin.overlaySaved:
+                                state = ETAT_MENU
+                            else:
+                                state = ETAT_OVERLAY_M
+                        elif b.name == "sauvegarder" and not dessin.overlaySaved:
                             save.save( game.player )
+                            dessin.overlaySaved = True
                 elif state == ETAT_OVERLAY_Q:
                     b = mouse.getBoutonAt("overlayQ",x,y)
                     if b:
                         if b.name == "non":
                             state = ETAT_OVERLAY
                         elif b.name == "oui":
-                            running = False
+                            state = ETAT_QUIT
                 elif state == ETAT_OVERLAY_M:
                     b = mouse.getBoutonAt("overlayM",x,y)
                     if b:
@@ -140,6 +172,8 @@ while running:
                             state = ETAT_OVERLAY
                         elif b.name == "oui":
                             state = ETAT_MENU
+                elif state == ETAT_QUIT:
+                    running = False
                 elif state == ETAT_GAME and option.debugMode:
                     debug.caseSel = list( debug.getCellAt(x,y) )
                     print("click en",debug.caseSel)
