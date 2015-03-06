@@ -1,0 +1,5 @@
+2,2,gobelin
+2,5,gobelin
+2,8,gobelin
+2,12,gobelin
+2,20,gobelin

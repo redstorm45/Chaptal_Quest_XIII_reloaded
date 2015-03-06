@@ -111,7 +111,7 @@ newGameButtons = {}
 newGameInfo = {}
 newGameSelectedInfo = "PTSI"
 
-#surface avant de quitter
+#surfaces avant de quitter
 quitSurf = None
 quitPython = None
 quitPygame = None
@@ -305,6 +305,7 @@ def loadAllSprites():
     sprites["plancher"]       = getLoaded("plancher.bmp")
     sprites["planche"]        = getLoaded("planche.bmp")
     
+    sprites["eclair"] = getLoaded("eclair.bmp")
     loadAnimSprite( "gobelin" )
     
 #gère le décalage de l'écran à partir de la position du joueur
@@ -532,6 +533,10 @@ def drawPlayer(fenetre,player):
         fenetre.blit(sprites[player.spriteName + "G"][int(player.anim)%8], (xEcran,yEcran))
     else:
         fenetre.blit(sprites[player.spriteName][player.direction-1], (xEcran,yEcran))
+    
+    #affiche l'aura
+    if player.aura:
+        fenetre.blit(sprites[player.aura], (xEcran,yEcran))
     
     #affiche la vie au dessus du sprite
     pygame.draw.rect( fenetre , (255,0,0) , (xEcran,yEcran-10,64,10) )

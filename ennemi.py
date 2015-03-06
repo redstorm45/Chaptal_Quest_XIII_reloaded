@@ -1,30 +1,28 @@
 import collision
 import os
+import joueurBase
 
 
-class Ennemi:
+class Ennemi(joueurBase.JoueurBase):
     
     def __init__(self,name,position):
-        
+        super(Ennemi,self).__init__(int(position[1]),int(position[2]))
         self.name = name
    
         workDir = os.getcwd()
         os.chdir(workDir)
         file = open( "ennemi/" + name + ".txt")
         self.position   = position
+        self.position[1] = int(self.position[1])
+        self.position[2] = int(self.position[2])
         self.spriteName = file.readline().strip().split(";")
         self.direction  = int(file.readline().strip().split(";")[0])
         self.lvl        = int(file.readline().strip().split(";")[0])
         self.hp         =self.lvl*100
         self.dammage    = int(file.readline().strip().split(";")[0])
         self.armure      = int(file.readline().strip().split(";")[0])
-        self.hitbox     = [ -1/4 , 1/4 , -1/4 , 1/4 ]
-        self.position[1] = int(self.position[1])
-        self.position[2] = int(self.position[2])
-        self.spriteName = str(self.spriteName[0])
-        self.anim       = 0 
-        self.attackTimer = 0
-    
+        self.hitbox      = [ -1/4 , 1/4 , -1/4 , 1/4 ]
+        self.spriteName  = str(self.spriteName[0])
      
      
     def mouvement(self,x,y):

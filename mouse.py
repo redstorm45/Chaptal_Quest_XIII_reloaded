@@ -74,9 +74,9 @@ def init(scrW,scrH):
     addBoutCenter("overlayQ","non"         ,int(scrW*0.6) , int(scrH*0.65) , 100,50 )
     addBoutCenter("overlayM","oui"         ,int(scrW*0.4) , int(scrH*0.65) , 100,50 )
     addBoutCenter("overlayM","non"         ,int(scrW*0.6) , int(scrH*0.65) , 100,50 )
-    addBoutCenter("nouveau" ,"PTSI"        ,int(scrW*0.3) , int(scrH*0.3)  , 260,75 )
-    addBoutCenter("nouveau" ,"MPSI"        ,int(scrW*0.5) , int(scrH*0.3)  , 260,75 )
-    addBoutCenter("nouveau" ,"PCSI"        ,int(scrW*0.7) , int(scrH*0.3)  , 230,75 )
+    addBoutCenter("nouveau" ,"PTSI"        ,int(scrW*0.3) , int(scrH*0.25)  , 260,75 )
+    addBoutCenter("nouveau" ,"MPSI"        ,int(scrW*0.5) , int(scrH*0.25)  , 260,75 )
+    addBoutCenter("nouveau" ,"PCSI"        ,int(scrW*0.7) , int(scrH*0.25)  , 230,75 )
     addBoutCenter("nouveau" ,"commencer"   ,int(scrW*0.5) , int(scrH*0.9)  , 260,75 )
     #création des etideurs de textes
     tEdits["nouveau"] = {}

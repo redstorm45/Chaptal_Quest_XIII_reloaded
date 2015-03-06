@@ -15,6 +15,7 @@ import math
 import keybinding
 import mouse
 import option
+
 import debug
 import save
 import texte
@@ -90,9 +91,12 @@ while running:
     
     #  ***  evenements  ***
     for event in pygame.event.get():
-        #quitte le programme
+        #appui sur la croix
         if event.type == QUIT:
-            running = False
+            if state == ETAT_QUIT:
+                running = False
+            else:
+                state = ETAT_QUIT
         #appui sur une touche
         if event.type == KEYDOWN:
             if event.key == K_ESCAPE:

@@ -21,6 +21,8 @@ class JoueurBase:
         self.armure = 100
         self.anim = 0
         self.attackTimer = 0
+        self.arme = 0
+        self.aura = ""
         
     #mouvement de x cases vers la droite
     # et de y cases vers le bas

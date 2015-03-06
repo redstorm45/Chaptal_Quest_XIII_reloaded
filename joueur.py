@@ -15,6 +15,7 @@ import option as opt
 
 class Joueur(joueurBase.JoueurBase):
     def __init__(self,x,y):
+        super(Joueur,self).__init__(x,y)
         #variables misc
         self.name   = ""
         self.classe = "PTSI"
@@ -30,6 +31,8 @@ class Joueur(joueurBase.JoueurBase):
         self.dammage = 20
         self.armure = 100
         self.attackTimer = 0
+        self.regen = 0.5
+        self.capacite1 = "RLC"
     
     def mouvement(self,x,y):
         #mouvement normal

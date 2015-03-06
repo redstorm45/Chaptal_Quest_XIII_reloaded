@@ -14,6 +14,7 @@ import ia
 import quete
 import option as opt
 import attackJoueur
+import capacite
 
 #defini un joueur
 player = joueur.Joueur(2,2)
@@ -70,6 +71,9 @@ def actionKeys(listPressed):
             player.attackTimer = 1
         else:
             player.attackTimer = max( 0, player.attackTimer - 1/16)
+    if keybinding.isKeyActive( "SORT1" , listPressed ):
+        capacite.capacite('RLC',player,map.theMap.regionList[player.position[0]].ennemiList)
+        
 
 #evenement de mise à jour (ia et animations)    
 def tick():
@@ -81,7 +85,7 @@ def tick():
         if ia.agro(player.position,e.position):
             ia.trajectoire(player.position,e)
             e.anim += 0.25
-        else:
+        elif e.anim != 0:
             e.anim = 0
             e.mouvement(0,0)
         
