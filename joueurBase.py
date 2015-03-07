@@ -10,20 +10,24 @@ import collision
 
 class JoueurBase:
     def __init__(self,x,y):
+        #caractéristiques
         self.name       = ""
         self.position   = ["base",x,y]
         self.hitbox     = [ -0.25 , 0.25 , -0.2 , 0.3 ]  # xmin , xmax , ymin , ymax
+        #dessin
         self.spriteName = "gobelin"
         self.direction  = 1
-        self.lvl = 1
-        self.hp = 100 * self.lvl
+        #stats
+        self.lvl     = 1
+        self.hp      = 100 * self.lvl
         self.dammage = 5
-        self.armure = 100
-        self.anim = 0
+        self.armure  = 100
+        self.anim    = 0
+        self.arme    = 0
+        self.aura    = ""
+        #timers
         self.attackTimer = 0
-        self.arme = 0
-        self.aura = ""
-        self.auratimer = 0
+        self.auratimer   = 0
         
     #mouvement de x cases vers la droite
     # et de y cases vers le bas

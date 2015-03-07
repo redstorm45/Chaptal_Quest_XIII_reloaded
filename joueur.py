@@ -16,23 +16,15 @@ import option as opt
 class Joueur(joueurBase.JoueurBase):
     def __init__(self,x,y):
         super(Joueur,self).__init__(x,y)
-        #variables misc
-        self.name   = ""
+        #caractéristiques
         self.classe = "PTSI"
         #variables d'affichage
-        self.position   = ["salle/1.V1.1",x,y]
         self.hitbox     = [ -0.25 , 0.25 , -0.1 , 0.4 ]  # xmin , xmax , ymin , ymax
         self.spriteName = "gobelin"
-        self.direction  = 1
-        self.anim = 0
         #variables de compétences
-        self.lvl = 1
-        self.hp = 100 * self.lvl
-        self.dammage = 20
-        self.armure = 100
-        self.attackTimer = 0
-        self.regen = 0.5
-        self.capacite1 = "RLC"
+        self.regen          = 0.5
+        self.capacite1      = "RLC"
+        #timers
         self.capacite1timer = 0
     
     def mouvement(self,x,y):
