@@ -88,6 +88,7 @@ def tick():
     for e in map.theMap.regionList[ player.position[0] ].ennemiList:
         if e.hp < 0:
             map.theMap.regionList[ player.position[0] ].ennemiList.remove(e)
+            player.levelup += e.exp
         if ia.agro(player.position,e.position):
             ia.trajectoire(player.position,e)
             e.anim += 0.25
@@ -99,6 +100,10 @@ def tick():
             ia.attackIA(player,e)
         else:
             e.attackTimer = max( 0, e.attackTimer - 1/16)
+        if player.levelup - (100*2**player.lvl) >= 0:
+            player.levelup -= (100*2**player.lvl)
+            player.lvl += 1
+            player.hp = player.lvl * 100
         
     
     
