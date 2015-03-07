@@ -23,6 +23,7 @@ class JoueurBase:
         self.attackTimer = 0
         self.arme = 0
         self.aura = ""
+        self.auratimer = 0
         
     #mouvement de x cases vers la droite
     # et de y cases vers le bas

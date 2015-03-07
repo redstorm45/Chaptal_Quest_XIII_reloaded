@@ -535,8 +535,12 @@ def drawPlayer(fenetre,player):
         fenetre.blit(sprites[player.spriteName][player.direction-1], (xEcran,yEcran))
     
     #affiche l'aura
-    if player.aura:
+    if player.auratimer > 0 :
         fenetre.blit(sprites[player.aura], (xEcran,yEcran))
+        player.auratimer -= 1
+    else:
+        player.aura = ""
+        
     
     #affiche la vie au dessus du sprite
     pygame.draw.rect( fenetre , (255,0,0) , (xEcran,yEcran-10,64,10) )

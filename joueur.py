@@ -33,6 +33,7 @@ class Joueur(joueurBase.JoueurBase):
         self.attackTimer = 0
         self.regen = 0.5
         self.capacite1 = "RLC"
+        self.capacite1timer = 0
     
     def mouvement(self,x,y):
         #mouvement normal

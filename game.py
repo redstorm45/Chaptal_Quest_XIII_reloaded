@@ -71,9 +71,15 @@ def actionKeys(listPressed):
             player.attackTimer = 1
         else:
             player.attackTimer = max( 0, player.attackTimer - 1/16)
-    if keybinding.isKeyActive( "SORT1" , listPressed ):
+    if keybinding.isKeyActive( "SORT1" , listPressed ) and player.capacite1timer == 0:
         capacite.capacite('RLC',player,map.theMap.regionList[player.position[0]].ennemiList)
+        player.capacite1timer = player.capacite1timer + 60*3
         
+    
+    if player.capacite1timer > 0:
+        player.capacite1timer -= 1
+    print(player.capacite1timer)
+    
 
 #evenement de mise à jour (ia et animations)    
 def tick():

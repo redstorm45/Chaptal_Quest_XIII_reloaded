@@ -186,6 +186,9 @@ while running:
         listPressed = pygame.key.get_pressed()
         game.actionKeys(listPressed)
     
+   
+        
+    
     #  ***  update général  ***
     if state == ETAT_GAME:
         game.tick()
