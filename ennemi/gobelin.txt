@@ -1,5 +1,6 @@
 gobelin
 0
-1
-2
-100
+1;level
+2;damage
+100;armor
+200;gain dexp

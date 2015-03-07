@@ -19,6 +19,7 @@ class Ennemi(joueurBase.JoueurBase):
         self.armure      = int(file.readline().strip().split(";")[0])
         self.hitbox      = [ -1/4 , 1/4 , -1/4 , 1/4 ]
         self.spriteName  = str(self.spriteName[0])
+        self.exp         = int(file.readline().strip().split(";")[0])
      
      
     def mouvement(self,x,y):
