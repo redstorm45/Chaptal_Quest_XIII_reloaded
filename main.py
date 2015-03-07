@@ -95,7 +95,7 @@ while running:
         if event.type == QUIT:
             if state == ETAT_QUIT:
                 running = False
-            elif debugMode:
+            elif option.debugMode:
                 running = False
             else:
                 state = ETAT_QUIT
