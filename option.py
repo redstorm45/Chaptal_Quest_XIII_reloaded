@@ -14,7 +14,7 @@ speedDiag = speed
 SPRITE_SIZE = 64
 
 #○mode de débogguage
-debugMode = False
+debugMode = True
 
 
 

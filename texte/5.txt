@@ -3,4 +3,3 @@ confirmM
 Êtes-vous sûr de vouloir retourner au menu?
 Les changements non sauvegardés
 seront perdus
-OUI            NON

@@ -104,6 +104,8 @@ overlayQuit = None
 #surface de validation de retour au menu
 overlayMenu = None
 
+overlayYesNo = None
+
 #surfaces de l'écran de nouvelle partie
 newGameBack = None
 newGameTitle = None
@@ -148,23 +150,38 @@ def initDraw(fenetre):
     overlayButtons["sauvegarder"].surf  = buttonFontM.render("Sauvegarder" ,True,(20 ,20 ,20))
     overlayButtons["sauvegarder"].surf2 = buttonFontM.render("Sauvegarder" ,True,(60 ,60 ,60))
     
+    #validation de quittage de l'overlay, boutons Oui et Non
+    global overlayYesNo
+    overlayYes = buttonFontM.render("Oui",True,(20,20,20))
+    overlayNo  = buttonFontM.render("Non",True,(20,20,20))
+    width  = int( (overlayYes.get_width() + overlayNo.get_width())*2 )
+    height = int( max(  overlayYes.get_height() , overlayNo.get_height() )*1.2 )
+    diff = int(height/6)
+    overlayYesNo = pygame.Surface( ( width,height ) )
+    overlayYesNo.fill( (230,230,230) )
+    overlayYesNo.blit( overlayYes , (diff,diff) )
+    overlayYesNo.blit( overlayNo  , (overlayYesNo.get_width()-overlayNo.get_width()-diff,diff) )
+    
     #validation de quittage de l'overlay et du jeu
     global overlayQuit
-    overlayQuit = pygame.Surface( ( max( fenetre.get_width()//1.5 , 900 ), max( fenetre.get_height()//2, 300) ) )
-    overlayQuit.fill( (230,230,230) )
     textOverlayQuit = renderMultiLine(buttonFontS,texte.getTexte("overlay","confirmQ"),30,(10,10,10),(230,230,230))
-    xPos = (overlayQuit.get_width()-textOverlayQuit.get_width())//2
-    yPos = (overlayQuit.get_height()-textOverlayQuit.get_height())//2
-    overlayQuit.blit( textOverlayQuit, (xPos,yPos) )
+    overlayQuit = pygame.Surface( ( textOverlayQuit.get_width()+2*diff, textOverlayQuit.get_height()+2*diff) )
+    overlayQuit.fill( (230,230,230) )
+    overlayQuit.blit( textOverlayQuit, (diff,diff) )
     
     #validation de quittage de l'overlay vers le menu
     global overlayMenu
-    overlayMenu = pygame.Surface( ( max( fenetre.get_width()//1.5 , 900 ), max( fenetre.get_height()//2, 300) ) )
-    overlayMenu.fill( (230,230,230) )
     textOverlayMenu = renderMultiLine(buttonFontS,texte.getTexte("overlay","confirmM"),30,(10,10,10),(230,230,230))
-    xPos = (overlayMenu.get_width()-textOverlayMenu.get_width())//2
-    yPos = (overlayMenu.get_height()-textOverlayMenu.get_height())//2
-    overlayMenu.blit( textOverlayMenu, (xPos,yPos) )
+    overlayMenu = pygame.Surface( ( textOverlayMenu.get_width()+2*diff , textOverlayMenu.get_height()+2*diff) )
+    overlayMenu.fill( (230,230,230) )
+    overlayMenu.blit( textOverlayMenu, (diff,diff) )
+    
+    #position des boutons oui et non
+    left = fenetre.get_width()//2 - overlayYesNo.get_width()//2 + diff
+    right = fenetre.get_width()//2 + overlayYesNo.get_width()//2 - diff
+    top = fenetre.get_height()//2 + max( overlayQuit.get_height() , overlayMenu.get_height() )//2 + diff
+    mouse.boutons["overlayV"]["oui"].setTopLeft(top,left)
+    mouse.boutons["overlayV"]["non"].setTopRight(top,right)
     
     #écran de menu
     global menuBack , menuTitle , menuButtons
@@ -359,11 +376,17 @@ def drawOverlayQuit(fenetre):
     xPos = (fenetre.get_width()-overlayQuit.get_width())//2
     yPos = (fenetre.get_height()-overlayQuit.get_height())//2
     fenetre.blit( overlayQuit , (xPos,yPos) )
+    xPos = (fenetre.get_width()-overlayYesNo.get_width())//2
+    yPos = (fenetre.get_height()+ max(overlayMenu.get_height(),overlayQuit.get_height()) )//2
+    fenetre.blit( overlayYesNo , (xPos,yPos) )
 
 def drawOverlayMenu(fenetre):
     xPos = (fenetre.get_width()-overlayMenu.get_width())//2
     yPos = (fenetre.get_height()-overlayMenu.get_height())//2
     fenetre.blit( overlayMenu , (xPos,yPos) )
+    xPos = (fenetre.get_width()-overlayYesNo.get_width())//2
+    yPos = (fenetre.get_height()+ max(overlayMenu.get_height(),overlayQuit.get_height()) )//2
+    fenetre.blit( overlayYesNo , (xPos,yPos) )
     
 def drawNewGame(fenetre):
     fenetre.blit( newGameBack, (0,0) )

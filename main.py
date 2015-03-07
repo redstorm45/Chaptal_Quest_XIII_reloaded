@@ -95,6 +95,8 @@ while running:
         if event.type == QUIT:
             if state == ETAT_QUIT:
                 running = False
+            elif option.debugMode:
+                running = False
             else:
                 state = ETAT_QUIT
         #appui sur une touche
@@ -163,14 +165,14 @@ while running:
                             save.save( game.player )
                             dessin.overlaySaved = True
                 elif state == ETAT_OVERLAY_Q:
-                    b = mouse.getBoutonAt("overlayQ",x,y)
+                    b = mouse.getBoutonAt("overlayV",x,y)
                     if b:
                         if b.name == "non":
                             state = ETAT_OVERLAY
                         elif b.name == "oui":
                             state = ETAT_QUIT
                 elif state == ETAT_OVERLAY_M:
-                    b = mouse.getBoutonAt("overlayM",x,y)
+                    b = mouse.getBoutonAt("overlayV",x,y)
                     if b:
                         if b.name == "non":
                             state = ETAT_OVERLAY
