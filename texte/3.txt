@@ -1,6 +1,6 @@
 nouveau
 MPSI
-La MPSI est une classe de théoriciens
-de l'arrière, qui peuvent décrire la
+La MPSI est une classe de thÃ©oriciens
+de l'arriÃ¨re, qui peuvent dÃ©crire la
 rotation d'une patate autour du soleil
 sans se tromper.

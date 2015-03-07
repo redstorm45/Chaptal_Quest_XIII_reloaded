@@ -209,7 +209,7 @@ def initDraw(fenetre):
     newGameButtons["MPSI"].surf2 = buttonFontM.render("MPSI" ,True,(120,120,120))
     newGameButtons["PCSI"].setSurfCenterTop( buttonFontM.render("PCSI" ,True,(240,240,240)) )
     newGameButtons["PCSI"].surf2 = buttonFontM.render("PCSI" ,True,(120,120,120))
-    newGameButtons["commencer"].setSurfCenterTop( buttonFontM.render("C'est parti!" ,True,(240,240,240)) )
+    newGameButtons["commencer"].setSurfCenterTop( buttonFontM.render("APB" ,True,(240,240,240)) )
     
     newGameInfo["PTSI"] = renderMultiLine(buttonFontS,texte.getTexte("nouveau","PTSI"),30,(240,240,240),(0,0,0) )
     newGameInfo["PCSI"] = renderMultiLine(buttonFontS,texte.getTexte("nouveau","PCSI"),30,(240,240,240),(0,0,0) )

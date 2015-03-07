@@ -2,4 +2,4 @@ nouveau
 PCSI
 La PCSI est une classe de physiciens
 et de chimistes qui utiliserons
-l'oxydoréduction à leur avantage.
+l'oxydorÃ©duction Ã  leur avantage.

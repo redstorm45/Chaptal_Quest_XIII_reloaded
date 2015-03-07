@@ -21,7 +21,7 @@ def loadTextes():
         i += 1
         #lis un fichier de texte
         try:
-            file = open("texte/"+str(i)+".txt")
+            file = open("texte/"+str(i)+".txt",encoding = "utf-8")
             groupe = file.readline().strip()
             name = file.readline().strip()
             texte = ""
