@@ -71,6 +71,7 @@ import option
 import debug
 import option as opt
 import texte
+import elementDessin as elt
 
 SCR_WIDTH   = 20   #largeur de l'écran (en termes de nombre de cases)
 SCR_HEIGHT  = 10   #hauteur de l'écran
@@ -165,9 +166,12 @@ def initDraw(fenetre):
     #validation de quittage de l'overlay et du jeu
     global overlayQuit
     textOverlayQuit = renderMultiLine(buttonFontS,texte.getTexte("overlay","confirmQ"),30,(10,10,10),(230,230,230))
-    overlayQuit = pygame.Surface( ( textOverlayQuit.get_width()+2*diff, textOverlayQuit.get_height()+2*diff) )
-    overlayQuit.fill( (230,230,230) )
-    overlayQuit.blit( textOverlayQuit, (diff,diff) )
+    overlayQuit = elt.BoutonRempli(0,0,10,10,10,(230,230,230),textOverlayQuit)
+    overlayQuit.setCenterX( fenetre.get_width() //2 )
+    overlayQuit.setCenterY( fenetre.get_height()//2 )
+    #pygame.Surface( ( textOverlayQuit.get_width()+2*diff, textOverlayQuit.get_height()+2*diff) )
+    #overlayQuit.fill( (230,230,230) )
+    #overlayQuit.blit( textOverlayQuit, (diff,diff) )
     
     #validation de quittage de l'overlay vers le menu
     global overlayMenu
@@ -179,7 +183,7 @@ def initDraw(fenetre):
     #position des boutons oui et non
     left = fenetre.get_width()//2 - overlayYesNo.get_width()//2 + diff
     right = fenetre.get_width()//2 + overlayYesNo.get_width()//2 - diff
-    top = fenetre.get_height()//2 + max( overlayQuit.get_height() , overlayMenu.get_height() )//2 + diff
+    top = fenetre.get_height()//2 + max( overlayQuit.h , overlayMenu.get_height() )//2 + diff
     mouse.boutons["overlayV"]["oui"].setTopLeft(top,left)
     mouse.boutons["overlayV"]["non"].setTopRight(top,right)
     
@@ -373,11 +377,9 @@ def drawOverlay(fenetre):
             fenetre.blit( overlayButtons[k].surf , (overlayButtons[k].pX , overlayButtons[k].pY) )
 
 def drawOverlayQuit(fenetre):
-    xPos = (fenetre.get_width()-overlayQuit.get_width())//2
-    yPos = (fenetre.get_height()-overlayQuit.get_height())//2
-    fenetre.blit( overlayQuit , (xPos,yPos) )
+    overlayQuit.drawOn(fenetre)
     xPos = (fenetre.get_width()-overlayYesNo.get_width())//2
-    yPos = (fenetre.get_height()+ max(overlayMenu.get_height(),overlayQuit.get_height()) )//2
+    yPos = (fenetre.get_height()+ max(overlayMenu.get_height(),overlayQuit.h) )//2
     fenetre.blit( overlayYesNo , (xPos,yPos) )
 
 def drawOverlayMenu(fenetre):
@@ -385,7 +387,7 @@ def drawOverlayMenu(fenetre):
     yPos = (fenetre.get_height()-overlayMenu.get_height())//2
     fenetre.blit( overlayMenu , (xPos,yPos) )
     xPos = (fenetre.get_width()-overlayYesNo.get_width())//2
-    yPos = (fenetre.get_height()+ max(overlayMenu.get_height(),overlayQuit.get_height()) )//2
+    yPos = (fenetre.get_height()+ max(overlayMenu.get_height(),overlayQuit.h) )//2
     fenetre.blit( overlayYesNo , (xPos,yPos) )
     
 def drawNewGame(fenetre):
