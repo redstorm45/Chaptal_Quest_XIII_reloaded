@@ -237,16 +237,18 @@ def getLoaded(name,makeAlpha=True):
 #charge les sprites animés d'un personnage
 def loadAnimSprite(spriteName):
     sprite = []
-    sprited , spriteg , spriteb = [] , [] , []
+    sprited , spriteg , spriteb , spriteh = [] , [] , [] , []
     for i in range(8):
         sprited.append(getLoaded(spriteName + "D" + str(i)+".png"))
         spriteg.append(getLoaded(spriteName + "G" + str(i)+".png"))
         spriteb.append(getLoaded(spriteName + "B" + str(i)+".png"))
+        spriteh.append(getLoaded(spriteName + "H" + str(i)+".png"))
         sprite.append(getLoaded(spriteName + str(i+1)+".png"))
     sprites[spriteName] = sprite
     sprites[spriteName + "D"] = sprited
     sprites[spriteName + "G"] = spriteg
     sprites[spriteName + "B"] = spriteb
+    sprites[spriteName + "H"] = spriteh
 
 #charge tous les sprites utilisés dans le jeu en mémoire
 def loadAllSprites():
@@ -535,6 +537,8 @@ def drawPlayer(fenetre,player):
         fenetre.blit(sprites[player.spriteName + "G"][int(player.anim)%8], (xEcran,yEcran))
     elif player.direction == 2:
         fenetre.blit(sprites[player.spriteName + "B"][int(player.anim)%8], (xEcran,yEcran))
+    elif player.direction == 6:
+        fenetre.blit(sprites[player.spriteName + "H"][int(player.anim)%8], (xEcran,yEcran))
     else:
         fenetre.blit(sprites[player.spriteName][player.direction-1], (xEcran,yEcran))
     
