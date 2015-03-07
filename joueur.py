@@ -26,7 +26,7 @@ class Joueur(joueurBase.JoueurBase):
         self.capacite1      = "RLC"
         #timers
         self.capacite1timer = 0
-        self.levelup = 1/(2**self.lvl*100)
+        self.levelup = 0
     
     def mouvement(self,x,y):
         #mouvement normal
