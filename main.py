@@ -95,6 +95,8 @@ while running:
         if event.type == QUIT:
             if state == ETAT_QUIT:
                 running = False
+            elif debugMode:
+                running = False
             else:
                 state = ETAT_QUIT
         #appui sur une touche
