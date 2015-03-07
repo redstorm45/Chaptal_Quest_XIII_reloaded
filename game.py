@@ -78,7 +78,7 @@ def actionKeys(listPressed):
     
     if player.capacite1timer > 0:
         player.capacite1timer -= 1
-    print(player.capacite1timer)
+    #print(player.capacite1timer)
     
 
 #evenement de mise à jour (ia et animations)    

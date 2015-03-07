@@ -46,6 +46,32 @@ class Bouton:
         self.pos = newX,self.pY
         self.width = surf.get_width()
         self.size = self.width,self.height
+    
+    #changement d'angle haut gauche
+    def setTopLeft(self,t,l):
+        self.setTop(t)
+        self.setLeft(l)
+    
+    #changement d'angle haut droite
+    def setTopRight(self,t,r):
+        self.setTop(t)
+        self.setRight(r)
+        print("top right to",r,t)
+        
+    #changement du bord gauche
+    def setLeft(self,l):
+        self.pX = l
+        self.pos = l,self.pY
+        
+    #changement du bord droit
+    def setRight(self,r):
+        self.pX = r - self.width
+        self.pos = self.pX,self.pY
+    
+    #changement du bord haut
+    def setTop(self,t):
+        self.pY = t
+        self.pos = self.pX,t
         
     def inBouton(self,x,y):
         if self.pX<x and x<self.pX+self.width and self.pY<y and y<self.pY+self.height:
@@ -70,13 +96,11 @@ def init(scrW,scrH):
     addBoutCenter("menu"    ,"charger"     ,int(scrW*0.5) , int(scrH*0.45) , 260,75 )
     addBoutCenter("menu"    ,"option"      ,int(scrW*0.5) , int(scrH*0.60) , 260,75 )
     addBoutCenter("menu"    ,"quitter"     ,int(scrW*0.5) , int(scrH*0.75) , 230,75 )
-    addBoutCenter("overlayQ","oui"         ,int(scrW*0.4) , int(scrH*0.65) , 100,50 )
-    addBoutCenter("overlayQ","non"         ,int(scrW*0.6) , int(scrH*0.65) , 100,50 )
-    addBoutCenter("overlayM","oui"         ,int(scrW*0.4) , int(scrH*0.65) , 100,50 )
-    addBoutCenter("overlayM","non"         ,int(scrW*0.6) , int(scrH*0.65) , 100,50 )
-    addBoutCenter("nouveau" ,"PTSI"        ,int(scrW*0.3) , int(scrH*0.25)  , 260,75 )
-    addBoutCenter("nouveau" ,"MPSI"        ,int(scrW*0.5) , int(scrH*0.25)  , 260,75 )
-    addBoutCenter("nouveau" ,"PCSI"        ,int(scrW*0.7) , int(scrH*0.25)  , 230,75 )
+    addBoutCenter("overlayV","oui"         ,int(scrW*0.4) , int(scrH*0.65) , 100,50 )
+    addBoutCenter("overlayV","non"         ,int(scrW*0.6) , int(scrH*0.65) , 100,50 )
+    addBoutCenter("nouveau" ,"PTSI"        ,int(scrW*0.3) , int(scrH*0.25) , 260,75 )
+    addBoutCenter("nouveau" ,"MPSI"        ,int(scrW*0.5) , int(scrH*0.25) , 260,75 )
+    addBoutCenter("nouveau" ,"PCSI"        ,int(scrW*0.7) , int(scrH*0.25) , 230,75 )
     addBoutCenter("nouveau" ,"commencer"   ,int(scrW*0.5) , int(scrH*0.9)  , 260,75 )
     #création des etideurs de textes
     tEdits["nouveau"] = {}
