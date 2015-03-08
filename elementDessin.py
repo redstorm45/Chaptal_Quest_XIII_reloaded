@@ -61,7 +61,6 @@ class _Rectangle():
     def setCSize(self,w,h):
         self.setCWidth(w)
         self.setCHeight(h)
-        print("set size to:",w,h)
             
     def setCWidth(self,w):
         if self.intSize:
@@ -87,13 +86,26 @@ class _Rectangle():
             self.size = self.w,h
             self.setTop( midY - h/2 )
 
+def roundedRect(x,y,w,h,radius,color):
+    surf = pygame.Surface( (w,h) )
+    surf.fill( (255,0,255) )
+    surf.set_colorkey( (255,0,255) )
+    pygame.draw.rect( surf , color , ( radius,0 , w-2*radius,h) )
+    pygame.draw.rect( surf , color , ( 0,radius , w,h-2*radius) )
+    pygame.draw.circle( surf , color , (radius,radius) , radius )
+    pygame.draw.circle( surf , color , (w-radius,radius) , radius )
+    pygame.draw.circle( surf , color , (w-radius,h-radius) , radius )
+    pygame.draw.circle( surf , color , (radius,h-radius) , radius )
+    return surf
+
 #un rectangle avec bords arrondis, redimensionable
 class RectangleArrondi(_Rectangle):
     
-    def __init__(self,x,y,w,h,radius,color):
+    def __init__(self,x,y,w,h,radius,color,colorBordure):
         self.radius = radius
         self.colorBack = color
-        super(RectangleArrondi,self).__init__(x,y,w,h,True)
+        self.colorBordure = colorBordure
+        _Rectangle.__init__(self,x,y,w,h,True)
         RectangleArrondi.redraw(self)
     
     def drawOn(self,surf):
@@ -101,26 +113,20 @@ class RectangleArrondi(_Rectangle):
     
     def redraw(self):
         x,y,w,h,radius = self.x,self.y,self.w,self.h,self.radius
-        color = self.colorBack
-        self.surf = pygame.Surface( (self.w,self.h) )
+        self.surf = pygame.Surface( (w,h) )
         self.surf.fill( (255,0,255) )
         self.surf.set_colorkey( (255,0,255) )
-        print("draw with :",w,h,radius)
-        pygame.draw.rect( self.surf , color , ( radius,0 , w-2*radius,h) )
-        pygame.draw.rect( self.surf , color , ( 0,radius , w,h-2*radius) )
-        pygame.draw.circle( self.surf , color , (radius,radius) , radius )
-        pygame.draw.circle( self.surf , color , (w-radius,radius) , radius )
-        pygame.draw.circle( self.surf , color , (w-radius,h-radius) , radius )
-        pygame.draw.circle( self.surf , color , (radius,h-radius) , radius )
+        self.surf.blit( roundedRect(x,y,w,h,radius,self.colorBordure ) , (0,0) )
+        self.surf.blit( roundedRect(x+2,y+2,w-4,h-4,radius-2,self.colorBack ) , (2,2) )
 
 #un cadre pouvant accueillir d'autres éléments à l'intérieur de celui-ci
 class Cadre(RectangleArrondi):
     
-    def __init__(self,xC,yC,widgets,radius=0,color=(0,0,0),apparent=False):
+    def __init__(self,xC,yC,widgets,colorBordure=(0,0,0),radius=0,color=(0,0,0),apparent=False):
         self.widgets = widgets
         self.calculateDim()
         if apparent:
-            super(Cadre,self).__init__(xC - self.w//2,yC - self.h//2,self.w,self.h,radius,color)
+            super(Cadre,self).__init__(xC - self.w//2,yC - self.h//2,self.w,self.h,radius,color,colorBordure)
             RectangleArrondi.redraw(self)
         else:
             _Rectangle.__init__(self,xC-self.w//2,yC-self.h//2,self.w,self.h,True)
@@ -172,35 +178,32 @@ class Cadre(RectangleArrondi):
 #un bouton avec une surface intérieure
 class BoutonRempli(RectangleArrondi):
     
-    def __init__(self,x,y,w,h,radius,colorBack,interieur):
-        super(BoutonRempli,self).__init__(x,y,w,h,radius,colorBack)
+    def __init__(self,x,y,w,h,radius,colorBack,interieur,colorBordure):
+        RectangleArrondi.__init__(self,x,y,w,h,radius,colorBack,colorBordure)
         self.interieur = interieur
         BoutonRempli.redraw(self)
     
     def redraw(self):
         x,y,w,h,radius = self.x,self.y,self.w,self.h,self.radius
         inW , inH = self.interieur.get_width() , self.interieur.get_height()
-        print("int :",self.interieur)
-        print("s :",self.size)
         if inW > w-2*radius or inH > h-2*radius:
             _Rectangle.setCSize( self,max( inW+2*radius , w ) , max( inH+2*radius , h ) )
         RectangleArrondi.redraw(self)
         self.xInPos = (self.w - inW) //2
         self.yInPos = (self.h - inH) //2
-        print("blit at,",self.xInPos,self.yInPos)
         self.surf.blit( self.interieur , (self.xInPos,self.yInPos) )
 
 #un rectangle arrondi contenant du texte centré
 #la taille s'agrandi si le texte ne rentre pas
 class BoutonTexte(BoutonRempli):
     
-    def __init__(self,x,y,w,h,radius,colorBack,police,texte,colorTexte):
+    def __init__(self,x,y,w,h,radius,colorBack,colorBordure,police,texte,colorTexte):
         self.police     = police
         self.texte      = texte
         self.colorBack  = colorBack
         self.colorTexte = colorTexte
         self.interieur  = self.police.render( self.texte , True, self.colorTexte , self.colorBack)
-        super(BoutonTexte,self).__init__(x,y,w,h,radius,colorBack,self.interieur)
+        BoutonRempli.__init__(self,x,y,w,h,radius,colorBack,self.interieur,colorBordure)
     
     def redraw(self):
         self.interieur  = self.police.render( self.texte , True, self.colorTexte , self.colorBack)

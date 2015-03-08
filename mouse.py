@@ -13,11 +13,19 @@ class Bouton:
         self.pX,self.pY = position
         self.size = size
         self.width,self.height = size
-        self.surf = None
-        self.surf2 = None
     
     def __repr__(self):
         return "bouton["+str(self.pX)+","+str(self.pY)+","+str(self.pX+self.width)+","+str(self.pY+self.height)
+    
+    def setDim(self,w,h):
+        self.size = w,h
+        self.width = w
+        self.height = h
+        
+    def setDimElt(self,elt):
+        self.size = elt.w,elt.h
+        self.width = elt.w
+        self.height = elt.h
     
     #change la surface et met à jour la position pour se centrer
     def setSurfCenter(self,surf):
@@ -56,7 +64,6 @@ class Bouton:
     def setTopRight(self,t,r):
         self.setTop(t)
         self.setRight(r)
-        print("top right to",r,t)
         
     #changement du bord gauche
     def setLeft(self,l):

@@ -156,8 +156,8 @@ def initDraw(fenetre):
     
     #validation de quittage de l'overlay, boutons Oui et Non
     global overlayYesNo
-    overlayYes = elt.BoutonTexte( 0,0,10,10,10,(230,230,230),buttonFontM,"Oui",(20,20,20) )
-    overlayNo  = elt.BoutonTexte( 0,0,10,10,10,(230,230,230),buttonFontM,"Non",(20,20,20) )
+    overlayYes = elt.BoutonTexte( 0,0,10,10,10,(230,230,230),(120,120,120),buttonFontM,"Oui",(20,20,20) )
+    overlayNo  = elt.BoutonTexte( 0,0,10,10,10,(230,230,230),(120,120,120),buttonFontM,"Non",(20,20,20) )
     overlayYes.setRight( -overlayNo.w )
     overlayNo.setLeft( overlayYes.w )
     overlayYesNo = elt.Cadre( fenetre.get_width()//2 , 0 , [ overlayYes,overlayNo ] )
@@ -165,24 +165,24 @@ def initDraw(fenetre):
     #validation de quittage de l'overlay et du jeu
     global overlayQuit
     textOverlayQuit = renderMultiLine(buttonFontS,texte.getTexte("overlay","confirmQ"),30,(10,10,10),(230,230,230))
-    overlayQuit = elt.BoutonRempli(0,0,10,10,10,(230,230,230),textOverlayQuit)
+    overlayQuit = elt.BoutonRempli(0,0,10,10,10,(230,230,230),textOverlayQuit,(120,120,120))
     overlayQuit.setCenterX( fenetre.get_width() //2 )
     overlayQuit.setCenterY( fenetre.get_height()//2 )
     
     #validation de quittage de l'overlay vers le menu
     global overlayMenu
     textOverlayMenu = renderMultiLine(buttonFontS,texte.getTexte("overlay","confirmM"),30,(10,10,10),(230,230,230))
-    overlayMenu = elt.BoutonRempli(0,0,10,10,10,(230,230,230),textOverlayMenu)
+    overlayMenu = elt.BoutonRempli(0,0,10,10,10,(230,230,230),textOverlayMenu,(120,120,120))
     overlayMenu.setCenterX( fenetre.get_width() //2 )
     overlayMenu.setCenterY( fenetre.get_height()//2 )
     
     #position des boutons oui et non
-    left = fenetre.get_width()//2 - overlayYesNo.w//2
-    right = fenetre.get_width()//2 + overlayYesNo.w//2
     top = fenetre.get_height()//2 + max( overlayQuit.h , overlayMenu.h )//2
     overlayYesNo.setTop(top)
-    mouse.boutons["overlayV"]["oui"].setTopLeft(top,left)
-    mouse.boutons["overlayV"]["non"].setTopRight(top,right)
+    mouse.boutons["overlayV"]["oui"].setTopLeft(top,overlayYesNo.x)
+    mouse.boutons["overlayV"]["oui"].setDimElt(overlayYes)
+    mouse.boutons["overlayV"]["non"].setTopRight(top,overlayYesNo.x+overlayYesNo.w)
+    mouse.boutons["overlayV"]["oui"].setDimElt(overlayNo)
     
     #écran de menu
     global menuBack , menuTitle , menuButtons
