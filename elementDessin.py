@@ -112,21 +112,48 @@ class RectangleArrondi(_Rectangle):
 #un cadre pouvant accueillir d'autres éléments à l'intérieur de celui-ci
 class Cadre(RectangleArrondi):
     
-    def __init__(self,x,y,w,h,widgets,radius=0,color=(0,0,0),apparent=False):
+    def __init__(self,xC,yC,widgets,radius=0,color=(0,0,0),apparent=False):
         self.widgets = widgets
+        self.calculateDim()
         if apparent:
-            super(Cadre,self).__init__(x,y,w,h,radius,color)
+            super(Cadre,self).__init__(xC - self.w//2,yC - self.h//2,self.w,self.h,radius,color)
             RectangleArrondi.redraw(self)
         else:
-            _Rectangle.__init__(self,x,y,w,h,True)
-            self.surf = pygame.Surface( (w,h) )
+            _Rectangle.__init__(self,xC-self.w//2,yC-self.h//2,self.w,self.h,True)
+            self.surf = pygame.Surface( (self.w,self.h) )
             self.surf.fill( (255,0,255) )
             self.surf.set_colorkey( (255,0,255) )
         self.redraw()
     
+    def calculateDim(self):
+        self.minX = 0
+        self.maxX = 0
+        self.minY = 0
+        self.maxY = 0
+        
+        for w in self.widgets:
+            if isinstance(w,RectangleArrondi):
+                self.minX = min( self.minX,w.x )
+                self.maxX = max( self.maxX,w.x+w.w )
+                self.minY = min( self.minY,w.y )
+                self.maxY = max( self.minY,w.y+w.h )
+            else:
+                surf,x,y = w
+                self.minX = min( self.minX,x )
+                self.maxX = max( self.maxX,x+surf.get_width() )
+                self.minY = min( self.minY,y )
+                self.maxY = max( self.minY,y+surf.get_height() )
+        
+        self.w = self.maxX - self.minX
+        self.h = self.maxY - self.minY
+    
     def redraw(self):
         for w in self.widgets:
-            w.drawOn( self.surf )
+            if isinstance(w,RectangleArrondi):
+                w.drawOn( self.surf )
+            else:
+                surf,x,y = w
+                self.surf.blit( surf , (x,y) )
     
 #un bouton avec une surface intérieure
 class BoutonRempli(RectangleArrondi):
