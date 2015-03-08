@@ -182,7 +182,7 @@ def initDraw(fenetre):
     mouse.boutons["overlayV"]["oui"].setTopLeft(top,overlayYesNo.x)
     mouse.boutons["overlayV"]["oui"].setDimElt(overlayYes)
     mouse.boutons["overlayV"]["non"].setTopRight(top,overlayYesNo.x+overlayYesNo.w)
-    mouse.boutons["overlayV"]["oui"].setDimElt(overlayNo)
+    mouse.boutons["overlayV"]["non"].setDimElt(overlayNo)
     
     #écran de menu
     global menuBack , menuTitle , menuButtons

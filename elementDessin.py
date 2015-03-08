@@ -25,6 +25,7 @@ class _Rectangle():
         self.h = h
         self.size = w,h
         self.intSize=intSize
+        self.container = None
     
     def translate(self,x,y):
         self.x += x
@@ -85,6 +86,13 @@ class _Rectangle():
             self.h = h
             self.size = self.w,h
             self.setTop( midY - h/2 )
+        
+    def getTruePos(self):
+        if self.container:
+            xc,yc = self.container.getTruPos()
+            return self.x+xc,self.y+yc
+        else:
+            return self.pos
 
 def roundedRect(x,y,w,h,radius,color):
     surf = pygame.Surface( (w,h) )
