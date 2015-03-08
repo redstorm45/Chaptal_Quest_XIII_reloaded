@@ -168,9 +168,6 @@ def initDraw(fenetre):
     overlayQuit = elt.BoutonRempli(0,0,10,10,10,(230,230,230),textOverlayQuit)
     overlayQuit.setCenterX( fenetre.get_width() //2 )
     overlayQuit.setCenterY( fenetre.get_height()//2 )
-    #pygame.Surface( ( textOverlayQuit.get_width()+2*diff, textOverlayQuit.get_height()+2*diff) )
-    #overlayQuit.fill( (230,230,230) )
-    #overlayQuit.blit( textOverlayQuit, (diff,diff) )
     
     #validation de quittage de l'overlay vers le menu
     global overlayMenu

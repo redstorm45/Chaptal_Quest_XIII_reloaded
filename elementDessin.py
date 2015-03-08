@@ -25,6 +25,10 @@ class _Rectangle():
         self.h = h
         self.size = w,h
         self.intSize=intSize
+    
+    def translate(self,x,y):
+        self.x += x
+        self.y += y
         
     def setTop(self,y):
         self.y = y
@@ -146,6 +150,16 @@ class Cadre(RectangleArrondi):
         
         self.w = self.maxX - self.minX
         self.h = self.maxY - self.minY
+        
+        for w in self.widgets:
+            if isinstance(w,RectangleArrondi):
+                w.translate( -self.minX,-self.minY )
+            else:
+                surf,x,y = w
+                x -= self.minX
+                y -= self.minY
+                w = surf,x,y
+        
     
     def redraw(self):
         for w in self.widgets:
