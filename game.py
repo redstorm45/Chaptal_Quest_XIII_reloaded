@@ -41,6 +41,9 @@ def draw(fenetre):
     dessin.drawPlayer(fenetre,player)
     for e in map.theMap.regionList[ player.position[0] ].ennemiList:
         dessin.drawPlayer(fenetre,e)
+    if player.attackanim > 0:
+        dessin.animAttack(fenetre,player)    
+        player.attackanim -=1
 
 #touches de mouvement
 def actionKeys(listPressed):
@@ -69,6 +72,7 @@ def actionKeys(listPressed):
         if player.attackTimer == 0:
             attackJoueur.attack(player,map.theMap.regionList[player.position[0]].ennemiList)
             player.attackTimer = 1
+            player.attackanim  = 0.2*60
         else:
             player.attackTimer = max( 0, player.attackTimer - 1/16)
     if keybinding.isKeyActive( "SORT1" , listPressed ) and player.capacite1timer == 0:

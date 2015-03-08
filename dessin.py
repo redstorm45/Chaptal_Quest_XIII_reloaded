@@ -331,6 +331,12 @@ def loadAllSprites():
     sprites["planche"]        = getLoaded("planche.bmp")
     
     sprites["eclair"] = getLoaded("eclair.bmp")
+    
+    sprites["attackH"] = getLoaded("attackH.bmp")
+    sprites["attackB"] = getLoaded("attackB.png")
+    sprites["attackG"] = getLoaded("attackG.png")
+    sprites["attackD"] = getLoaded("attackD.png")
+        
     loadAnimSprite( "gobelin" )
     
 #gère le décalage de l'écran à partir de la position du joueur
@@ -578,3 +584,20 @@ def drawPlayer(fenetre,player):
     #affiche la vie au dessus du sprite
     pygame.draw.rect( fenetre , (255,0,0) , (xEcran,yEcran-10,64,10) )
     pygame.draw.rect( fenetre , (0,255,0) , (xEcran,yEcran-10,64*player.hp/(100*player.lvl),10) )
+
+
+def animAttack(fenetre,player):
+    
+    x,y = player.position[1] , player.position[2]
+    xEcran = (x-0.5) * opt.SPRITE_SIZE  + xOffset
+    yEcran = (y-0.5) * opt.SPRITE_SIZE  + yOffset
+    
+    if player.direction in [3,4]:
+        fenetre.blit(sprites["attack" + "D"], (xEcran+1,yEcran))
+    elif player.direction  in [7,8]:
+        fenetre.blit(sprites["attack" + "G"], (xEcran-1,yEcran))
+    elif player.direction in [1,2]:
+        fenetre.blit(sprites["attack" + "B"], (xEcran,yEcran+1))
+    elif player.direction  in [5,6]:
+        fenetre.blit(sprites["attack" + "H"], (xEcran,yEcran-1))
+    

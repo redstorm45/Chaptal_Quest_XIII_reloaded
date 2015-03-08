@@ -28,6 +28,7 @@ class JoueurBase:
         #timers
         self.attackTimer = 0
         self.auratimer   = 0
+        self.attackanim  = 0
         
     #mouvement de x cases vers la droite
     # et de y cases vers le bas
