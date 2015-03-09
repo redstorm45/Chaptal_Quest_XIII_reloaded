@@ -132,6 +132,9 @@ class Cadre(RectangleArrondi):
     
     def __init__(self,xC,yC,widgets,colorBordure=(0,0,0),radius=0,color=(0,0,0),apparent=False):
         self.widgets = widgets
+        for w in widgets:
+            if isinstance(w,RectangleArrondi):
+                w.container = self
         self.calculateDim()
         if apparent:
             super(Cadre,self).__init__(xC - self.w//2,yC - self.h//2,self.w,self.h,radius,color,colorBordure)
