@@ -1,0 +1,10 @@
+orc
+1;type d'attaque (1:arc / 2:épée)
+5;portée
+8;distance max d'agro
+4;distance min d'agro
+1;nb de sprites animes
+2;level
+5;damage
+100;armor
+200;gain dexp

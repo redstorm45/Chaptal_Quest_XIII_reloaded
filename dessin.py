@@ -247,11 +247,15 @@ def renderMultiLine(font,text,spacing,color,backColor):
 
 #charge un sprite seul
 def getLoaded(name,makeAlpha=True):
-    s = pygame.image.load("sprites/"+name).convert()
+    try:
+        s = pygame.image.load("sprites/"+name).convert()
+    except:
+        s = pygame.Surface( (64,64) )
+        s.fill( (255,255,255) )
     if makeAlpha:
         s.set_colorkey((255,255,255))
     return s
-
+    
 #charge les sprites animés d'un personnage
 def loadAnimSprite(spriteName):
     sprite = []
@@ -333,8 +337,11 @@ def loadAllSprites():
     sprites["attackB"] = getLoaded("attackB.png")
     sprites["attackG"] = getLoaded("attackG.png")
     sprites["attackD"] = getLoaded("attackD.png")
+    
+    sprites["projectile"] = getLoaded("projectile.png")
         
     loadAnimSprite( "gobelin" )
+    loadAnimSprite( "orc" )
     
 #gère le décalage de l'écran à partir de la position du joueur
 def centerOffset(player):
@@ -554,13 +561,13 @@ def drawPlayer(fenetre,player):
     yEcran = (y-0.5) * opt.SPRITE_SIZE  + yOffset
     
     if player.direction == 4:
-        fenetre.blit(sprites[player.spriteName + "D"][int(player.anim)%8], (xEcran,yEcran))
+        fenetre.blit(sprites[player.spriteName + "D"][int(player.anim)%player.spriteNb], (xEcran,yEcran))
     elif player.direction == 8:
-        fenetre.blit(sprites[player.spriteName + "G"][int(player.anim)%8], (xEcran,yEcran))
+        fenetre.blit(sprites[player.spriteName + "G"][int(player.anim)%player.spriteNb], (xEcran,yEcran))
     elif player.direction == 2:
-        fenetre.blit(sprites[player.spriteName + "B"][int(player.anim)%8], (xEcran,yEcran))
+        fenetre.blit(sprites[player.spriteName + "B"][int(player.anim)%player.spriteNb], (xEcran,yEcran))
     elif player.direction == 6:
-        fenetre.blit(sprites[player.spriteName + "H"][int(player.anim)%8], (xEcran,yEcran))
+        fenetre.blit(sprites[player.spriteName + "H"][int(player.anim)%player.spriteNb], (xEcran,yEcran))
     else:
         fenetre.blit(sprites[player.spriteName][player.direction-1], (xEcran,yEcran))
     
@@ -591,4 +598,18 @@ def animAttack(fenetre,player):
         fenetre.blit(sprites["attack" + "B"], (xEcran,yEcran+1))
     elif player.direction  in [5,6]:
         fenetre.blit(sprites["attack" + "H"], (xEcran,yEcran-1))
+
+
+def drawProjectile(fenetre,projectile):
+    x,y = projectile.position
+    xEcran = (x-0.5) * opt.SPRITE_SIZE  + xOffset
+    yEcran = (y-0.5) * opt.SPRITE_SIZE  + yOffset
+    
+    fenetre.blit(sprites["projectile"],(xEcran,yEcran))
+
+
+
+
+
+
     

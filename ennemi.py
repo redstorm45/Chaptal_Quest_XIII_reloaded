@@ -12,7 +12,12 @@ class Ennemi(joueurBase.JoueurBase):
         file = open( "ennemi/" + name + ".txt")
         self.position[0] = position[0]
         self.spriteName  = file.readline().strip().split(";")
-        self.direction   = int(file.readline().strip().split(";")[0])
+        self.typeAttaque = int(file.readline().strip().split(";")[0])
+        self.direction   = 1
+        self.portee      = float(file.readline().strip().split(";")[0])
+        self.dMaxAgro    = float(file.readline().strip().split(";")[0])
+        self.dMinAgro    = float(file.readline().strip().split(";")[0])
+        self.spriteNb    = int(file.readline().strip().split(";")[0])
         self.lvl         = int(file.readline().strip().split(";")[0])
         self.hp          = self.lvl*100
         self.dammage     = int(file.readline().strip().split(";")[0])

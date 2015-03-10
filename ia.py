@@ -6,17 +6,18 @@ commun à tous les ennemis
 """
 
 import collision
+import projectile
 from math import exp
 
 speed = 1/32
 dmin = 0.5
 dmax = 3
-dattack = 0.75
 
 #test si une IA doit aller vers le joueur
-def agro(positionJoueur,positionIA):
+def agro(positionJoueur,ennemi):
+    positionIA = ennemi.position
     d = (positionIA[1] - positionJoueur[1])**2 +  (positionIA[2] - positionJoueur[2])**2
-    if  d < dmax**2 and d> dmin**2: #on regarde si l'ennemi est dans la zone d'agro
+    if  d < ennemi.dMaxAgro**2 and d> ennemi.dMinAgro**2: #on regarde si l'ennemi est dans la zone d'agro
         return(True)
     else:
         return(False)
@@ -49,13 +50,17 @@ def trajectoire(positionJoueur, ennemi):
     return(positionIA)
 
 #effectue l'attaque d'une IA sur le joueur à distance suffisante
-def attackIA(joueur,ennemi):
+def attackIA(joueur,ennemi,projectileList):
     positionIA = ennemi.position
     positionJoueur = joueur.position
     d = (positionIA[1] - positionJoueur[1])**2 +  (positionIA[2] - positionJoueur[2])**2
-    if d < dattack **2 and ennemi.attackTimer == 0:
-        joueur.hp = joueur.hp - (ennemi.dammage*exp(-joueur.armure/300))
+    if d < ennemi.portee **2 and ennemi.attackTimer == 0:
+        if ennemi.typeAttaque == 2:
+            joueur.hp = joueur.hp - (ennemi.dammage*exp(-joueur.armure/300))
+        elif ennemi.typeAttaque == 1:
+            projectileList.append( projectile.Projectile(ennemi,joueur) )
         ennemi.attackTimer = 1
+    
         
     
     

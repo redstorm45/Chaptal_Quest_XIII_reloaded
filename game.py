@@ -4,7 +4,7 @@ Fichier de gestion de toutes les variables pendant la phase de jeu
 (gère l'histoire entre autres)
 
 """
-
+import projectile
 import dessin
 import keybinding
 import joueur
@@ -18,6 +18,7 @@ import capacite
 
 #defini un joueur
 player = joueur.Joueur(2,2)
+projectileList = []
 
 #initialisation du jeu
 def init():
@@ -39,8 +40,13 @@ def draw(fenetre):
     dessin.centerOffset(player)
     dessin.drawRegion(fenetre,regionAffichee)
     dessin.drawPlayer(fenetre,player)
+    
     for e in map.theMap.regionList[ player.position[0] ].ennemiList:
         dessin.drawPlayer(fenetre,e)
+        
+    for p in projectileList:
+        dessin.drawProjectile(fenetre,p)
+        
     if player.attackanim > 0:
         dessin.animAttack(fenetre,player)    
         player.attackanim -=1
@@ -79,7 +85,10 @@ def actionKeys(listPressed):
         capacite.capacite('RLC',player,map.theMap.regionList[player.position[0]].ennemiList)
         player.capacite1timer = player.capacite1timer + 60*3
         
-    
+    if keybinding.isKeyActive( "UPSORT1" , listPressed ) and player.pointbonus > 0:
+        player.capacite1Lvl += 1
+        player.pointbonus -=1
+        
     if player.capacite1timer > 0:
         player.capacite1timer -= 1
     #print(player.capacite1timer)
@@ -88,27 +97,42 @@ def actionKeys(listPressed):
 #evenement de mise à jour (ia et animations)    
 def tick():
     player.anim += 0.25
+    #avancement de projectiles
+    for p in projectileList:
+        p.avancer()
+        
+        if p.life < 0:
+            projectileList.remove(p)
+    
     #IA
     for e in map.theMap.regionList[ player.position[0] ].ennemiList:
+        #mort d'un ennemi
         if e.hp < 0:
             map.theMap.regionList[ player.position[0] ].ennemiList.remove(e)
             player.levelup += e.exp
-        if ia.agro(player.position,e.position):
+        
+        #deplacement d'ennemi
+        if ia.agro(player.position,e):
             ia.trajectoire(player.position,e)
             e.anim += 0.25
         elif e.anim != 0:
             e.anim = 0
             e.mouvement(0,0)
         
+        #attaque d'ennemi
         if e.attackTimer == 0:
-            ia.attackIA(player,e)
+            ia.attackIA(player,e,projectileList)
         else:
             e.attackTimer = max( 0, e.attackTimer - 1/16)
-        if player.levelup - (100*2**player.lvl) >= 0:
-            player.levelup -= (100*2**player.lvl)
-            player.lvl += 1
-            player.hp = player.lvl * 100
-        
+            
+    
+    #levelup de l'ennemi
+    if player.levelup - (100*2**player.lvl) >= 0:
+        player.levelup -= (100*2**player.lvl)
+        player.lvl += 1
+        player.pointbonus += 1
+        player.hp = player.lvl * 100
+    
     
     
     

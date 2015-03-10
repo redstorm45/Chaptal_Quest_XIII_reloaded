@@ -21,12 +21,18 @@ class Joueur(joueurBase.JoueurBase):
         #variables d'affichage
         self.hitbox     = [ -0.25 , 0.25 , -0.1 , 0.4 ]  # xmin , xmax , ymin , ymax
         self.spriteName = "gobelin"
+        self.spriteNb   = 8
         #variables de compétences
         self.regen          = 0.5
         self.capacite1      = "RLC"
+        self.capacite1Lvl   = 1
+        self.capacite2      = "RDM"
+        self.capacite2Lvl   = 1
+        self.pointbonus     = 0
         #timers
         self.capacite1timer = 0
         self.levelup = 0
+        
     
     def mouvement(self,x,y):
         #mouvement normal
