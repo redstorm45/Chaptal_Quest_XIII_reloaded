@@ -1,8 +1,8 @@
 gobelin
-2;type d'attaque (1:arc / 2:épée)
-0.75;portée
-3;distance max d'agro
-0.5;distance min d'agro
+1;type d'attaque (1:arc / 2:épée)
+5;portée
+8;distance max d'agro
+4;distance min d'agro
 8;nb de sprites animés
 1;level
 2;damage
