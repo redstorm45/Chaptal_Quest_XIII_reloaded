@@ -31,6 +31,13 @@ def create(name):
     try:
         saveFile = open("save/"+name+".save","w")
         saveFile.write("salle/2.V1.1,2,2\n") #position
+        saveFile.write("PTSI\n")             #classe
+        saveFile.write("0.5")
+        saveFile.write("RLC")
+        saveFile.write("RDM")
+        saveFile.write("1")
+        saveFile.write(str(player.capacite2Lvl))
+        saveFile.write(str(player.pointbonus))
     except:
         return False
     else:
@@ -51,6 +58,13 @@ def load(name,player):
             player.position = l.strip().split(",")
             player.position[1] = float(player.position[1])
             player.position[2] = float(player.position[2])
+            player.classe = saveFile.readline().strip()
+            player.regen = float( saveFile.readline().strip() )
+            player.capacite1 = saveFile.readline().strip()
+            player.capacite2 = saveFile.readline().strip()
+            player.capacite1Lvl = int( saveFile.readline().strip() )
+            player.capacite2Lvl = int( saveFile.readline().strip() )
+            player.pointbonus = int( saveFile.readline().strip() )
         except Exception as e:
             return False
         else:
@@ -65,6 +79,13 @@ def save(player):
     try:
         saveFile = open("save/"+currentSaveName+".save","w")
         saveFile.write(player.position[0]+","+str(player.position[1])+","+str(player.position[2])) #position
+        saveFile.write(player.classe)
+        saveFile.write(str(player.regen))
+        saveFile.write(str(player.capacite1))
+        saveFile.write(str(player.capacite2))
+        saveFile.write(str(player.capacite1Lvl))
+        saveFile.write(str(player.capacite2Lvl))
+        saveFile.write(str(player.pointbonus))
     except:
         return False
     else:

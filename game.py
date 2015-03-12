@@ -106,26 +106,29 @@ def tick():
     
     #IA
     for e in map.theMap.regionList[ player.position[0] ].ennemiList:
-        #mort d'un ennemi
-        if e.hp < 0:
-            map.theMap.regionList[ player.position[0] ].ennemiList.remove(e)
-            player.levelup += e.exp
+        if map.theMap.regionList[ player.position[0] ].ennemiList(e).aura != "stun":
+            #mort d'un ennemi
+            if e.hp < 0:
+                map.theMap.regionList[ player.position[0] ].ennemiList.remove(e)
+                player.levelup += e.exp
         
-        #deplacement d'ennemi
-        if ia.agro(player.position,e):
-            ia.trajectoire(player.position,e)
-            e.anim += 0.25
-        elif e.anim != 0:
-            e.anim = 0
-            e.mouvement(0,0)
+            #deplacement d'ennemi
+            if ia.agro(player.position,e):
+                ia.trajectoire(player.position,e)
+                e.anim += 0.25
+            elif e.anim != 0:
+                e.anim = 0
+                e.mouvement(0,0)
         
-        #attaque d'ennemi
-        if e.attackTimer == 0:
-            ia.attackIA(player,e,projectileList)
-        else:
-            e.attackTimer = max( 0, e.attackTimer - 1/16)
-            
-    
+            #attaque d'ennemi
+            if e.attackTimer == 0:
+                ia.attackIA(player,e,projectileList)
+            else:
+                e.attackTimer = max( 0, e.attackTimer - 1/16)
+         else:
+                map.theMap.regionList[ player.position[0] ].ennemiList(e).auratimer -= 1
+        if map.theMap.regionList[ player.position[0] ].ennemiList(e).auratimer <= 0:
+            map.theMap.regionList[ player.position[0] ].ennemiList(e).aura = ""
     #levelup de l'ennemi
     if player.levelup - (100*2**player.lvl) >= 0:
         player.levelup -= (100*2**player.lvl)
