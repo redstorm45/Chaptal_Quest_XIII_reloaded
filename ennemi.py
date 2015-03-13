@@ -1,16 +1,15 @@
 
 import collision
 import joueurBase
-
+import copy
 
 class Ennemi(joueurBase.JoueurBase):
     
-    def __init__(self,name,position):
-        super(Ennemi,self).__init__(int(position[1]),int(position[2]))
+    def __init__(self,name):
+        super(Ennemi,self)
         self.name = name
    
         file = open( "ennemi/" + name + ".txt")
-        self.position[0] = position[0]
         self.spriteName  = file.readline().strip().split(";")
         self.typeAttaque = int(file.readline().strip().split(";")[0])
         self.direction   = 1
@@ -25,6 +24,20 @@ class Ennemi(joueurBase.JoueurBase):
         self.hitbox      = [ -1/4 , 1/4 , -1/4 , 1/4 ]
         self.spriteName  = str(self.spriteName[0])
         self.exp         = int(file.readline().strip().split(";")[0])
+    
+        #stats
+        self.anim    = 0
+        self.arme    = 0
+        self.aura    = ""
+        #timers
+        self.attackTimer = 0
+        self.auratimer   = 0
+        self.attackanim  = 0
+        
+    def copyAt(self,position):
+        newEnnemi = copy.deepcopy(self)
+        newEnnemi.position = list(position)
+        return newEnnemi
      
     def __repr__(self):
         return self.name+" at("+str(self.position[1])+","+str(self.position[2])+")"
@@ -46,3 +59,6 @@ class Ennemi(joueurBase.JoueurBase):
             self.position[1] += x
         if collision.checkJoueur(self,0,y):
             self.position[2] += y
+
+typesEnnemis = {"gobelin"  : Ennemi("gobelin") ,
+                "orc"      : Ennemi("orc") }

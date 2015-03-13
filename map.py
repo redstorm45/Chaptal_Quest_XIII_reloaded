@@ -64,7 +64,7 @@ class Region:
             fileEnnemi = open("map/"+name+"_ennemi.txt")
             for l in fileEnnemi:
                 lineEnnemi = l.strip().split(",")
-                self.ennemiBaseList.append( [ lineEnnemi[2] , int(lineEnnemi[0]) , int(lineEnnemi[1]) ] )
+                self.ennemiBaseList.append( ( lineEnnemi[2] , int(lineEnnemi[0]) , int(lineEnnemi[1]) ) )
         except:
             pass
         else:

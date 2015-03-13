@@ -34,7 +34,8 @@ def init():
     for k in map.theMap.regionList.keys():
         r = map.theMap.regionList[k]
         for e in r.ennemiBaseList:
-            r.ennemiList.append( ennemi.Ennemi( e[0] , [ k , e[1] , e[2] ] ) )
+            type,posX,posY = e
+            r.ennemiList.append( ennemi.typesEnnemis[type].copyAt( (r.name,posX,posY) ) )
         
     #chargement des quêtes
     quete.loadQuetes()
