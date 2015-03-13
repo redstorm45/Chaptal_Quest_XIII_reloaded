@@ -41,7 +41,7 @@ def init():
     quete.refreshActive()
     
     #initialisation de la bonne liste
-    ennemiList = map.theMap.regionList[ player.position[0] ].ennemiList.copy()
+    ennemiList = map.theMap.regionList[ player.position[0] ].ennemiList[:]
 
 #dessin de la scène
 def draw(fenetre):
@@ -61,7 +61,9 @@ def draw(fenetre):
     if player.attackanim > 0:
         dessin.animAttack(fenetre,player)    
         player.attackanim -=1
-
+        
+    if player.spritecapacite != '':
+        dessin.drawCapacite(player,fenetre)
 #touches de mouvement
 def actionKeys(listPressed):
     global player,ennemiList
@@ -90,8 +92,8 @@ def actionKeys(listPressed):
     if t:
         if opt.debugMode:
             print("teleport",player.position)
-        player.position = t[0].dest.copy()
-        ennemiList = map.theMap.regionList[ player.position[0] ].ennemiList.copy()
+        player.position = t[0].dest[:]
+        ennemiList = map.theMap.regionList[ player.position[0] ].ennemiList[:]
         print(ennemiList)
         if opt.debugMode:
             print("teleport2",player.position)
@@ -120,6 +122,9 @@ def actionKeys(listPressed):
 #evenement de mise à jour (ia et animations)    
 def tick():
     player.anim += 0.25
+    
+  
+    
     #avancement de projectiles
     for p in projectileList:
         p.avancer()
@@ -156,7 +161,7 @@ def tick():
             e.auratimer -= 1
         if e.auratimer <= 0:
             e.aura = ""
-    #levelup de l'ennemi
+    #levelup du joueur
     if player.levelup - (100*2**player.lvl) >= 0:
         player.levelup -= (100*2**player.lvl)
         player.lvl += 1

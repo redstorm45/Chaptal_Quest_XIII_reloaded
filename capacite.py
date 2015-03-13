@@ -24,6 +24,8 @@ def RLC(joueur,ennemis):
                 ennemis[i].hp = ennemis[i].hp - 50*joueur.capacite1Lvl
                 ennemis[i].aura = "eclair"
                 ennemis[i].auratimer = 0.5*30
+                joueur.spritecapacite = "eclairH"
+                joueur.positioncapacite = [posJ[0]-0.5,posJ[1]]
         elif joueur.direction in [3,4]:
             if d < 2**2 and abs(posE[1]-posJ[1]) <= (posE[0]-posJ[0]):
                 ennemis[i].hp = ennemis[i].hp - 50*joueur.capacite1Lvl

@@ -29,6 +29,8 @@ class Joueur(joueurBase.JoueurBase):
         self.capacite2      = "RDM"
         self.capacite2Lvl   = 1
         self.pointbonus     = 0
+        self.spritecapacite = ""
+        self.positioncapacite = [0,0]
         #timers
         self.capacite1timer = 0
         self.levelup = 0

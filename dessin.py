@@ -332,11 +332,22 @@ def loadAllSprites():
     sprites["planche"]        = getLoaded("Tiles/planche.bmp")
     
     sprites["eclair"] = getLoaded("eclair.bmp")
+    sprites["stun"] = getLoaded("eclair.bmp")
     
     sprites["attackH"] = getLoaded("attackH.bmp")
     sprites["attackB"] = getLoaded("attackB.png")
     sprites["attackG"] = getLoaded("attackG.png")
     sprites["attackD"] = getLoaded("attackD.png")
+    
+    
+    
+    
+    sprites["eclairH"] = getLoaded("eclairH.png")
+    sprites["eclairB"] = getLoaded("eclairB.png")
+    sprites["eclairG"] = getLoaded("eclairG.png")
+    sprites["eclairD"] = getLoaded("eclairD.png")
+    
+    
     
     sprites["projectile"] = getLoaded("projectile.png")
         
@@ -608,7 +619,10 @@ def drawProjectile(fenetre,projectile):
     fenetre.blit(sprites["projectile"],(xEcran,yEcran))
 
 
-
+def drawCapacite(player,fenetre):
+    fenetre.blit(sprites[player.spritecapacite],(player.positioncapacite[0] * opt.SPRITE_SIZE,player.positioncapacite[1] * opt.SPRITE_SIZE))
+        
+    
 
 
 
