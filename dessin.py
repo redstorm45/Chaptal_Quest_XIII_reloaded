@@ -257,15 +257,15 @@ def getLoaded(name,makeAlpha=True):
     return s
     
 #charge les sprites animés d'un personnage
-def loadAnimSprite(spriteName):
+def loadAnimSprite(spriteName,directory):
     sprite = []
     sprited , spriteg , spriteb , spriteh = [] , [] , [] , []
     for i in range(8):
-        sprited.append(getLoaded(spriteName + "D" + str(i)+".png"))
-        spriteg.append(getLoaded(spriteName + "G" + str(i)+".png"))
-        spriteb.append(getLoaded(spriteName + "B" + str(i)+".png"))
-        spriteh.append(getLoaded(spriteName + "H" + str(i)+".png"))
-        sprite.append(getLoaded(spriteName + str(i+1)+".png"))
+        sprited.append(getLoaded(directory+spriteName + "D" + str(i)+".png"))
+        spriteg.append(getLoaded(directory+spriteName + "G" + str(i)+".png"))
+        spriteb.append(getLoaded(directory+spriteName + "B" + str(i)+".png"))
+        spriteh.append(getLoaded(directory+spriteName + "H" + str(i)+".png"))
+        sprite.append(getLoaded(directory+spriteName + str(i+1)+".png"))
     sprites[spriteName] = sprite
     sprites[spriteName + "D"] = sprited
     sprites[spriteName + "G"] = spriteg
@@ -275,61 +275,61 @@ def loadAnimSprite(spriteName):
 #charge tous les sprites utilisés dans le jeu en mémoire
 def loadAllSprites():
     sprites["mur"]={}
-    sprites["mur"]["H"]   = getLoaded("mur_haut.bmp")
-    sprites["mur"]["HG"]  = getLoaded("mur_angle_gauche_haut.bmp")
-    sprites["mur"]["HG2"] = getLoaded("mur_angle2_gauche_haut.bmp")
-    sprites["mur"]["G"]   = getLoaded("mur_gauche.bmp")
-    sprites["mur"]["BG"]  = getLoaded("mur_angle_gauche_bas.bmp")
-    sprites["mur"]["BG2"] = getLoaded("mur_angle2_gauche_bas.bmp")
-    sprites["mur"]["B"]   = getLoaded("mur_bas.bmp")
-    sprites["mur"]["BD"]  = getLoaded("mur_angle_droite_bas.bmp")
-    sprites["mur"]["BD2"] = getLoaded("mur_angle2_droite_bas.bmp")
-    sprites["mur"]["D"]   = getLoaded("mur_droite.bmp")
-    sprites["mur"]["HD"]  = getLoaded("mur_angle_droite_haut.bmp")
-    sprites["mur"]["HD2"] = getLoaded("mur_angle2_droite_haut.bmp")
+    sprites["mur"]["H"]   = getLoaded("Tiles/mur_haut.bmp")
+    sprites["mur"]["HG"]  = getLoaded("Tiles/mur_angle_gauche_haut.bmp")
+    sprites["mur"]["HG2"] = getLoaded("Tiles/mur_angle2_gauche_haut.bmp")
+    sprites["mur"]["G"]   = getLoaded("Tiles/mur_gauche.bmp")
+    sprites["mur"]["BG"]  = getLoaded("Tiles/mur_angle_gauche_bas.bmp")
+    sprites["mur"]["BG2"] = getLoaded("Tiles/mur_angle2_gauche_bas.bmp")
+    sprites["mur"]["B"]   = getLoaded("Tiles/mur_bas.bmp")
+    sprites["mur"]["BD"]  = getLoaded("Tiles/mur_angle_droite_bas.bmp")
+    sprites["mur"]["BD2"] = getLoaded("Tiles/mur_angle2_droite_bas.bmp")
+    sprites["mur"]["D"]   = getLoaded("Tiles/mur_droite.bmp")
+    sprites["mur"]["HD"]  = getLoaded("Tiles/mur_angle_droite_haut.bmp")
+    sprites["mur"]["HD2"] = getLoaded("Tiles/mur_angle2_droite_haut.bmp")
     sprites["escalier"]={}
     #haut
-    sprites["escalier"]["HG"]  = getLoaded("escalier_hautGauche.bmp")
-    sprites["escalier"]["HM"]  = getLoaded("escalier_hautMilieu.bmp")
-    sprites["escalier"]["HD"]  = getLoaded("escalier_hautDroite.bmp")
-    sprites["escalier"]["H_D"] = getLoaded("escalier_fin_hautDroite.bmp")
-    sprites["escalier"]["H_G"] = getLoaded("escalier_fin_hautGauche.bmp")
-    sprites["escalier"]["H_M"] = getLoaded("escalier_fin_hautMilieu.bmp")
+    sprites["escalier"]["HG"]  = getLoaded("Tiles/escalier_hautGauche.bmp")
+    sprites["escalier"]["HM"]  = getLoaded("Tiles/escalier_hautMilieu.bmp")
+    sprites["escalier"]["HD"]  = getLoaded("Tiles/escalier_hautDroite.bmp")
+    sprites["escalier"]["H_D"] = getLoaded("Tiles/escalier_fin_hautDroite.bmp")
+    sprites["escalier"]["H_G"] = getLoaded("Tiles/escalier_fin_hautGauche.bmp")
+    sprites["escalier"]["H_M"] = getLoaded("Tiles/escalier_fin_hautMilieu.bmp")
     #gauche
-    sprites["escalier"]["GG"]  = getLoaded("escalier_gaucheGauche.bmp")
-    sprites["escalier"]["GM"]  = getLoaded("escalier_gaucheMilieu.bmp")
-    sprites["escalier"]["GD"]  = getLoaded("escalier_gaucheDroite.bmp")
-    sprites["escalier"]["G_D"] = getLoaded("escalier_fin_gaucheDroite.bmp")
-    sprites["escalier"]["G_G"] = getLoaded("escalier_fin_gaucheGauche.bmp")
-    sprites["escalier"]["G_M"] = getLoaded("escalier_fin_gaucheMilieu.bmp")
+    sprites["escalier"]["GG"]  = getLoaded("Tiles/escalier_gaucheGauche.bmp")
+    sprites["escalier"]["GM"]  = getLoaded("Tiles/escalier_gaucheMilieu.bmp")
+    sprites["escalier"]["GD"]  = getLoaded("Tiles/escalier_gaucheDroite.bmp")
+    sprites["escalier"]["G_D"] = getLoaded("Tiles/escalier_fin_gaucheDroite.bmp")
+    sprites["escalier"]["G_G"] = getLoaded("Tiles/escalier_fin_gaucheGauche.bmp")
+    sprites["escalier"]["G_M"] = getLoaded("Tiles/escalier_fin_gaucheMilieu.bmp")
     #bas
-    sprites["escalier"]["BG"]  = getLoaded("escalier_basGauche.bmp")
-    sprites["escalier"]["BM"]  = getLoaded("escalier_basMilieu.bmp")
-    sprites["escalier"]["BD"]  = getLoaded("escalier_basDroite.bmp")
-    sprites["escalier"]["B_D"] = getLoaded("escalier_fin_basDroite.bmp")
-    sprites["escalier"]["B_G"] = getLoaded("escalier_fin_basGauche.bmp")
-    sprites["escalier"]["B_M"] = getLoaded("escalier_fin_basMilieu.bmp")
+    sprites["escalier"]["BG"]  = getLoaded("Tiles/escalier_basGauche.bmp")
+    sprites["escalier"]["BM"]  = getLoaded("Tiles/escalier_basMilieu.bmp")
+    sprites["escalier"]["BD"]  = getLoaded("Tiles/escalier_basDroite.bmp")
+    sprites["escalier"]["B_D"] = getLoaded("Tiles/escalier_fin_basDroite.bmp")
+    sprites["escalier"]["B_G"] = getLoaded("Tiles/escalier_fin_basGauche.bmp")
+    sprites["escalier"]["B_M"] = getLoaded("Tiles/escalier_fin_basMilieu.bmp")
     #droite
-    sprites["escalier"]["DG"]  = getLoaded("escalier_droiteGauche.bmp")
-    sprites["escalier"]["DM"]  = getLoaded("escalier_droiteMilieu.bmp")
-    sprites["escalier"]["DD"]  = getLoaded("escalier_droiteDroite.bmp")
-    sprites["escalier"]["D_D"] = getLoaded("escalier_fin_droiteDroite.bmp")
-    sprites["escalier"]["D_G"] = getLoaded("escalier_fin_droiteGauche.bmp")
-    sprites["escalier"]["D_M"] = getLoaded("escalier_fin_droiteMilieu.bmp")
+    sprites["escalier"]["DG"]  = getLoaded("Tiles/escalier_droiteGauche.bmp")
+    sprites["escalier"]["DM"]  = getLoaded("Tiles/escalier_droiteMilieu.bmp")
+    sprites["escalier"]["DD"]  = getLoaded("Tiles/escalier_droiteDroite.bmp")
+    sprites["escalier"]["D_D"] = getLoaded("Tiles/escalier_fin_droiteDroite.bmp")
+    sprites["escalier"]["D_G"] = getLoaded("Tiles/escalier_fin_droiteGauche.bmp")
+    sprites["escalier"]["D_M"] = getLoaded("Tiles/escalier_fin_droiteMilieu.bmp")
     #tapis
-    sprites["escalier"]["TH"]  = getLoaded("tapis_haut.bmp")
-    sprites["escalier"]["TG"]  = getLoaded("tapis_gauche.bmp")
-    sprites["escalier"]["TB"]  = getLoaded("tapis_bas.bmp")
-    sprites["escalier"]["TD"]  = getLoaded("tapis_droite.bmp")
-    sprites["escalier"]["TM"]  = getLoaded("tapis_milieu.bmp")
+    sprites["escalier"]["TH"]  = getLoaded("Tiles/tapis_haut.bmp")
+    sprites["escalier"]["TG"]  = getLoaded("Tiles/tapis_gauche.bmp")
+    sprites["escalier"]["TB"]  = getLoaded("Tiles/tapis_bas.bmp")
+    sprites["escalier"]["TD"]  = getLoaded("Tiles/tapis_droite.bmp")
+    sprites["escalier"]["TM"]  = getLoaded("Tiles/tapis_milieu.bmp")
     
-    sprites["escalier"]["mH"] = getLoaded("mur_escalier_haut.bmp")
-    sprites["escalier"]["mG"] = getLoaded("mur_escalier_gauche.bmp")
-    sprites["escalier"]["mB"] = getLoaded("mur_escalier_bas.bmp")
-    sprites["escalier"]["mD"] = getLoaded("mur_escalier_droite.bmp")
-    sprites["beton"]          = getLoaded("beton.png")
-    sprites["plancher"]       = getLoaded("plancher.bmp")
-    sprites["planche"]        = getLoaded("planche.bmp")
+    sprites["escalier"]["mH"] = getLoaded("Tiles/mur_escalier_haut.bmp")
+    sprites["escalier"]["mG"] = getLoaded("Tiles/mur_escalier_gauche.bmp")
+    sprites["escalier"]["mB"] = getLoaded("Tiles/mur_escalier_bas.bmp")
+    sprites["escalier"]["mD"] = getLoaded("Tiles/mur_escalier_droite.bmp")
+    sprites["beton"]          = getLoaded("Tiles/beton.png")
+    sprites["plancher"]       = getLoaded("Tiles/plancher.bmp")
+    sprites["planche"]        = getLoaded("Tiles/planche.bmp")
     
     sprites["eclair"] = getLoaded("eclair.bmp")
     
@@ -340,8 +340,8 @@ def loadAllSprites():
     
     sprites["projectile"] = getLoaded("projectile.png")
         
-    loadAnimSprite( "gobelin" )
-    loadAnimSprite( "orc" )
+    loadAnimSprite("gobelin","Ennemis/gobelin/")
+    loadAnimSprite("orc"    ,"Ennemis/orc/"    )
     
 #gère le décalage de l'écran à partir de la position du joueur
 def centerOffset(player):
@@ -403,7 +403,7 @@ def drawNewGame(fenetre):
         else:
             fenetre.blit( newGameButtons[k].surf2 , (newGameButtons[k].pX , newGameButtons[k].pY) )
     infoTxt = newGameInfo[newGameSelectedInfo]
-    fenetre.blit( infoTxt , (int(SCR_WIDTH*opt.SPRITE_SIZE/2-infoTxt.get_width()/2) ,int(SCR_HEIGHT*opt.SPRITE_SIZE*0.45) ) )
+    fenetre.blit( infoTxt , (int(SCR_WIDTH*opt.SPRITE_SIZE/2-infoTxt.get_width()/2) ,int(SCR_HEIGHT*opt.SPRITE_SIZE*0.4) ) )
 
 def drawQuit(fenetre):
     fenetre.blit( quitSurf , (0,0) )
