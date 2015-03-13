@@ -26,6 +26,8 @@ class Ennemi(joueurBase.JoueurBase):
         self.spriteName  = str(self.spriteName[0])
         self.exp         = int(file.readline().strip().split(";")[0])
      
+    def __repr__(self):
+        return self.name+" at("+str(self.position[1])+","+str(self.position[2])+")"
      
     def mouvement(self,x,y):
         if x> 0:

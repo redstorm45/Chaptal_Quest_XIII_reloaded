@@ -21,6 +21,8 @@ def attack(joueur,ennemis):
                 if joueur.capacite2 == "RDM":
                     capacite.capacite("RDM",joueur,ennemis[i])                    
                 ennemis[i].hp = ennemis[i].hp - damJ
+                ennemis[i].aura ='stun'
+                ennemis[i].auratimer = 3*60
         
         elif joueur.direction in [3,4]:
             if d < 2**2 and abs(posE[1]-posJ[1]) <= (posE[0]-posJ[0]):

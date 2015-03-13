@@ -3,6 +3,15 @@
 Fichier principal du programme
 Il gère les évènements, et la fenêtre
 
+à faire:
+
++ecran de chargement
++module d'animations
++interface utilisateur (en jeu)
++ajouter du son
++ajouter des objets
++agrandir la map
+
 """
 
 import pygame
@@ -43,9 +52,6 @@ while not pygame.display.get_init():
 
 #charge la map
 map.theMap = map.Map()
-
-#charge les ennemis sur la map
-game.init()
 
 #charge les textes
 texte.loadTextes()
@@ -147,6 +153,8 @@ while running:
                             save.create("test")
                             save.load("test",game.player)
                             dessin.overlaySaved = False
+                            #charge les ennemis sur la map
+                            game.init()
                             state = ETAT_GAME
                 elif state == ETAT_OVERLAY:
                     b = mouse.getBoutonAt("overlay",x,y)

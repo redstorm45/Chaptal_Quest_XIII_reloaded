@@ -2,6 +2,7 @@
 
 class Projectile():
     def __init__(self,tireur,cible):
+        self.tireur , self.cible = tireur,cible
         self.vitesse = 1/16
         
         distance = ( (tireur.position[1]-cible.position[1])**2 + (tireur.position[2]-cible.position[2])**2 )**0.5

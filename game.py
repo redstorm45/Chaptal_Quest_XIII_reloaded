@@ -15,13 +15,21 @@ import quete
 import option as opt
 import attackJoueur
 import capacite
+import collision
 
 #defini un joueur
 player = joueur.Joueur(2,2)
+
+#liste des projectiles
 projectileList = []
+
+#liste des ennemis
+ennemiList = []
 
 #initialisation du jeu
 def init():
+    global ennemiList
+    
     #création des ennemis sur la map
     for k in map.theMap.regionList.keys():
         r = map.theMap.regionList[k]
@@ -31,6 +39,9 @@ def init():
     #chargement des quêtes
     quete.loadQuetes()
     quete.refreshActive()
+    
+    #initialisation de la bonne liste
+    ennemiList = map.theMap.regionList[ player.position[0] ].ennemiList.copy()
 
 #dessin de la scène
 def draw(fenetre):
@@ -41,7 +52,7 @@ def draw(fenetre):
     dessin.drawRegion(fenetre,regionAffichee)
     dessin.drawPlayer(fenetre,player)
     
-    for e in map.theMap.regionList[ player.position[0] ].ennemiList:
+    for e in ennemiList:
         dessin.drawPlayer(fenetre,e)
         
     for p in projectileList:
@@ -53,8 +64,9 @@ def draw(fenetre):
 
 #touches de mouvement
 def actionKeys(listPressed):
-    global player
+    global player,ennemiList
     
+    #mouvement du joueur
     if keybinding.areKeysActive(["LEFT","UP"],listPressed):
         player.mouvement( -opt.speedDiag , -opt.speedDiag )
     elif keybinding.areKeysActive(["LEFT","DOWN"],listPressed):
@@ -73,7 +85,18 @@ def actionKeys(listPressed):
         player.mouvement( 0 , -opt.speed )
     else:
         player.mouvement( 0 , 0 )
+    #test de teleportation
+    t = map.theMap.regionList[ player.position[0] ].eventAt( player.position[1],player.position[2],"teleport" )
+    if t:
+        if opt.debugMode:
+            print("teleport",player.position)
+        player.position = t[0].dest.copy()
+        ennemiList = map.theMap.regionList[ player.position[0] ].ennemiList.copy()
+        print(ennemiList)
+        if opt.debugMode:
+            print("teleport2",player.position)
     
+    #attaque
     if keybinding.isKeyActive( "ATTACK" , listPressed ):
         if player.attackTimer == 0:
             attackJoueur.attack(player,map.theMap.regionList[player.position[0]].ennemiList)
@@ -103,13 +126,17 @@ def tick():
         
         if p.life < 0:
             projectileList.remove(p)
+        elif isinstance(p.cible,joueur.Joueur):
+            if collision.checkProjectile(p,player):
+                player.hp -= p.tireur.dammage
+                projectileList.remove(p)
     
     #IA
-    for e in map.theMap.regionList[ player.position[0] ].ennemiList:
-        if map.theMap.regionList[ player.position[0] ].ennemiList(e).aura != "stun":
+    for e in ennemiList:
+        if e.aura != "stun":
             #mort d'un ennemi
             if e.hp < 0:
-                map.theMap.regionList[ player.position[0] ].ennemiList.remove(e)
+                ennemiList.remove(e)
                 player.levelup += e.exp
         
             #deplacement d'ennemi
@@ -125,10 +152,10 @@ def tick():
                 ia.attackIA(player,e,projectileList)
             else:
                 e.attackTimer = max( 0, e.attackTimer - 1/16)
-         else:
-                map.theMap.regionList[ player.position[0] ].ennemiList(e).auratimer -= 1
-        if map.theMap.regionList[ player.position[0] ].ennemiList(e).auratimer <= 0:
-            map.theMap.regionList[ player.position[0] ].ennemiList(e).aura = ""
+        else:
+            e.auratimer -= 1
+        if e.auratimer <= 0:
+            e.aura = ""
     #levelup de l'ennemi
     if player.levelup - (100*2**player.lvl) >= 0:
         player.levelup -= (100*2**player.lvl)

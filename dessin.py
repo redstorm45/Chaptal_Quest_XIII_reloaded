@@ -602,8 +602,8 @@ def animAttack(fenetre,player):
 
 def drawProjectile(fenetre,projectile):
     x,y = projectile.position
-    xEcran = (x-0.5) * opt.SPRITE_SIZE  + xOffset
-    yEcran = (y-0.5) * opt.SPRITE_SIZE  + yOffset
+    xEcran = x * opt.SPRITE_SIZE  + xOffset
+    yEcran = y * opt.SPRITE_SIZE  + yOffset
     
     fenetre.blit(sprites["projectile"],(xEcran,yEcran))
 

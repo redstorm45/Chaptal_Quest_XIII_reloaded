@@ -34,17 +34,9 @@ class Joueur(joueurBase.JoueurBase):
         self.levelup = 0
         
     
-    def mouvement(self,x,y):
+    def mouvement(self,x,y,):
         #mouvement normal
         super( Joueur , self ).mouvement(x,y)
-        #test de téléportation
-        t = map.theMap.regionList[ self.position[0] ].eventAt( self.position[1],self.position[2],"teleport" )
-        if t:
-            if opt.debugMode:
-                print("teleport",self.position)
-            self.position = t[0].dest.copy()
-            if opt.debugMode:
-                print("teleport2",self.position)
         #test de quete
         qList = map.theMap.regionList[ self.position[0] ].eventAt( self.position[1],self.position[2],"quest" )
         for qNum in qList:

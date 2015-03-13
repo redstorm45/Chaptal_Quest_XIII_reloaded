@@ -27,6 +27,17 @@ def checkJoueur(joueur,dx,dy):
         return False
     return True
 
+def checkProjectile(projectile,joueur):
+    if projectile.position[0] < joueur.position[1] + joueur.hitbox[0]:
+        return False
+    if projectile.position[0] > joueur.position[1] + joueur.hitbox[1]:
+        return False
+    if projectile.position[1] < joueur.position[2] + joueur.hitbox[2]:
+        return False
+    if projectile.position[1] > joueur.position[2] + joueur.hitbox[3]:
+        return False
+    return True
+
 #retourne False si la position (x,y) contient une case non accessible
 def checkCase(regionName,x,y):
     if map.theMap.regionList[regionName].at( int(x) , int(y) ) in collideList:
