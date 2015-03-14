@@ -93,6 +93,10 @@ menuBack = None
 menuTitle = None
 menuButtons = {}
 
+#surfaces de l'écran d'option
+optionBack = None
+optionTitle = None
+
 #surfaces de l'overlay en jeu
 overlayBack = None
 overlayTitle = None
@@ -196,6 +200,13 @@ def initDraw(fenetre):
     menuButtons["nouveau"].surf = buttonFontM.render("Nouveau" ,True,(240,240,240))
     menuButtons["option"].surf  = buttonFontM.render("Options" ,True,(240,240,240))
     menuButtons["charger"].surf = buttonFontM.render("Charger" ,True,(240,240,240))
+    
+    #écran d'option
+    global optionBack , optionTitle
+    optionBack = pygame.Surface( ( fenetre.get_width(),fenetre.get_height()) )
+    optionBack.fill( (0,0,0) )
+    
+    optionTitle = menuFont.render("Options",True,(250,20,20))
     
     #écran de nouveau jeu
     global newGameBack , newGameTitle , newGameButtons , newGameInfo
@@ -404,6 +415,10 @@ def drawOverlayQuit(fenetre):
 def drawOverlayMenu(fenetre):
     overlayMenu.drawOn(fenetre)
     overlayYesNo.drawOn(fenetre)
+    
+def drawOption(fenetre):
+    fenetre.blit( optionBack, (0,0) )
+    fenetre.blit( optionTitle , (int(SCR_WIDTH*opt.SPRITE_SIZE/2-optionTitle.get_width()/2),0) )
     
 def drawNewGame(fenetre):
     fenetre.blit( newGameBack, (0,0) )
