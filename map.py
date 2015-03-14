@@ -29,7 +29,7 @@ class EventReg:
     
     #si l'evenement s'active
     def activate(self,x,y):
-        return  x>=self.pA[0] and x<= self.pB[0] and y>=self.pA[1] and y<= self.pB[1]
+        return  (x>=self.pA[0] and x<= self.pB[0] and y>=self.pA[1] and y<= self.pB[1])
     
 
 #defini un tableau de cases
