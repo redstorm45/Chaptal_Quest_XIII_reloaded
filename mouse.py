@@ -14,6 +14,14 @@ class Bouton:
         self.size = size
         self.width,self.height = size
     
+    def linkElement(self,element):
+        eltPos = element.getTruePos()
+        self.pos               = eltPos
+        self.pX,self.pY        = eltPos
+        self.size              = element.size
+        self.width,self.height = element.size
+        self.elt               = element
+    
     def __repr__(self):
         return "bouton["+str(self.pX)+","+str(self.pY)+","+str(self.pX+self.width)+","+str(self.pY+self.height)
     
@@ -109,7 +117,7 @@ def init(scrW,scrH):
     addBoutCenter("nouveau" ,"MPSI"        ,int(scrW*0.5) , int(scrH*0.25) , 260,75 )
     addBoutCenter("nouveau" ,"PCSI"        ,int(scrW*0.7) , int(scrH*0.25) , 230,75 )
     addBoutCenter("nouveau" ,"commencer"   ,int(scrW*0.5) , int(scrH*0.9)  , 260,75 )
-    #création des etideurs de textes
+    #création des editeurs de textes
     tEdits["nouveau"] = {}
 
 #ajoute un bouton, (x,y) en haut à gauche

@@ -183,10 +183,8 @@ def initDraw(fenetre):
     #position des boutons oui et non
     top = fenetre.get_height()//2 + max( overlayQuit.h , overlayMenu.h )//2
     overlayYesNo.setTop(top)
-    mouse.boutons["overlayV"]["oui"].setTopLeft(top,overlayYesNo.x)
-    mouse.boutons["overlayV"]["oui"].setDimElt(overlayYes)
-    mouse.boutons["overlayV"]["non"].setTopRight(top,overlayYesNo.x+overlayYesNo.w)
-    mouse.boutons["overlayV"]["non"].setDimElt(overlayNo)
+    mouse.boutons["overlayV"]["oui"].linkElement(overlayYes)
+    mouse.boutons["overlayV"]["non"].linkElement(overlayNo)
     
     #écran de menu
     global menuBack , menuTitle , menuButtons
@@ -233,8 +231,9 @@ def initDraw(fenetre):
     quitSurf.fill( (0,0,0) )
     quitTxt["Chaptal"] = renderMultiLine(buttonFontXS,texte.getTexte("quit","chaptal"),30,(240,240,240),(0,0,0) )
     quitTxt["Python"]  = renderMultiLine(buttonFontXS,texte.getTexte("quit","python") ,30,(240,240,240),(0,0,0) )
-    quitPython = getLoaded("python.jpg",False)
-    quitPygame = getLoaded("pygame.png",False)
+    quitPython  = getLoaded("python.jpg",False)
+    quitPygame  = getLoaded("pygame.png",False)
+    quitChaptal = getLoaded("chaptal.jpg",False)
 
 #dessine un texte sur plusieurs lignes
 def renderMultiLine(font,text,spacing,color,backColor):
@@ -435,6 +434,7 @@ def drawQuit(fenetre):
     fenetre.blit( quitSurf , (0,0) )
     fenetre.blit( quitTxt["Chaptal"] , (600,100) )
     fenetre.blit( quitTxt["Python"]  , (100,500) )
+    fenetre.blit( quitChaptal, (100,100) )
     fenetre.blit( quitPython, (800,400) )
     fenetre.blit( quitPygame, (800,600) )
 

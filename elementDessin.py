@@ -89,7 +89,7 @@ class _Rectangle():
         
     def getTruePos(self):
         if self.container:
-            xc,yc = self.container.getTruPos()
+            xc,yc = self.container.getTruePos()
             return self.x+xc,self.y+yc
         else:
             return self.pos
