@@ -111,12 +111,17 @@ overlayQuitCadre = None
 overlayMenu = None
 overlayMenuCadre = None
 
+#surface de validation de retour à l'édition du menu
+overlayFail = None
+overlayFailOk = None
+
 #surface des boutons pour Oui/Non
 overlayYesNo = None
 
 #surfaces de l'écran de nouvelle partie
 newGameBack = None
 newGameTitle = None
+newGameName = None
 newGameButtons = {}
 newGameInfo = {}
 newGameSelectedInfo = "PTSI"
@@ -207,11 +212,12 @@ def initDraw(fenetre):
     optionTitle = menuFont.render("Options",True,(250,20,20))
     
     #écran de nouveau jeu
-    global newGameBack , newGameTitle , newGameButtons , newGameInfo
+    global newGameBack , newGameTitle , newGameButtons , newGameInfo , newGameName
     newGameBack = pygame.Surface( ( fenetre.get_width(),fenetre.get_height()) )
     newGameBack.fill( (0,0,0) )
     
     newGameTitle = buttonFontM.render("Choisissez votre classe",True,(240,240,240))
+    newGameName = elt.BoutonTexte( fenetre.get_width()//2,int(fenetre.get_height()*0.18),10,10,10,(0,0,0),(0,0,0),buttonFontM,"",(81,88,220) )
     newGameButtons = mouse.boutons["nouveau"]
     newGameButtons["PTSI"].setSurfCenterTop( buttonFontM.render("PTSI" ,True,(240,240,240)) )
     newGameButtons["PTSI"].surf2 = buttonFontM.render("PTSI" ,True,(120,120,120))
@@ -224,6 +230,13 @@ def initDraw(fenetre):
     newGameInfo["PTSI"] = renderMultiLine(buttonFontS,texte.getTexte("nouveau","PTSI"),30,(240,240,240),(0,0,0) )
     newGameInfo["PCSI"] = renderMultiLine(buttonFontS,texte.getTexte("nouveau","PCSI"),30,(240,240,240),(0,0,0) )
     newGameInfo["MPSI"] = renderMultiLine(buttonFontS,texte.getTexte("nouveau","MPSI"),30,(240,240,240),(0,0,0) )
+    
+    #édition ratée du nom de la nouvelle sauvegarde
+    global overlayFail , overlayFailOk
+    textOverlayFail = renderMultiLine(buttonFontS,texte.getTexte("overlay","confirmF"),30,(10,10,10),(230,230,230))
+    overlayFail = elt.BoutonRempli(0,0,10,10,10,(230,230,230),textOverlayFail,(120,120,120))
+    overlayFail.setCenterX( fenetre.get_width() //2 )
+    overlayFail.setCenterY( fenetre.get_height()//2 )
     
     #écran de sortie
     global quitSurf , quitPython , quitPygame , quitChaptal , quitTxt
@@ -415,6 +428,9 @@ def drawOverlayMenu(fenetre):
     overlayMenu.drawOn(fenetre)
     overlayYesNo.drawOn(fenetre)
     
+def drawOverlayFail(fenetre):
+    overlayFail.drawOn(fenetre)
+    
 def drawOption(fenetre):
     fenetre.blit( optionBack, (0,0) )
     fenetre.blit( optionTitle , (int(SCR_WIDTH*opt.SPRITE_SIZE/2-optionTitle.get_width()/2),0) )
@@ -422,6 +438,7 @@ def drawOption(fenetre):
 def drawNewGame(fenetre):
     fenetre.blit( newGameBack, (0,0) )
     fenetre.blit( newGameTitle , (int(SCR_WIDTH*opt.SPRITE_SIZE/2-newGameTitle.get_width()/2),20) )
+    newGameName.drawOn( fenetre )
     for k in newGameButtons.keys():
         if k == newGameSelectedInfo or k=="commencer":
             fenetre.blit( newGameButtons[k].surf , (newGameButtons[k].pX , newGameButtons[k].pY) )

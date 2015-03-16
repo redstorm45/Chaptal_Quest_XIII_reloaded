@@ -1,0 +1,6 @@
+overlay
+confirmF
+Le nom de votre personnage ne dois pas être vide,
+et vous devez utiliser un nom différent
+pour chacun de vos personnages.
+Ce nom est peut-être déjà utilisé.

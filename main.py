@@ -24,20 +24,21 @@ import math
 import keybinding
 import mouse
 import option
-
+import string
 import debug
 import save
 import texte
 
 #definition des différents états du jeu
-ETAT_MENU      = 1  #menu
-ETAT_GAME      = 2  #en jeu
-ETAT_OVERLAY   = 3  #en jeu, avec overlay pour quitter,sauvegarder
-ETAT_OVERLAY_Q = 4  #validation avant de quitter le jeu
-ETAT_OVERLAY_M = 5  #validation avant de revenir au menu
-ETAT_OPTION    = 6  #ecran d'options
-ETAT_NOUVEAU   = 7  #lancement de partie (selection de filière)
-ETAT_QUIT      = 8  #fin du programme
+ETAT_MENU         = 1  #menu
+ETAT_GAME         = 2  #en jeu
+ETAT_OVERLAY      = 3  #en jeu, avec overlay pour quitter,sauvegarder
+ETAT_OVERLAY_Q    = 4  #validation avant de quitter le jeu
+ETAT_OVERLAY_M    = 5  #validation avant de revenir au menu
+ETAT_OPTION       = 6  #ecran d'options
+ETAT_NOUVEAU      = 7  #lancement de partie (selection de filière)
+ETAT_NOUVEAU_FAIL = 8  #selection invalide (nom de sauvagarde déjà utilisé)
+ETAT_QUIT         = 9  #fin du programme
 
 #crée la fenetre
 pygame.init()
@@ -82,6 +83,9 @@ while running:
         dessin.drawOption(fenetre)
     elif state == ETAT_NOUVEAU:
         dessin.drawNewGame(fenetre)
+    elif state == ETAT_NOUVEAU_FAIL:
+        dessin.drawNewGame(fenetre)
+        dessin.drawOverlayFail(fenetre)
     elif state == ETAT_OVERLAY:
         game.draw(fenetre)
         dessin.drawOverlay(fenetre)
@@ -117,15 +121,22 @@ while running:
                     state = ETAT_GAME
                 elif state == ETAT_MENU:
                     state = ETAT_QUIT
-                elif state in [ETAT_NOUVEAU,ETAT_OPTION]:
+                elif state == ETAT_NOUVEAU:
+                    state = ETAT_MENU
+                    dessin.newGameName.updateText("")
+                elif state == ETAT_OPTION:
                     state = ETAT_MENU
                 elif state == ETAT_QUIT:
                     running = False
-            if event.key == K_RETURN:
+            elif event.key == K_RETURN:
                 if state == ETAT_OVERLAY:
                     state = ETAT_OVERLAY_M
-            if event.key == K_a:
-                pass
+            elif (event.unicode in string.ascii_lowercase) or (event.unicode in string.ascii_uppercase):
+                if state == ETAT_NOUVEAU:
+                    dessin.newGameName.appendTexte( event.unicode )
+            elif event.key == pygame.K_BACKSPACE:
+                if state == ETAT_NOUVEAU:
+                    dessin.newGameName.appendTexte( "\b" )
             """
             different deplacement
             """
@@ -151,13 +162,29 @@ while running:
                         elif b.name == "MPSI":
                             dessin.newGameSelectedInfo = "MPSI"
                         elif b.name == "commencer":
-                            game.player.classe = dessin.newGameSelectedInfo
-                            save.create("test")
-                            save.load("test",game.player)
-                            dessin.overlaySaved = False
-                            #charge les ennemis sur la map
-                            game.init()
-                            state = ETAT_GAME
+                            if option.debugSave:
+                                game.player.classe = dessin.newGameSelectedInfo
+                                save.create("debugSave_")
+                                save.load("debugSave_",game.player)
+                                dessin.overlaySaved = False
+                                #charge les ennemis sur la map
+                                game.init()
+                                state = ETAT_GAME
+                                dessin.newGameName.updateText("")
+                            elif dessin.newGameName.texte:
+                                state = ETAT_NOUVEAU_FAIL
+                            elif dessin.newGameName.texte in save.getAllNames():
+                                state = ETAT_NOUVEAU_FAIL
+                            else:
+                                saveName = dessin.newGameName.texte
+                                game.player.classe = dessin.newGameSelectedInfo
+                                save.create(saveName)
+                                save.load(saveName,game.player)
+                                dessin.overlaySaved = False
+                                #charge les ennemis sur la map
+                                game.init()
+                                state = ETAT_GAME
+                                dessin.newGameName.updateText("")
                 elif state == ETAT_OVERLAY:
                     b = mouse.getBoutonAt("overlay",x,y)
                     if b:
@@ -174,6 +201,8 @@ while running:
                         elif b.name == "sauvegarder" and not dessin.overlaySaved:
                             save.save( game.player )
                             dessin.overlaySaved = True
+                elif state == ETAT_NOUVEAU_FAIL:
+                    state = ETAT_NOUVEAU
                 elif state == ETAT_OVERLAY_Q:
                     b = mouse.getBoutonAt("overlayV",x,y)
                     if b:

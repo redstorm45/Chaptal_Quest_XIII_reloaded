@@ -219,7 +219,19 @@ class BoutonTexte(BoutonRempli):
     def redraw(self):
         self.interieur  = self.police.render( self.texte , True, self.colorTexte , self.colorBack)
         BoutonRempli.redraw(self)
-
+        
+    def updateText(self,texte):
+        self.texte = texte
+        BoutonTexte.redraw( self )
+    
+    def appendTexte(self,caract):
+        if caract == "\b":
+            if len(self.texte) > 1:
+                self.updateTexte(self.texte[:len(self.texte)-1] )
+            else:
+                self.texte = ""
+        else:
+            self.updateText( self.texte+caract )
 
 
 
