@@ -28,6 +28,7 @@ import string
 import debug
 import save
 import texte
+import editGame
 
 #definition des différents états du jeu
 ETAT_MENU         = 1  #menu
@@ -40,6 +41,7 @@ ETAT_NOUVEAU      = 7  #lancement de partie (selection de filière)
 ETAT_NOUVEAU_FAIL = 8  #selection invalide (nom de sauvagarde déjà utilisé)
 ETAT_CHARGE       = 9  #selection invalide (nom de sauvagarde déjà utilisé)
 ETAT_QUIT         = 10 #fin du programme
+ETAT_EDIT         = 11 #edition des niveaux
 
 #crée la fenetre
 pygame.init()
@@ -71,6 +73,7 @@ clock = pygame.time.Clock()
 #initialisation de l'état avant entrée dans la boucle
 state = ETAT_MENU
 if option.editMode:
+    editGame.init()
     state = ETAT_EDIT
 
 #main loop
@@ -134,6 +137,9 @@ while running:
                     state = ETAT_MENU
                 elif state == ETAT_OPTION:
                     state = ETAT_MENU
+                elif state == ETAT_EDIT:
+                    editGame.saveChanges()
+                    running = False
                 elif state == ETAT_QUIT:
                     running = False
             elif event.key == K_RETURN:
@@ -236,10 +242,19 @@ while running:
                 elif state == ETAT_GAME and option.debugMode:
                     debug.caseSel = list( debug.getCellAt(x,y) )
                     print("click en",debug.caseSel)
+                elif state == ETAT_EDIT:
+                    editGame.click(x,y)
+            if event.button == 1:#bouton gauche
+                x,y = event.pos
+                if state == ETAT_EDIT:
+                    editGame.clickR(x,y)
     #gestion des déplacements
     if state == ETAT_GAME:
         listPressed = pygame.key.get_pressed()
         game.actionKeys(listPressed)
+    elif state == ETAT_EDIT:
+        listPressed = pygame.key.get_pressed()
+        editGame.actionKeys(listPressed)
     
     #  ***  update général  ***
     if state == ETAT_GAME:
