@@ -126,6 +126,11 @@ newGameButtons = {}
 newGameInfo = {}
 newGameSelectedInfo = "PTSI"
 
+#surfaces de l'écran de nouvelle partie
+chargeBack = None
+chargeTitle = None
+chargeName = None
+
 #surfaces avant de quitter
 quitSurf = None
 quitPython = None
@@ -230,6 +235,14 @@ def initDraw(fenetre):
     newGameInfo["PTSI"] = renderMultiLine(buttonFontS,texte.getTexte("nouveau","PTSI"),30,(240,240,240),(0,0,0) )
     newGameInfo["PCSI"] = renderMultiLine(buttonFontS,texte.getTexte("nouveau","PCSI"),30,(240,240,240),(0,0,0) )
     newGameInfo["MPSI"] = renderMultiLine(buttonFontS,texte.getTexte("nouveau","MPSI"),30,(240,240,240),(0,0,0) )
+    
+    #écran de nouveau jeu
+    global chargeBack , chargeTitle , chargeName
+    chargeBack = pygame.Surface( ( fenetre.get_width(),fenetre.get_height()) )
+    chargeBack.fill( (0,0,0) )
+    
+    chargeTitle = buttonFontM.render("Choisissez votre partie",True,(240,240,240))
+    chargeName = elt.BoutonTexte( fenetre.get_width()//2,int(fenetre.get_height()*0.18),10,10,10,(0,0,0),(0,0,0),buttonFontM,"",(81,88,220) )
     
     #édition ratée du nom de la nouvelle sauvegarde
     global overlayFail , overlayFailOk
@@ -362,15 +375,10 @@ def loadAllSprites():
     sprites["attackG"] = getLoaded("attackG.png")
     sprites["attackD"] = getLoaded("attackD.png")
     
-    
-    
-    
-    sprites["eclairH"] = getLoaded("eclairH.png")
-    sprites["eclairB"] = getLoaded("eclairB.png")
-    sprites["eclairG"] = getLoaded("eclairG.png")
-    sprites["eclairD"] = getLoaded("eclairD.png")
-    
-    
+    sprites["eclairH"] = getLoaded("hacheurH.png")
+    sprites["eclairB"] = getLoaded("hacheurB.png")
+    sprites["eclairG"] = getLoaded("hacheurG.png")
+    sprites["eclairD"] = getLoaded("hacheurD.png")
     
     sprites["projectile"] = getLoaded("projectile.png")
         
@@ -446,6 +454,11 @@ def drawNewGame(fenetre):
             fenetre.blit( newGameButtons[k].surf2 , (newGameButtons[k].pX , newGameButtons[k].pY) )
     infoTxt = newGameInfo[newGameSelectedInfo]
     fenetre.blit( infoTxt , (int(SCR_WIDTH*opt.SPRITE_SIZE/2-infoTxt.get_width()/2) ,int(SCR_HEIGHT*opt.SPRITE_SIZE*0.4) ) )
+    
+def drawCharge(fenetre):
+    fenetre.blit( chargeBack, (0,0) )
+    fenetre.blit( chargeTitle , (int(SCR_WIDTH*opt.SPRITE_SIZE/2-chargeTitle.get_width()/2),20) )
+    chargeName.drawOn( fenetre )
 
 def drawQuit(fenetre):
     fenetre.blit( quitSurf , (0,0) )
@@ -652,7 +665,9 @@ def drawProjectile(fenetre,projectile):
 
 
 def drawCapacite(player,fenetre):
-    fenetre.blit(sprites[player.spritecapacite],(player.positioncapacite[0] * opt.SPRITE_SIZE,player.positioncapacite[1] * opt.SPRITE_SIZE))
+    xEcran = player.positionCapacite[0] * opt.SPRITE_SIZE  + xOffset
+    yEcran = player.positionCapacite[1] * opt.SPRITE_SIZE  + yOffset
+    fenetre.blit(sprites[player.spriteCapacite],(xEcran, yEcran))
         
     
 

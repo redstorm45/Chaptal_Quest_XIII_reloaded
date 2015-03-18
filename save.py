@@ -78,14 +78,14 @@ def save(player):
     global currentSaveName
     try:
         saveFile = open("save/"+currentSaveName+".save","w")
-        saveFile.write(player.position[0]+","+str(player.position[1])+","+str(player.position[2])+"/n") #position
-        saveFile.write(player.classe+"/n")
-        saveFile.write(str(player.regen)+"/n")
-        saveFile.write(str(player.capacite1)+"/n")
-        saveFile.write(str(player.capacite2)+"/n")
-        saveFile.write(str(player.capacite1Lvl)+"/n")
-        saveFile.write(str(player.capacite2Lvl)+"/n")
-        saveFile.write(str(player.pointbonus)+"/n")
+        saveFile.write(player.position[0]+","+str(player.position[1])+","+str(player.position[2])+"\n") #position
+        saveFile.write(player.classe+"\n")
+        saveFile.write(str(player.regen)+"\n")
+        saveFile.write(str(player.capacite1)+"\n")
+        saveFile.write(str(player.capacite2)+"\n")
+        saveFile.write(str(player.capacite1Lvl)+"\n")
+        saveFile.write(str(player.capacite2Lvl)+"\n")
+        saveFile.write(str(player.pointbonus)+"\n")
     except:
         return False
     else:

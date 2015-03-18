@@ -38,7 +38,8 @@ ETAT_OVERLAY_M    = 5  #validation avant de revenir au menu
 ETAT_OPTION       = 6  #ecran d'options
 ETAT_NOUVEAU      = 7  #lancement de partie (selection de filière)
 ETAT_NOUVEAU_FAIL = 8  #selection invalide (nom de sauvagarde déjà utilisé)
-ETAT_QUIT         = 9  #fin du programme
+ETAT_CHARGE       = 9  #selection invalide (nom de sauvagarde déjà utilisé)
+ETAT_QUIT         = 10 #fin du programme
 
 #crée la fenetre
 pygame.init()
@@ -69,6 +70,8 @@ clock = pygame.time.Clock()
 
 #initialisation de l'état avant entrée dans la boucle
 state = ETAT_MENU
+if option.editMode:
+    state = ETAT_EDIT
 
 #main loop
 running = True
@@ -77,6 +80,8 @@ while running:
     fenetre.fill( (0,0,0) )
     if state == ETAT_GAME:
         game.draw(fenetre)
+    elif state == ETAT_EDIT:
+        editGame.draw(fenetre)
     elif state == ETAT_MENU:
         dessin.drawMenu(fenetre)
     elif state == ETAT_OPTION:
@@ -85,7 +90,8 @@ while running:
         dessin.drawNewGame(fenetre)
     elif state == ETAT_NOUVEAU_FAIL:
         dessin.drawNewGame(fenetre)
-        dessin.drawOverlayFail(fenetre)
+    elif state == ETAT_CHARGE:
+        dessin.drawCharge(fenetre)
     elif state == ETAT_OVERLAY:
         game.draw(fenetre)
         dessin.drawOverlay(fenetre)
@@ -124,6 +130,8 @@ while running:
                 elif state == ETAT_NOUVEAU:
                     state = ETAT_MENU
                     dessin.newGameName.updateText("")
+                elif state == ETAT_CHARGE:
+                    state = ETAT_MENU
                 elif state == ETAT_OPTION:
                     state = ETAT_MENU
                 elif state == ETAT_QUIT:
@@ -134,9 +142,13 @@ while running:
             elif (event.unicode in string.ascii_lowercase) or (event.unicode in string.ascii_uppercase):
                 if state == ETAT_NOUVEAU:
                     dessin.newGameName.appendTexte( event.unicode )
+                elif state == ETAT_CHARGE:
+                    dessin.chargeName.appendTexte( event.unicode )
             elif event.key == pygame.K_BACKSPACE:
                 if state == ETAT_NOUVEAU:
                     dessin.newGameName.appendTexte( "\b" )
+                elif state == ETAT_CHARGE:
+                    dessin.chargeName.appendTexte( "\b" )
             """
             different deplacement
             """
@@ -150,6 +162,8 @@ while running:
                             state = ETAT_QUIT
                         elif b.name == "nouveau":
                             state = ETAT_NOUVEAU
+                        elif b.name == "charger":
+                            state = ETAT_CHARGE
                         elif b.name == "option":
                             state = ETAT_OPTION
                 elif state == ETAT_NOUVEAU:
@@ -170,8 +184,8 @@ while running:
                                 #charge les ennemis sur la map
                                 game.init()
                                 state = ETAT_GAME
-                                dessin.newGameName.updateText("")
-                            elif dessin.newGameName.texte:
+                                dessin.newGameName.updateTexte("")
+                            elif not dessin.newGameName.texte:
                                 state = ETAT_NOUVEAU_FAIL
                             elif dessin.newGameName.texte in save.getAllNames():
                                 state = ETAT_NOUVEAU_FAIL
@@ -184,7 +198,7 @@ while running:
                                 #charge les ennemis sur la map
                                 game.init()
                                 state = ETAT_GAME
-                                dessin.newGameName.updateText("")
+                                dessin.newGameName.updateTexte("")
                 elif state == ETAT_OVERLAY:
                     b = mouse.getBoutonAt("overlay",x,y)
                     if b:

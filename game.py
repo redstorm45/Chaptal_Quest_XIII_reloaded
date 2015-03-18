@@ -41,7 +41,7 @@ def init():
     quete.loadQuetes()
     quete.refreshActive()
     
-    #initialisation de la bonne liste
+    #initialisation de la liste d'ennemi
     ennemiList = map.theMap.regionList[ player.position[0] ].ennemiList[:]
 
 #dessin de la scène
@@ -63,8 +63,9 @@ def draw(fenetre):
         dessin.animAttack(fenetre,player)    
         player.attackanim -=1
         
-    if player.spritecapacite != '':
+    if player.spriteCapacite != '' and player.spriteCapaciteTimer >0:
         dessin.drawCapacite(player,fenetre)
+        
 #touches de mouvement
 def actionKeys(listPressed):
     global player,ennemiList
@@ -124,7 +125,8 @@ def actionKeys(listPressed):
 def tick():
     player.anim += 0.25
     
-  
+    if player.spriteCapaciteTimer > 0:
+        player.spriteCapaciteTimer -= 1
     
     #avancement de projectiles
     for p in projectileList:
@@ -139,12 +141,14 @@ def tick():
     
     #IA
     for e in ennemiList:
+        #mort d'un ennemi
+        if e.hp < 0:
+            ennemiList.remove(e)
+            player.levelup += e.exp
+                
+                
         if e.aura != "stun":
-            #mort d'un ennemi
-            if e.hp < 0:
-                ennemiList.remove(e)
-                player.levelup += e.exp
-        
+
             #deplacement d'ennemi
             if ia.agro(player.position,e):
                 ia.trajectoire(player.position,e)
