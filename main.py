@@ -139,7 +139,6 @@ while running:
                     state = ETAT_MENU
                 elif state == ETAT_EDIT:
                     editGame.saveChanges()
-                    running = False
                 elif state == ETAT_QUIT:
                     running = False
             elif event.key == K_RETURN:
@@ -243,11 +242,17 @@ while running:
                     debug.caseSel = list( debug.getCellAt(x,y) )
                     print("click en",debug.caseSel)
                 elif state == ETAT_EDIT:
-                    editGame.click(x,y)
-            if event.button == 1:#bouton gauche
+                    editGame.clickL(x,y)
+            elif event.button == 3:#bouton droit
                 x,y = event.pos
                 if state == ETAT_EDIT:
                     editGame.clickR(x,y)
+            elif event.button == 4:#molette vers le haut
+                if state == ETAT_EDIT:
+                    editGame.mouseWheel(1)
+            elif event.button == 5:#molette vers le bas
+                if state == ETAT_EDIT:
+                    editGame.mouseWheel(-1)
     #gestion des déplacements
     if state == ETAT_GAME:
         listPressed = pygame.key.get_pressed()

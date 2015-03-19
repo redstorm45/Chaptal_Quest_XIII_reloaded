@@ -31,6 +31,19 @@ class EventReg:
     def activate(self,x,y):
         return  (x>=self.pA[0] and x<= self.pB[0] and y>=self.pA[1] and y<= self.pB[1])
     
+    def translate(self,dx,dy):
+        self.pA[0] += dx
+        self.pA[1] += dy
+        self.pB[0] += dx
+        self.pB[1] += dy
+    
+    #représentation (str) de cet evenement
+    def __str__(self):
+        area = str( self.pA[0] )+","+str( self.pA[1] )+","+str( self.pB[0] )+","+str( self.pB[1] )
+        info = ""
+        if self.type == "teleport":
+            info = "t,"+self.dest[0]+","+str(self.dest[1])+","+str(self.dest[2])
+        return area + ":" + info
 
 #defini un tableau de cases
 class Region:
@@ -41,6 +54,8 @@ class Region:
         self.ennemiBaseList = []   #position de spawn des ennemis
         self.ennemiList     = []   #liste des ennemis sur la carte
         self.eventList      = []   #liste des points d'évenements
+        
+        self.readOffset = [0,0]
         
         #chargement de la base de la région
         try:
@@ -83,12 +98,44 @@ class Region:
     
     #donne la case à un certain endroit
     def at(self,x,y):
-        if x>self.width or x<0 or y>self.height or y<0:
-            return 20
+        tX,tY = x-self.readOffset[0] , y-self.readOffset[1]
+        if tX>self.width or tX<0 or tY>self.height or tY<0:
+            return 0
         try:
-            return self.data[x][y]
+            return self.data[tX][tY]
         except:
-            return 20
+            return 0
+    
+    def setAt(self,x,y,val):
+        tX,tY = x-self.readOffset[0] , y-self.readOffset[1]
+        #print("set (",x,y,") (",tX,tY,") to ",val)
+        #try to expand data size
+        if tX>=self.width or tX<0 or tY>=self.height or tY<0:
+            if tX>=self.width:
+                expandX = tX-self.width +1
+                self.data.extend( [[0 for i in range(self.height)] for j in range(expandX) ] )
+                self.width += expandX
+            if tY>=self.height:
+                expandY = tY-self.height +1
+                for i in range(self.width):
+                    self.data[i].extend( [0 for j in range(expandY) ] )
+                self.height += expandY
+            if tX<0:
+                expandX = -tX
+                for i in range(expandX):
+                    self.data.insert( 0 , [0 for i in range(self.height)] )
+                self.width += expandX
+                self.readOffset[0]-=expandX
+            if tY<0:
+                expandY = -tY
+                for j in range(self.width):
+                    for i in range(expandY):
+                        self.data[j].insert( 0 , 0 )
+                self.height += expandY
+                self.readOffset[1]-=expandY
+        #set the value
+        tX,tY = x-self.readOffset[0] , y-self.readOffset[1]
+        self.data[tX][tY] = val
     
     def eventAt(self,x,y,type=None):
         l = []
@@ -97,6 +144,13 @@ class Region:
                 if (not type) or type==i.type:
                     l.append(i)
         return l
+    
+    def resetReadOffset(self):
+        for e in self.ennemiList:
+            e.translate( -self.readOffset[0] ,-self.readOffset[1] )
+        for e in self.eventList:
+            e.translate( -self.readOffset[0] ,-self.readOffset[1] )
+        self.readOffset = [0,0]
 
 #defini l'ensemble des régions
 class Map:

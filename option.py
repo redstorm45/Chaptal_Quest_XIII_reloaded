@@ -20,6 +20,6 @@ debugMode = True
 debugSave = True
 
 #mode d'édition
-editMode = True
+editMode = False
 editRegion = "couloir/2.V1"
 

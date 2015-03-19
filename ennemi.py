@@ -59,6 +59,10 @@ class Ennemi(joueurBase.JoueurBase):
             self.position[1] += x
         if collision.checkJoueur(self,0,y):
             self.position[2] += y
+        
+    def translate(self,dx,dy):
+        r,ox,oy = self.position
+        self.position = r,ox+dx,oy+dy 
 
 typesEnnemis = {"gobelin"  : Ennemi("gobelin") ,
                 "orc"      : Ennemi("orc") }

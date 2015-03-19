@@ -60,6 +60,8 @@ Liste des sprites:
 54  : fin de tapis vers la droite, partie droite
 55  : fin de tapis vers la droite, partie centrale
 56  : tapis vers la droite
+
+100 : plancher
 """
 
 import map
@@ -80,6 +82,60 @@ xOffset = 0
 yOffset = 0
 
 sprites = {}
+
+listSprites = { 0   : "vide",
+                1   : "beton",
+                2   : "mur std haut",
+                3   : "mur std haut-gauche intérieur",
+                4   : "mur std gauche",
+                5   : "mur std bas-gauche intérieur",
+                6   : "mur std bas",
+                7   : "mur std bas-droite intérieur",
+                8   : "mur std droite",
+                9   : "mur std haut-droite intérieur",
+                10  : "mur std haut-gauche extérieur",
+                11  : "mur std bas-gauche extérieur",
+                12  : "mur std bas-droite extérieur",
+                13  : "mur std haut-droite extérieur",
+                14  : "mur escalier haut",
+                15  : "mur escalier gauche",
+                16  : "mur escalier bas",
+                17  : "mur escalier droite",
+                18  : "planches de bloquage",
+                19  : "tapis central",
+                20  : "escalier vers le haut, partie gauche",
+                21  : "escalier vers le haut, partie droite",
+                22  : "escalier vers le haut, partie centrale",
+                23  : "fin de tapis vers le haut, partie gauche",
+                24  : "fin de tapis vers le haut, partie droite",
+                25  : "fin de tapis vers le haut, partie centrale",
+                26  : "tapis vers le haut",
+                
+                30  : "escalier vers la gauche, partie gauche",
+                31  : "escalier vers la gauche, partie droite",
+                32  : "escalier vers la gauche, partie centrale",
+                33  : "fin de tapis vers la gauche, partie gauche",
+                34  : "fin de tapis vers la gauche, partie droite",
+                35  : "fin de tapis vers la gauche, partie centrale",
+                36  : "tapis vers la gauche",
+                
+                40  : "escalier vers le bas, partie gauche",
+                41  : "escalier vers le bas, partie droite",
+                42  : "escalier vers le bas, partie centrale",
+                43  : "fin de tapis vers le bas, partie gauche",
+                44  : "fin de tapis vers le bas, partie droite",
+                45  : "fin de tapis vers le bas, partie centrale",
+                46  : "tapis vers le bas",
+                
+                50  : "escalier vers la droite, partie gauche",
+                51  : "escalier vers la droite, partie droite",
+                52  : "escalier vers la droite, partie centrale",
+                53  : "fin de tapis vers la droite, partie gauche",
+                54  : "fin de tapis vers la droite, partie droite",
+                55  : "fin de tapis vers la droite, partie centrale",
+                56  : "tapis vers la droite",
+                
+                100 : "plancher"}
 
 #polices
 menuFont = None
@@ -475,7 +531,7 @@ def drawRegion(fenetre,regionName):
     #dessine les sols
     for x in range( region.width ):
         for y in range( region.height ):
-            drawCase(fenetre,region,x,y)
+            drawCase(fenetre,region,x+region.readOffset[0],y+region.readOffset[1])
     #dessine la case selectionnée
     if option.debugMode and debug.caseSel != [-1,-1]:
         xEcran = debug.caseSel[0] * opt.SPRITE_SIZE  + xOffset
