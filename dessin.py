@@ -83,6 +83,11 @@ yOffset = 0
 
 sprites = {}
 
+listStyleSprites =   ["v" ,"s"                                   #vide , sol
+                     ,"m1","m2","m3","m4","m5","m6","m7","m8"    #murs
+                     ,"a1","a2","a3","a4","a5","a6","a7","a8"    #angles interieurs
+                     ,"b1","b2","b3","b4","b5","b6","b7","b8"]   #angles exterieurs
+
 listSprites = { 0   : "vide",
                 1   : "beton",
                 2   : "mur std haut",
@@ -139,6 +144,7 @@ listSprites = { 0   : "vide",
 
 #polices
 menuFont = None
+buttonFontXXS = None
 buttonFontXS = None
 buttonFontS = None
 buttonFontM = None
@@ -202,12 +208,13 @@ def initDraw(fenetre):
     SCR_HEIGHT = fenetre.get_height() / opt.SPRITE_SIZE
     
     #polices
-    global menuFont , buttonFontXS , buttonFontS , buttonFontM , buttonFontL
+    global menuFont , buttonFontXXS , buttonFontXS , buttonFontS , buttonFontM , buttonFontL
     menuFont = pygame.font.SysFont("vinerhanditc",120)
-    buttonFontXS= pygame.font.SysFont("chillernormal",52)
-    buttonFontS = pygame.font.SysFont("chillernormal",72)
-    buttonFontM = pygame.font.SysFont("chillernormal",92)
-    buttonFontL = pygame.font.SysFont("chillernormal",120)
+    buttonFontXXS= pygame.font.SysFont("chillernormal",30)
+    buttonFontXS = pygame.font.SysFont("chillernormal",52)
+    buttonFontS  = pygame.font.SysFont("chillernormal",72)
+    buttonFontM  = pygame.font.SysFont("chillernormal",92)
+    buttonFontL  = pygame.font.SysFont("chillernormal",120)
     
     #écran overlay
     global overlayBack , overlayTitle , overlayButtons
@@ -318,7 +325,7 @@ def initDraw(fenetre):
     quitChaptal = getLoaded("chaptal.jpg",False)
 
 #dessine un texte sur plusieurs lignes
-def renderMultiLine(font,text,spacing,color,backColor):
+def renderMultiLine(font,text,spacing,color,backColor,align="center"):
     #crée les différentes surfaces
     lines = text.split("\n")
     surfaces = []
@@ -333,7 +340,10 @@ def renderMultiLine(font,text,spacing,color,backColor):
     totSurf.fill(backColor)
     h = 0
     for s in surfaces:
-        totSurf.blit( s , ( (maxWidth-s.get_width())//2 , h ) )
+        if align == "center":
+            totSurf.blit( s , ( (maxWidth-s.get_width())//2 , h ) )
+        elif align == "left":
+            totSurf.blit( s , ( 0 , h ) )
         h += s.get_height()+spacing
     return totSurf
 
@@ -341,7 +351,7 @@ def renderMultiLine(font,text,spacing,color,backColor):
 def getLoaded(name,makeAlpha=True):
     try:
         s = pygame.image.load("sprites/"+name).convert()
-    except:
+    except Exception as e:
         s = pygame.Surface( (64,64) )
         s.fill( (255,255,255) )
     if makeAlpha:
@@ -364,8 +374,27 @@ def loadAnimSprite(spriteName,directory):
     sprites[spriteName + "B"] = spriteb
     sprites[spriteName + "H"] = spriteh
 
+def loadStyle(styleName):
+    sprites[styleName] = {}
+    sprites[styleName]["sol"] = getLoaded( "Tiles/"+styleName+"/sol.bmp" )
+    
+    sprites[styleName]["mur"]    = []
+    for i in range(8):
+        sprites[styleName]["mur"].append( getLoaded( "Tiles/"+styleName+"/mur"+str(i+1)+".bmp" ) )
+        
+    sprites[styleName]["angleI"]  = []
+    for i in range(8):
+        sprites[styleName]["angleI"].append( getLoaded( "Tiles/"+styleName+"/angleInt"+str(i+1)+".bmp" ) )
+        
+    sprites[styleName]["angleE"]  = []
+    for i in range(8):
+        sprites[styleName]["angleE"].append( getLoaded( "Tiles/"+styleName+"/angleExt"+str(i+1)+".bmp" ) )
+
 #charge tous les sprites utilisés dans le jeu en mémoire
 def loadAllSprites():
+    loadStyle("style1")
+    
+    """
     sprites["mur"]={}
     sprites["mur"]["H"]   = getLoaded("Tiles/mur_haut.bmp")
     sprites["mur"]["HG"]  = getLoaded("Tiles/mur_angle_gauche_haut.bmp")
@@ -422,7 +451,7 @@ def loadAllSprites():
     sprites["beton"]          = getLoaded("Tiles/beton.png")
     sprites["plancher"]       = getLoaded("Tiles/plancher.bmp")
     sprites["planche"]        = getLoaded("Tiles/planche.bmp")
-    
+    """
     sprites["eclair"] = getLoaded("eclair.bmp")
     sprites["stun"] = getLoaded("eclair.bmp")
     
@@ -543,6 +572,29 @@ def drawCase(fenetre,region,x,y):
     xEcran = x * opt.SPRITE_SIZE  + xOffset
     yEcran = y * opt.SPRITE_SIZE  + yOffset
     
+    #style de dessin
+    drawStyle = region.style
+    
+    if region.at(x,y) == "v":
+        pass
+    elif region.at(x,y) == "s":
+        fenetre.blit(sprites[drawStyle]["sol"] , (xEcran,yEcran))
+    elif region.at(x,y)[:1] == "m":
+        num = int( region.at(x,y)[1:] )
+        if num <= 8 and num >= 1:
+            fenetre.blit(sprites[drawStyle]["mur"][num-1] , (xEcran,yEcran))
+    elif region.at(x,y)[:1] == "a":
+        num = int( region.at(x,y)[1:] )
+        if num <= 8 and num >= 1:
+            fenetre.blit(sprites[drawStyle]["angleI"][num-1] , (xEcran,yEcran))
+    elif region.at(x,y)[:1] == "b":
+        num = int( region.at(x,y)[1:] )
+        if num <= 8 and num >= 1:
+            fenetre.blit(sprites[drawStyle]["angleE"][num-1] , (xEcran,yEcran))
+    else:
+        print("unregistered:",region.at(x,y) )
+    
+    """
     #sols
     if region.at(x,y) == 1:
         fenetre.blit(sprites["beton"] , (xEcran,yEcran))
@@ -665,7 +717,7 @@ def drawCase(fenetre,region,x,y):
     elif region.at(x,y) == 56:
         fenetre.blit(sprites["plancher"] , (xEcran,yEcran))
         fenetre.blit(sprites["escalier"]["TD"] , (xEcran,yEcran))
-
+"""
 #dessine le sprite d'un object JoueurBase
 def drawPlayer(fenetre,player):
     x,y = player.position[1] , player.position[2]

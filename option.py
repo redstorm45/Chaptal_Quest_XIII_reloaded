@@ -21,5 +21,5 @@ debugSave = True
 
 #mode d'édition
 editMode = False
-editRegion = "couloir/2.V1"
+editRegion = "salle/2.V1.2"
 

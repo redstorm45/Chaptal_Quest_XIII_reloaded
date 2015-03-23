@@ -1,5 +1,5 @@
-2,2,gobelin
-2,5,gobelin
-2,8,gobelin
-2,12,orc
-2,20,gobelin
+3,3,gobelin
+3,6,gobelin
+3,9,gobelin
+3,13,orc
+3,21,gobelin
