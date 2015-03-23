@@ -20,6 +20,11 @@ ennemiList = []
 #région en édition
 regionEditee = None
 
+#edition d'une case de teleport
+teleportCaseReg = ""        #région d'origine du téléport
+teleportCase    = [0,0]     #position de la destination
+teleportEvent   = 0         #numéro de l'évent séléctionné dans la liste
+
 #nom du curseur en utilisation
 # sprite (vert) : edition du fond
 # item (rouge)  : edition des items
@@ -35,14 +40,22 @@ helpSurf = None
 
 #initialisation du jeu
 def init():
-    global ennemiList,regionEditee,helpSurf
+    global ennemiList,regionEditee,helpSurf,changesSaved
     
     regionEditee = map.theMap.regionList[option.editRegion]
+    pygame.display.set_caption("Chaptal Quest XIII - reloaded - edit["+option.editRegion+"]")
+    dessin.xOffset , dessin.yOffset = 64,64
+    changesSaved = False
     
     #création des ennemis sur la map
-    for e in regionEditee.ennemiBaseList:
-        type,posX,posY = e
-        regionEditee.ennemiList.append( ennemi.typesEnnemis[type].copyAt( (regionEditee.name,posX,posY) ) )
+    if regionEditee.ennemiList == []:
+        for e in regionEditee.ennemiBaseList:
+            type,posX,posY = e
+            regionEditee.ennemiList.append( ennemi.typesEnnemis[type].copyAt( (regionEditee.name,posX,posY) ) )
+    
+    #création des surfaces de description des events
+    for e in regionEditee.eventList:
+        e.surf = dessin.buttonFontXXS.render( e.__repr__() , True , (60,60,255) )
     
     #initialisation de la liste d'ennemi
     ennemiList = regionEditee.ennemiList[:]
@@ -107,10 +120,17 @@ def draw(fenetre):
             if e == eventSel:
                 pygame.draw.line( fenetre , (0,0,255) , (xEcran   ,yEcran   ), (xEcran+w ,yEcran+h ) ,2 )
                 pygame.draw.line( fenetre , (0,0,255) , (xEcran+w ,yEcran   ), (xEcran   ,yEcran+h ) ,2 )
+            fenetre.blit( e.surf , (xEcran+20,yEcran+20) )
             pygame.draw.lines( fenetre , (0,0,255) , True, [(xEcran   ,yEcran   ),
                                                             (xEcran+w ,yEcran   ),
                                                             (xEcran+w ,yEcran+h ),
                                                             (xEcran   ,yEcran+h )],2 )
+        if teleportCaseReg != "":
+            xEcran = teleportCase[0] * opt.SPRITE_SIZE  + dessin.xOffset
+            yEcran = teleportCase[1] * opt.SPRITE_SIZE  + dessin.yOffset
+            if eventSel == "tel":
+                pygame.draw.circle( fenetre , (100,50,255) , (xEcran+32,yEcran+32) , 24 )
+            pygame.draw.circle( fenetre , (50,50,255) , (xEcran+32,yEcran+32) , 16 )
         
     #dessin du cadre d'aide
     fenetre.blit( helpSurf , (fenetre.get_width()-helpSurf.get_width(),0) )
@@ -141,7 +161,7 @@ def clickR(x,y):
         
 #clique gauche à un endroit: selectionne la case
 def clickL(x,y):
-    global eventSel
+    global eventSel,teleportCaseReg,teleportCase,teleportEvent
     #coordonnées de la case
     xC,yC = x-dessin.xOffset , y-dessin.yOffset
     xC,yC = xC//opt.SPRITE_SIZE , yC//opt.SPRITE_SIZE
@@ -159,11 +179,25 @@ def clickL(x,y):
                 caseSel.append( (xC,yC) )
     elif cursor == "event":
         for e in regionEditee.eventList:
-            if e.activate(xC,yC):
+            if e.activate(xC,yC) and eventSel != e:
                 eventSel = e
+            elif e.activate(xC,yC) and eventSel == e:
+                if e.type == "teleport":
+                    #crée les items pour l'édition de la destination
+                    teleportCaseReg = option.editRegion
+                    teleportCase    = [ e.dest[1],e.dest[2] ]
+                    teleportEvent   = regionEditee.eventList.index(e)
+                    #change de région
+                    writeEvent(option.editRegion)
+                    option.editRegion = e.dest[0]
+                    init()
+        if teleportCaseReg != "":
+            if [xC,yC] == teleportCase:
+                eventSel = "tel"
 
 def mouseWheel(dir):
     global changesSaved
+    global eventSel,teleportCaseReg,teleportCase,teleportEvent
     if cursor == "sprite":
         for xC,yC in caseSel:
             if dir > 0:
@@ -186,18 +220,26 @@ def mouseWheel(dir):
                 changesSaved = False
     elif cursor == "event":
         if eventSel:
-            if pygame.key.get_mods() & pygame.locals.KMOD_CTRL:
-                if pygame.key.get_mods() & pygame.locals.KMOD_SHIFT:
-                    eventSel.changeSize( dir ,0 )
+            if eventSel == "tel":
+                if pygame.key.get_mods() & pygame.locals.KMOD_CTRL:
+                    teleportCase[0] += dir
                 else:
-                    eventSel.pA[0] += dir
-                    eventSel.pB[0] += dir
+                    teleportCase[1] += dir
+                changesSaved = False
             else:
-                if pygame.key.get_mods() & pygame.locals.KMOD_SHIFT:
-                    eventSel.changeSize( 0,-dir )
+                if pygame.key.get_mods() & pygame.locals.KMOD_CTRL:
+                    if pygame.key.get_mods() & pygame.locals.KMOD_SHIFT:
+                        eventSel.changeSize( dir ,0 )
+                    else:
+                        eventSel.pA[0] += dir
+                        eventSel.pB[0] += dir
                 else:
-                    eventSel.pA[1] -= dir
-                    eventSel.pB[1] -= dir
+                    if pygame.key.get_mods() & pygame.locals.KMOD_SHIFT:
+                        eventSel.changeSize( 0,-dir )
+                    else:
+                        eventSel.pA[1] -= dir
+                        eventSel.pB[1] -= dir
+                changesSaved = False
 
 #réduit la taille de la région en enlevant les bords vides inutiles
 def optimiseStep():
@@ -259,11 +301,24 @@ def optimiseRegion():
     dessin.yOffset += opt.SPRITE_SIZE * regionEditee.readOffset[1]
     regionEditee.resetReadOffset()
 
+def writeEvent(regName):
+    #event
+    try:
+        f = open("map/"+regName+"_event.txt","w")
+        for e in map.theMap.regionList[regName].eventList:
+            line = str(e)+"\n"
+            f.write(line)
+    except Exception as e:
+        print("except :",e)
+    else:
+        f.close()
+
 #sauvegarde la région en cours d'édition
 def saveChanges():
+    global changesSaved,teleportCaseReg
+    
     optimiseRegion()
     
-    global changesSaved
     changesSaved = True
     
     #sprites
@@ -291,16 +346,13 @@ def saveChanges():
     else:
         f.close()
         
-    #event
-    try:
-        f = open("map/"+option.editRegion+"_event.txt","w")
-        for e in regionEditee.eventList:
-            line = str(e)+"\n"
-            f.write(line)
-    except Exception as e:
-        print("except :",e)
-    else:
-        f.close()
+    writeEvent(option.editRegion)
+    
+    if teleportCaseReg != "":#édition d'une case de téléportation
+        e = map.theMap.regionList[teleportCaseReg].eventList[teleportEvent]
+        e.dest = [regionEditee.name,teleportCase[0],teleportCase[1]]
+        writeEvent(teleportCaseReg)
+        teleportCaseReg = ""
     
     
     

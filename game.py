@@ -68,7 +68,7 @@ def draw(fenetre):
         
 #touches de mouvement
 def actionKeys(listPressed):
-    global player,ennemiList
+    global player,ennemiList,projectileList
     
     #mouvement du joueur
     if keybinding.areKeysActive(["LEFT","UP"],listPressed):
@@ -96,7 +96,10 @@ def actionKeys(listPressed):
             print("teleport",player.position)
         player.position = t[0].dest[:]
         ennemiList = map.theMap.regionList[ player.position[0] ].ennemiList[:]
-        print(ennemiList)
+        for e in ennemiList:
+            if e.hp <= 0:
+                ennemiList.remove(e)
+        projectileList = []
         if opt.debugMode:
             print("teleport2",player.position)
     

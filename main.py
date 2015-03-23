@@ -149,10 +149,6 @@ while running:
                     dessin.newGameName.appendTexte( "\b" )
                 elif state == ETAT_CHARGE:
                     dessin.chargeName.appendTexte( "\b" )
-            elif event.key == pygame.K_b and state == ETAT_EDIT:
-                editGame.mouseWheel(1)
-            elif event.key == pygame.K_n and state == ETAT_EDIT:
-                    editGame.mouseWheel(-1)
             elif (event.unicode in string.ascii_lowercase) or (event.unicode in string.ascii_uppercase):
                 if state == ETAT_NOUVEAU:
                     dessin.newGameName.appendTexte( event.unicode )

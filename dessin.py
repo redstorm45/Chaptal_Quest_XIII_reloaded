@@ -83,7 +83,7 @@ yOffset = 0
 
 sprites = {}
 
-listStyleSprites =   ["v" ,"s"                                   #vide , sol
+listStyleSprites =   ["v" ,"s","p"                               #vide , sol , planches
                      ,"m1","m2","m3","m4","m5","m6","m7","m8"    #murs
                      ,"a1","a2","a3","a4","a5","a6","a7","a8"    #angles interieurs
                      ,"b1","b2","b3","b4","b5","b6","b7","b8"]   #angles exterieurs
@@ -450,8 +450,9 @@ def loadAllSprites():
     sprites["escalier"]["mD"] = getLoaded("Tiles/mur_escalier_droite.bmp")
     sprites["beton"]          = getLoaded("Tiles/beton.png")
     sprites["plancher"]       = getLoaded("Tiles/plancher.bmp")
-    sprites["planche"]        = getLoaded("Tiles/planche.bmp")
     """
+    sprites["planche"]        = getLoaded("Tiles/planche.bmp")
+    
     sprites["eclair"] = getLoaded("eclair.bmp")
     sprites["stun"] = getLoaded("eclair.bmp")
     
@@ -579,6 +580,9 @@ def drawCase(fenetre,region,x,y):
         pass
     elif region.at(x,y) == "s":
         fenetre.blit(sprites[drawStyle]["sol"] , (xEcran,yEcran))
+    elif region.at(x,y) == "p":
+        fenetre.blit(sprites[drawStyle]["sol"] , (xEcran,yEcran))
+        fenetre.blit(sprites["planche"] , (xEcran,yEcran))
     elif region.at(x,y)[:1] == "m":
         num = int( region.at(x,y)[1:] )
         if num <= 8 and num >= 1:

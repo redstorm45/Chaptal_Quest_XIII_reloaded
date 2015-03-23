@@ -70,6 +70,13 @@ class EventReg:
         if self.type == "teleport":
             info = "t,"+self.dest[0]+","+str(self.dest[1])+","+str(self.dest[2])
         return area + ":" + info
+        
+    #représentation (str) de cet evenement, plus compact
+    def __repr__(self):
+        if self.type == "teleport":
+            return "t,"+self.dest[0]+","+str(self.dest[1])+","+str(self.dest[2])
+        else:
+            return ""
 
 #defini un tableau de cases
 class Region:
