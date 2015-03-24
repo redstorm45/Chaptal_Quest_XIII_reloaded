@@ -3,7 +3,7 @@ orc
 0.75;portée
 3;distance max d'agro
 0.5;distance min d'agro
-6;nb de sprites animes
+5;nb de sprites animes
 2;level
 5;damage
 100;armor

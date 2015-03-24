@@ -466,10 +466,14 @@ def loadAllSprites():
     sprites["eclairG"] = getLoaded("hacheurG.png")
     sprites["eclairD"] = getLoaded("hacheurD.png")
     
+    sprites["Laplace"] = getLoaded("Laplace.png")
+    
+    
     sprites["projectile"] = getLoaded("projectile.png")
         
     loadAnimSprite("gobelin","Ennemis/gobelin/")
     loadAnimSprite("orc"    ,"Ennemis/orc/"    )
+    
     
 #gère le décalage de l'écran à partir de la position du joueur
 def centerOffset(player):
@@ -741,7 +745,7 @@ def drawPlayer(fenetre,player):
     
     #affiche l'aura
     if player.auratimer > 0 :
-        fenetre.blit(sprites[player.aura], (xEcran,yEcran))
+        fenetre.blit(sprites[player.aura], (xEcran-150,yEcran))
         player.auratimer -= 1
     else:
         player.aura = ""

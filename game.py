@@ -18,7 +18,7 @@ import capacite
 import collision
 
 #defini un joueur
-player = joueur.Joueur(2,2)
+player = joueur.Joueur(4,4)
 
 #liste des projectiles
 projectileList = []
