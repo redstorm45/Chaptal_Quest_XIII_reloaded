@@ -30,7 +30,7 @@ def create(name):
         return False
     try:
         saveFile = open("save/"+name+".save","w")
-        saveFile.write("salle/2.V1.1,2,2\n") #position
+        saveFile.write("salle/2.V1.1,3,3\n") #position
         saveFile.write("PTSI\n")             #classe
         saveFile.write("0.5")
         saveFile.write("RLC")

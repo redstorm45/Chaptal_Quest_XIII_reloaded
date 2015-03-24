@@ -7,11 +7,16 @@ qui sont chacune identifiées par un nom
 """
 
 convertDic = {  "1"   : "s" ,
+                "0"   : "v" ,
                 "100" : "s" ,
                 "2"   : "m1",
+                "14"  : "m1",
                 "4"   : "m3",
+                "15"  : "m3",
                 "6"   : "m5",
+                "16"  : "m5",
                 "8"   : "m7",
+                "17"  : "m7",
                 "3"   : "a3",
                 "5"   : "a5",
                 "7"   : "a7",
@@ -20,7 +25,38 @@ convertDic = {  "1"   : "s" ,
                 "11"  : "b1",
                 "12"  : "b3",
                 "13"  : "b5",
-                "18"  : "p"  }
+                "18"  : "p"  ,
+                
+                "19"  : "tm9",
+                "26"  : "tm7",
+                "36"  : "tm8",
+                "46"  : "tm5",
+                "25"  : "tm3",
+                "35"  : "tm5",
+                "45"  : "tm7",
+                "55"  : "tm1",
+                
+                "23"  : "ta6",
+                "24"  : "ta5",
+                "33"  : "ta8",
+                "34"  : "ta7",
+                "43"  : "ta2",
+                "44"  : "ta1",
+                "53"  : "ta4",
+                "54"  : "ta3",
+                
+                "20"  : "e1",
+                "30"  : "e4",
+                "40"  : "e7",
+                "50"  : "e10",
+                "22"  : "e2",
+                "32"  : "e5",
+                "42"  : "e8",
+                "52"  : "e11",
+                "21"  : "e3",
+                "31"  : "e7",
+                "41"  : "e9",
+                "51"  : "e12"}
 
 #variable contenant la carte utilisée tout au long du jeu
 theMap = None
@@ -209,7 +245,6 @@ class Map:
         self.regionList["salle/2.V1.3"] = Region("salle/2.V1.3")
         self.regionList["salle/2.V1.4"] = Region("salle/2.V1.4")
         
-        """
         self.regionList["salle/1.V1.1"] = Region("salle/1.V1.1")
         self.regionList["salle/1.V1.2"] = Region("salle/1.V1.2")
         self.regionList["salle/1.V1.3"] = Region("salle/1.V1.3")
@@ -224,6 +259,8 @@ class Map:
         self.regionList["escalier/1.7"] = Region("escalier/1.7")
         self.regionList["escalier/0_5.7"] = Region("escalier/0_5.7")
         self.regionList["escalier/0.7"] = Region("escalier/0.7")
+        
+        """
         self.regionList["base"]    = Region("base")
         self.regionList["atelier"] = Region("atelier")
 """

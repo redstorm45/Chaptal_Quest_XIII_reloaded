@@ -86,7 +86,10 @@ sprites = {}
 listStyleSprites =   ["v" ,"s","p"                               #vide , sol , planches
                      ,"m1","m2","m3","m4","m5","m6","m7","m8"    #murs
                      ,"a1","a2","a3","a4","a5","a6","a7","a8"    #angles interieurs
-                     ,"b1","b2","b3","b4","b5","b6","b7","b8"]   #angles exterieurs
+                     ,"b1","b2","b3","b4","b5","b6","b7","b8"    #angles exterieurs
+                     ,"e1","e2","e3","e4","e5","e6","e7","e8","e9","e10","e11","e12"   #escaliers
+                     ,"ta1","ta2","ta3","ta4","ta5","ta6","ta7","ta8"   #angles tapis
+                     ,"tp1","tp2","tp3","tp4","tp5","tp6","tp7","tp8","tp8"]   #plat tapis
 
 listSprites = { 0   : "vide",
                 1   : "beton",
@@ -389,54 +392,24 @@ def loadStyle(styleName):
     sprites[styleName]["angleE"]  = []
     for i in range(8):
         sprites[styleName]["angleE"].append( getLoaded( "Tiles/"+styleName+"/angleExt"+str(i+1)+".bmp" ) )
+        
+    sprites[styleName]["escalier"]  = []
+    for i in range(12):
+        sprites[styleName]["escalier"].append( getLoaded( "Tiles/"+styleName+"/escalier"+str(i+1)+".bmp" ) )
 
 #charge tous les sprites utilisés dans le jeu en mémoire
 def loadAllSprites():
     loadStyle("style1")
     
+    #tapis
+    sprites["tapis"]={}
+    sprites["tapis"]["plat"]=[]
+    sprites["tapis"]["angle"]=[]
+    for i in range(8):
+        sprites["tapis"]["plat"].append(  getLoaded( "Tiles/tapis"+str(i+1)+".bmp") )
+        sprites["tapis"]["angle"].append( getLoaded( "Tiles/angle"+str(i+1)+".bmp") )
+    sprites["tapis"]["plat"].append(  getLoaded( "Tiles/tapis9.bmp") )
     """
-    sprites["mur"]={}
-    sprites["mur"]["H"]   = getLoaded("Tiles/mur_haut.bmp")
-    sprites["mur"]["HG"]  = getLoaded("Tiles/mur_angle_gauche_haut.bmp")
-    sprites["mur"]["HG2"] = getLoaded("Tiles/mur_angle2_gauche_haut.bmp")
-    sprites["mur"]["G"]   = getLoaded("Tiles/mur_gauche.bmp")
-    sprites["mur"]["BG"]  = getLoaded("Tiles/mur_angle_gauche_bas.bmp")
-    sprites["mur"]["BG2"] = getLoaded("Tiles/mur_angle2_gauche_bas.bmp")
-    sprites["mur"]["B"]   = getLoaded("Tiles/mur_bas.bmp")
-    sprites["mur"]["BD"]  = getLoaded("Tiles/mur_angle_droite_bas.bmp")
-    sprites["mur"]["BD2"] = getLoaded("Tiles/mur_angle2_droite_bas.bmp")
-    sprites["mur"]["D"]   = getLoaded("Tiles/mur_droite.bmp")
-    sprites["mur"]["HD"]  = getLoaded("Tiles/mur_angle_droite_haut.bmp")
-    sprites["mur"]["HD2"] = getLoaded("Tiles/mur_angle2_droite_haut.bmp")
-    sprites["escalier"]={}
-    #haut
-    sprites["escalier"]["HG"]  = getLoaded("Tiles/escalier_hautGauche.bmp")
-    sprites["escalier"]["HM"]  = getLoaded("Tiles/escalier_hautMilieu.bmp")
-    sprites["escalier"]["HD"]  = getLoaded("Tiles/escalier_hautDroite.bmp")
-    sprites["escalier"]["H_D"] = getLoaded("Tiles/escalier_fin_hautDroite.bmp")
-    sprites["escalier"]["H_G"] = getLoaded("Tiles/escalier_fin_hautGauche.bmp")
-    sprites["escalier"]["H_M"] = getLoaded("Tiles/escalier_fin_hautMilieu.bmp")
-    #gauche
-    sprites["escalier"]["GG"]  = getLoaded("Tiles/escalier_gaucheGauche.bmp")
-    sprites["escalier"]["GM"]  = getLoaded("Tiles/escalier_gaucheMilieu.bmp")
-    sprites["escalier"]["GD"]  = getLoaded("Tiles/escalier_gaucheDroite.bmp")
-    sprites["escalier"]["G_D"] = getLoaded("Tiles/escalier_fin_gaucheDroite.bmp")
-    sprites["escalier"]["G_G"] = getLoaded("Tiles/escalier_fin_gaucheGauche.bmp")
-    sprites["escalier"]["G_M"] = getLoaded("Tiles/escalier_fin_gaucheMilieu.bmp")
-    #bas
-    sprites["escalier"]["BG"]  = getLoaded("Tiles/escalier_basGauche.bmp")
-    sprites["escalier"]["BM"]  = getLoaded("Tiles/escalier_basMilieu.bmp")
-    sprites["escalier"]["BD"]  = getLoaded("Tiles/escalier_basDroite.bmp")
-    sprites["escalier"]["B_D"] = getLoaded("Tiles/escalier_fin_basDroite.bmp")
-    sprites["escalier"]["B_G"] = getLoaded("Tiles/escalier_fin_basGauche.bmp")
-    sprites["escalier"]["B_M"] = getLoaded("Tiles/escalier_fin_basMilieu.bmp")
-    #droite
-    sprites["escalier"]["DG"]  = getLoaded("Tiles/escalier_droiteGauche.bmp")
-    sprites["escalier"]["DM"]  = getLoaded("Tiles/escalier_droiteMilieu.bmp")
-    sprites["escalier"]["DD"]  = getLoaded("Tiles/escalier_droiteDroite.bmp")
-    sprites["escalier"]["D_D"] = getLoaded("Tiles/escalier_fin_droiteDroite.bmp")
-    sprites["escalier"]["D_G"] = getLoaded("Tiles/escalier_fin_droiteGauche.bmp")
-    sprites["escalier"]["D_M"] = getLoaded("Tiles/escalier_fin_droiteMilieu.bmp")
     #tapis
     sprites["escalier"]["TH"]  = getLoaded("Tiles/tapis_haut.bmp")
     sprites["escalier"]["TG"]  = getLoaded("Tiles/tapis_gauche.bmp")
@@ -599,6 +572,18 @@ def drawCase(fenetre,region,x,y):
         num = int( region.at(x,y)[1:] )
         if num <= 8 and num >= 1:
             fenetre.blit(sprites[drawStyle]["angleE"][num-1] , (xEcran,yEcran))
+    elif region.at(x,y)[:1] == "e":
+        num = int( region.at(x,y)[1:] )
+        if num <= 8 and num >= 1:
+            fenetre.blit(sprites[drawStyle]["escalier"][num-1] , (xEcran,yEcran))
+    elif region.at(x,y)[:2] == "ta":
+        num = int( region.at(x,y)[2:] )
+        if num <= 8 and num >= 1:
+            fenetre.blit(sprites["tapis"]["angle"][num-1] , (xEcran,yEcran))
+    elif region.at(x,y)[:2] == "tm":
+        num = int( region.at(x,y)[2:] )
+        if num <= 9 and num >= 1:
+            fenetre.blit(sprites["tapis"]["plat"][num-1] , (xEcran,yEcran))
     else:
         print("unregistered:",region.at(x,y) )
     
