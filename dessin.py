@@ -89,7 +89,7 @@ listStyleSprites =   ["v" ,"s","p"                               #vide , sol , p
                      ,"b1","b2","b3","b4","b5","b6","b7","b8"    #angles exterieurs
                      ,"e1","e2","e3","e4","e5","e6","e7","e8","e9","e10","e11","e12"   #escaliers
                      ,"ta1","ta2","ta3","ta4","ta5","ta6","ta7","ta8"   #angles tapis
-                     ,"tp1","tp2","tp3","tp4","tp5","tp6","tp7","tp8","tp8"]   #plat tapis
+                     ,"tm1","tm2","tm3","tm4","tm5","tm6","tm7","tm8","tm9"]   #plat tapis
 
 listSprites = { 0   : "vide",
                 1   : "beton",
@@ -406,8 +406,8 @@ def loadAllSprites():
     sprites["tapis"]["plat"]=[]
     sprites["tapis"]["angle"]=[]
     for i in range(8):
-        sprites["tapis"]["plat"].append(  getLoaded( "Tiles/tapis"+str(i+1)+".bmp") )
-        sprites["tapis"]["angle"].append( getLoaded( "Tiles/angle"+str(i+1)+".bmp") )
+        sprites["tapis"]["plat"].append(  getLoaded( "Tiles/tapis/tapis"+str(i+1)+".bmp") )
+        sprites["tapis"]["angle"].append( getLoaded( "Tiles/tapis/angle"+str(i+1)+".bmp") )
     sprites["tapis"]["plat"].append(  getLoaded( "Tiles/tapis9.bmp") )
     """
     #tapis
@@ -574,13 +574,15 @@ def drawCase(fenetre,region,x,y):
             fenetre.blit(sprites[drawStyle]["angleE"][num-1] , (xEcran,yEcran))
     elif region.at(x,y)[:1] == "e":
         num = int( region.at(x,y)[1:] )
-        if num <= 8 and num >= 1:
+        if num <= 12 and num >= 1:
             fenetre.blit(sprites[drawStyle]["escalier"][num-1] , (xEcran,yEcran))
     elif region.at(x,y)[:2] == "ta":
+        fenetre.blit(sprites[drawStyle]["sol"] , (xEcran,yEcran))
         num = int( region.at(x,y)[2:] )
         if num <= 8 and num >= 1:
             fenetre.blit(sprites["tapis"]["angle"][num-1] , (xEcran,yEcran))
     elif region.at(x,y)[:2] == "tm":
+        fenetre.blit(sprites[drawStyle]["sol"] , (xEcran,yEcran))
         num = int( region.at(x,y)[2:] )
         if num <= 9 and num >= 1:
             fenetre.blit(sprites["tapis"]["plat"][num-1] , (xEcran,yEcran))

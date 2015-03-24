@@ -14,12 +14,12 @@ speedDiag = speed
 SPRITE_SIZE = 64
 
 #mode de débogguage
-debugMode = False
+debugMode = True
 
 #charge la sauvegarde de débogguage plutôt qu'une sauvegarde normale
 debugSave = True
 
 #mode d'édition
-editMode = False
-editRegion = "couloir/2.V1"
+editMode = True
+editRegion = "escalier/1.7"
 
