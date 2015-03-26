@@ -7,61 +7,6 @@ Fichier de gestion du dessin et des sprites
   - ajouter le scrolling de map, pour ne dessiner les sprites que de
     quelques cases plus loins que la taille de l'écran
 
-
-Liste des sprites:
-
-1   : beton
-2   : mur std haut
-3   : mur std haut-gauche intérieur
-4   : mur std gauche
-5   : mur std bas-gauche intérieur
-6   : mur std bas
-7   : mur std bas-droite intérieur
-8   : mur std droite
-9   : mur std haut-droite intérieur
-10  : mur std haut-gauche extérieur
-11  : mur std bas-gauche extérieur
-12  : mur std bas-droite extérieur
-13  : mur std haut-droite extérieur
-14  : mur escalier haut
-15  : mur escalier gauche
-16  : mur escalier bas
-17  : mur escalier droite
-18  : planches de bloquage
-19  : tapis central
-20  : escalier vers le haut, partie gauche
-21  : escalier vers le haut, partie droite
-22  : escalier vers le haut, partie centrale
-23  : fin de tapis vers le haut, partie gauche
-24  : fin de tapis vers le haut, partie droite
-25  : fin de tapis vers le haut, partie centrale
-26  : tapis vers le haut
-
-30  : escalier vers la gauche, partie gauche
-31  : escalier vers la gauche, partie droite
-32  : escalier vers la gauche, partie centrale
-33  : fin de tapis vers la gauche, partie gauche
-34  : fin de tapis vers la gauche, partie droite
-35  : fin de tapis vers la gauche, partie centrale
-36  : tapis vers la gauche
-
-40  : escalier vers le bas, partie gauche
-41  : escalier vers le bas, partie droite
-42  : escalier vers le bas, partie centrale
-43  : fin de tapis vers le bas, partie gauche
-44  : fin de tapis vers le bas, partie droite
-45  : fin de tapis vers le bas, partie centrale
-46  : tapis vers le bas
-
-50  : escalier vers la droite, partie gauche
-51  : escalier vers la droite, partie droite
-52  : escalier vers la droite, partie centrale
-53  : fin de tapis vers la droite, partie gauche
-54  : fin de tapis vers la droite, partie droite
-55  : fin de tapis vers la droite, partie centrale
-56  : tapis vers la droite
-
-100 : plancher
 """
 
 import map
@@ -70,7 +15,6 @@ import os
 import pygame
 import mouse
 import option
-import debug
 import option as opt
 import texte
 import elementDessin as elt
@@ -91,59 +35,7 @@ listStyleSprites =   ["v" ,"s","p"                               #vide , sol , p
                      ,"ta1","ta2","ta3","ta4","ta5","ta6","ta7","ta8"   #angles tapis
                      ,"tm1","tm2","tm3","tm4","tm5","tm6","tm7","tm8","tm9"]   #plat tapis
 
-listSprites = { 0   : "vide",
-                1   : "beton",
-                2   : "mur std haut",
-                3   : "mur std haut-gauche intérieur",
-                4   : "mur std gauche",
-                5   : "mur std bas-gauche intérieur",
-                6   : "mur std bas",
-                7   : "mur std bas-droite intérieur",
-                8   : "mur std droite",
-                9   : "mur std haut-droite intérieur",
-                10  : "mur std haut-gauche extérieur",
-                11  : "mur std bas-gauche extérieur",
-                12  : "mur std bas-droite extérieur",
-                13  : "mur std haut-droite extérieur",
-                14  : "mur escalier haut",
-                15  : "mur escalier gauche",
-                16  : "mur escalier bas",
-                17  : "mur escalier droite",
-                18  : "planches de bloquage",
-                19  : "tapis central",
-                20  : "escalier vers le haut, partie gauche",
-                21  : "escalier vers le haut, partie droite",
-                22  : "escalier vers le haut, partie centrale",
-                23  : "fin de tapis vers le haut, partie gauche",
-                24  : "fin de tapis vers le haut, partie droite",
-                25  : "fin de tapis vers le haut, partie centrale",
-                26  : "tapis vers le haut",
-                
-                30  : "escalier vers la gauche, partie gauche",
-                31  : "escalier vers la gauche, partie droite",
-                32  : "escalier vers la gauche, partie centrale",
-                33  : "fin de tapis vers la gauche, partie gauche",
-                34  : "fin de tapis vers la gauche, partie droite",
-                35  : "fin de tapis vers la gauche, partie centrale",
-                36  : "tapis vers la gauche",
-                
-                40  : "escalier vers le bas, partie gauche",
-                41  : "escalier vers le bas, partie droite",
-                42  : "escalier vers le bas, partie centrale",
-                43  : "fin de tapis vers le bas, partie gauche",
-                44  : "fin de tapis vers le bas, partie droite",
-                45  : "fin de tapis vers le bas, partie centrale",
-                46  : "tapis vers le bas",
-                
-                50  : "escalier vers la droite, partie gauche",
-                51  : "escalier vers la droite, partie droite",
-                52  : "escalier vers la droite, partie centrale",
-                53  : "fin de tapis vers la droite, partie gauche",
-                54  : "fin de tapis vers la droite, partie droite",
-                55  : "fin de tapis vers la droite, partie centrale",
-                56  : "tapis vers la droite",
-                
-                100 : "plancher"}
+listItemSprites = {}
 
 #polices
 menuFont = None
@@ -361,6 +253,17 @@ def getLoaded(name,makeAlpha=True):
         s.set_colorkey((255,255,255))
     return s
     
+def loadAllItems():
+    global listItemSprites
+    l = os.listdir("sprites/Items/")
+    num = 0
+    for item in l:
+        if item.endswith(".bmp"):
+            listItemSprites[item[:-4]] = getLoaded("Items/"+item)
+            num += 1
+    print("loaded ",num,"items")
+    print(listItemSprites)
+
 #charge les sprites animés d'un personnage
 def loadAnimSprite(spriteName,directory):
     sprite = []
@@ -399,7 +302,10 @@ def loadStyle(styleName):
 
 #charge tous les sprites utilisés dans le jeu en mémoire
 def loadAllSprites():
+    
+    # *** charges les Tiles ***
     loadStyle("style1")
+    loadStyle("style2")
     
     #tapis
     sprites["tapis"]={}
@@ -408,23 +314,14 @@ def loadAllSprites():
     for i in range(8):
         sprites["tapis"]["plat"].append(  getLoaded( "Tiles/tapis/tapis"+str(i+1)+".bmp") )
         sprites["tapis"]["angle"].append( getLoaded( "Tiles/tapis/angle"+str(i+1)+".bmp") )
-    sprites["tapis"]["plat"].append(  getLoaded( "Tiles/tapis9.bmp") )
-    """
-    #tapis
-    sprites["escalier"]["TH"]  = getLoaded("Tiles/tapis_haut.bmp")
-    sprites["escalier"]["TG"]  = getLoaded("Tiles/tapis_gauche.bmp")
-    sprites["escalier"]["TB"]  = getLoaded("Tiles/tapis_bas.bmp")
-    sprites["escalier"]["TD"]  = getLoaded("Tiles/tapis_droite.bmp")
-    sprites["escalier"]["TM"]  = getLoaded("Tiles/tapis_milieu.bmp")
+    sprites["tapis"]["plat"].append(  getLoaded( "Tiles/tapis/tapis9.bmp") )
     
-    sprites["escalier"]["mH"] = getLoaded("Tiles/mur_escalier_haut.bmp")
-    sprites["escalier"]["mG"] = getLoaded("Tiles/mur_escalier_gauche.bmp")
-    sprites["escalier"]["mB"] = getLoaded("Tiles/mur_escalier_bas.bmp")
-    sprites["escalier"]["mD"] = getLoaded("Tiles/mur_escalier_droite.bmp")
-    sprites["beton"]          = getLoaded("Tiles/beton.png")
-    sprites["plancher"]       = getLoaded("Tiles/plancher.bmp")
-    """
     sprites["planche"]        = getLoaded("Tiles/planche.bmp")
+    
+    # *** charges les Items ***
+    loadAllItems()
+    
+    # *** charges les Effets ***
     
     sprites["eclair"] = getLoaded("eclair.bmp")
     sprites["stun"] = getLoaded("eclair.bmp")
@@ -441,6 +338,7 @@ def loadAllSprites():
     
     sprites["Laplace"] = getLoaded("Laplace.png")
     
+    # *** charges les Ennemis/Joueurs ***
     
     sprites["projectile"] = getLoaded("projectile.png")
         
@@ -539,11 +437,16 @@ def drawRegion(fenetre,regionName):
     for x in range( region.width ):
         for y in range( region.height ):
             drawCase(fenetre,region,x+region.readOffset[0],y+region.readOffset[1])
-    #dessine la case selectionnée
-    if option.debugMode and debug.caseSel != [-1,-1]:
-        xEcran = debug.caseSel[0] * opt.SPRITE_SIZE  + xOffset
-        yEcran = debug.caseSel[1] * opt.SPRITE_SIZE  + yOffset
-        pygame.draw.rect( fenetre , (250,250,250) , (xEcran,yEcran,64,64) )
+    #dessine les items par dessus
+    for i in region.itemList:
+        drawItem(fenetre,i[0],i[1],i[2])
+
+def drawItem(fenetre,x,y,name):
+    xEcran = x * opt.SPRITE_SIZE  + xOffset
+    yEcran = y * opt.SPRITE_SIZE  + yOffset
+    
+    if name in listItemSprites.keys():
+        fenetre.blit(listItemSprites[name] , (xEcran,yEcran))
 
 #dessine un sprite seul d'une case
 def drawCase(fenetre,region,x,y):
@@ -588,131 +491,7 @@ def drawCase(fenetre,region,x,y):
             fenetre.blit(sprites["tapis"]["plat"][num-1] , (xEcran,yEcran))
     else:
         print("unregistered:",region.at(x,y) )
-    
-    """
-    #sols
-    if region.at(x,y) == 1:
-        fenetre.blit(sprites["beton"] , (xEcran,yEcran))
-    elif region.at(x,y) == 100:
-        fenetre.blit(sprites["plancher"] , (xEcran,yEcran))
-    #murs
-    elif region.at(x,y) == 2:
-        fenetre.blit(sprites["mur"]["H"] , (xEcran,yEcran))
-    elif region.at(x,y) == 3:
-        fenetre.blit(sprites["mur"]["HG"], (xEcran,yEcran))
-    elif region.at(x,y) == 4:
-        fenetre.blit(sprites["mur"]["G"] , (xEcran,yEcran))
-    elif region.at(x,y) == 5:
-        fenetre.blit(sprites["mur"]["BG"], (xEcran,yEcran))
-    elif region.at(x,y) == 6:
-        fenetre.blit(sprites["mur"]["B"] , (xEcran,yEcran))
-    elif region.at(x,y) == 7:
-        fenetre.blit(sprites["mur"]["BD"], (xEcran,yEcran))
-    elif region.at(x,y) == 8:
-        fenetre.blit(sprites["mur"]["D"] , (xEcran,yEcran))
-    elif region.at(x,y) == 9:
-        fenetre.blit(sprites["mur"]["HD"], (xEcran,yEcran))
-    elif region.at(x,y) == 10:
-        fenetre.blit(sprites["mur"]["HG2"] , (xEcran,yEcran))
-    elif region.at(x,y) == 11:
-        fenetre.blit(sprites["mur"]["BG2"] , (xEcran,yEcran))
-    elif region.at(x,y) == 12:
-        fenetre.blit(sprites["mur"]["BD2"] , (xEcran,yEcran))
-    elif region.at(x,y) == 13:
-        fenetre.blit(sprites["mur"]["HD2"] , (xEcran,yEcran))
-    #murs d'escaliers
-    elif region.at(x,y) == 14:
-        fenetre.blit(sprites["escalier"]["mH"] , (xEcran,yEcran))
-    elif region.at(x,y) == 15:
-        fenetre.blit(sprites["escalier"]["mG"] , (xEcran,yEcran))
-    elif region.at(x,y) == 16:
-        fenetre.blit(sprites["escalier"]["mB"] , (xEcran,yEcran))
-    elif region.at(x,y) == 17:
-        fenetre.blit(sprites["escalier"]["mD"] , (xEcran,yEcran))
-    #planche
-    elif region.at(x,y) == 18:
-        fenetre.blit(sprites["plancher"] , (xEcran,yEcran))
-        fenetre.blit(sprites["planche"] , (xEcran,yEcran))
-    #tapis
-    elif region.at(x,y) == 19:
-        fenetre.blit(sprites["escalier"]["TM"] , (xEcran,yEcran))
-    #escaliers haut
-    elif region.at(x,y) == 20:
-        fenetre.blit(sprites["escalier"]["HD"] , (xEcran,yEcran))
-    elif region.at(x,y) == 21:
-        fenetre.blit(sprites["escalier"]["HG"] , (xEcran,yEcran))
-    elif region.at(x,y) == 22:
-        fenetre.blit(sprites["escalier"]["HM"] , (xEcran,yEcran))
-    elif region.at(x,y) == 23:
-        fenetre.blit(sprites["plancher"] , (xEcran,yEcran))
-        fenetre.blit(sprites["escalier"]["H_D"] , (xEcran,yEcran))
-    elif region.at(x,y) == 24:
-        fenetre.blit(sprites["plancher"] , (xEcran,yEcran))
-        fenetre.blit(sprites["escalier"]["H_G"] , (xEcran,yEcran))
-    elif region.at(x,y) == 25:
-        fenetre.blit(sprites["plancher"] , (xEcran,yEcran))
-        fenetre.blit(sprites["escalier"]["H_M"] , (xEcran,yEcran))
-    elif region.at(x,y) == 26:
-        fenetre.blit(sprites["plancher"] , (xEcran,yEcran))
-        fenetre.blit(sprites["escalier"]["TH"] , (xEcran,yEcran))
-    #escaliers gauche
-    elif region.at(x,y) == 30:
-        fenetre.blit(sprites["escalier"]["GD"] , (xEcran,yEcran))
-    elif region.at(x,y) == 31:
-        fenetre.blit(sprites["escalier"]["GG"] , (xEcran,yEcran))
-    elif region.at(x,y) == 32:
-        fenetre.blit(sprites["escalier"]["GM"] , (xEcran,yEcran))
-    elif region.at(x,y) == 33:
-        fenetre.blit(sprites["plancher"] , (xEcran,yEcran))
-        fenetre.blit(sprites["escalier"]["G_D"] , (xEcran,yEcran))
-    elif region.at(x,y) == 34:
-        fenetre.blit(sprites["plancher"] , (xEcran,yEcran))
-        fenetre.blit(sprites["escalier"]["G_G"] , (xEcran,yEcran))
-    elif region.at(x,y) == 35:
-        fenetre.blit(sprites["plancher"] , (xEcran,yEcran))
-        fenetre.blit(sprites["escalier"]["G_M"] , (xEcran,yEcran))
-    elif region.at(x,y) == 36:
-        fenetre.blit(sprites["plancher"] , (xEcran,yEcran))
-        fenetre.blit(sprites["escalier"]["TG"] , (xEcran,yEcran))
-    #escaliers bas
-    elif region.at(x,y) == 40:
-        fenetre.blit(sprites["escalier"]["BD"] , (xEcran,yEcran))
-    elif region.at(x,y) == 41:
-        fenetre.blit(sprites["escalier"]["BG"] , (xEcran,yEcran))
-    elif region.at(x,y) == 42:
-        fenetre.blit(sprites["escalier"]["BM"] , (xEcran,yEcran))
-    elif region.at(x,y) == 43:
-        fenetre.blit(sprites["plancher"] , (xEcran,yEcran))
-        fenetre.blit(sprites["escalier"]["B_D"] , (xEcran,yEcran))
-    elif region.at(x,y) == 44:
-        fenetre.blit(sprites["plancher"] , (xEcran,yEcran))
-        fenetre.blit(sprites["escalier"]["B_G"] , (xEcran,yEcran))
-    elif region.at(x,y) == 45:
-        fenetre.blit(sprites["plancher"] , (xEcran,yEcran))
-        fenetre.blit(sprites["escalier"]["B_M"] , (xEcran,yEcran))
-    elif region.at(x,y) == 46:
-        fenetre.blit(sprites["plancher"] , (xEcran,yEcran))
-        fenetre.blit(sprites["escalier"]["TB"] , (xEcran,yEcran))
-    #escaliers droite
-    elif region.at(x,y) == 50:
-        fenetre.blit(sprites["escalier"]["DD"] , (xEcran,yEcran))
-    elif region.at(x,y) == 51:
-        fenetre.blit(sprites["escalier"]["DG"] , (xEcran,yEcran))
-    elif region.at(x,y) == 52:
-        fenetre.blit(sprites["escalier"]["DM"] , (xEcran,yEcran))
-    elif region.at(x,y) == 53:
-        fenetre.blit(sprites["plancher"] , (xEcran,yEcran))
-        fenetre.blit(sprites["escalier"]["D_D"] , (xEcran,yEcran))
-    elif region.at(x,y) == 54:
-        fenetre.blit(sprites["plancher"] , (xEcran,yEcran))
-        fenetre.blit(sprites["escalier"]["D_G"] , (xEcran,yEcran))
-    elif region.at(x,y) == 55:
-        fenetre.blit(sprites["plancher"] , (xEcran,yEcran))
-        fenetre.blit(sprites["escalier"]["D_M"] , (xEcran,yEcran))
-    elif region.at(x,y) == 56:
-        fenetre.blit(sprites["plancher"] , (xEcran,yEcran))
-        fenetre.blit(sprites["escalier"]["TD"] , (xEcran,yEcran))
-"""
+
 #dessine le sprite d'un object JoueurBase
 def drawPlayer(fenetre,player):
     x,y = player.position[1] , player.position[2]

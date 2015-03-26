@@ -120,6 +120,7 @@ class Region:
     def __init__(self,name):
         self.name           = name #nom de la région
         self.data           = None #données de sprite
+        self.itemList       = []   #liste des items sur la carte
         self.ennemiBaseList = []   #position de spawn des ennemis
         self.ennemiList     = []   #liste des ennemis sur la carte
         self.eventList      = []   #liste des points d'évenements
@@ -149,9 +150,21 @@ class Region:
                 for y in range(self.height):
                     for x in range(self.width):
                         self.data[x][y] = convertDic[ self.data[x][y] ]
-                        
         except Exception as e:
             raise Exception("FATAL ERROR:\n"+str(e)+"\nat ")
+        else:
+            file.close()
+                        
+        #chargement des items de la région
+        try:
+            file = open("map/"+name+"_item.txt")
+            #charge les données des cases
+            for line in file:
+                xI,yI,type = line.strip().split(",")
+                xI,yI = int(xI) , int(yI)
+                self.itemList.append( [xI,yI,type] )
+        except:
+            pass
         else:
             file.close()
             
@@ -260,10 +273,8 @@ class Map:
         self.regionList["escalier/0_5.7"] = Region("escalier/0_5.7")
         self.regionList["escalier/0.7"] = Region("escalier/0.7")
         
-        """
         self.regionList["base"]    = Region("base")
         self.regionList["atelier"] = Region("atelier")
-"""
 
 
 

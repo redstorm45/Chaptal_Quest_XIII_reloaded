@@ -33,6 +33,8 @@ cursor = "sprite"
 
 #cases selectionnées (sprites)
 caseSel = []
+#item selectionnées (item)
+itemSel = []
 #event selectionné  (event)
 eventSel = None
 
@@ -303,15 +305,16 @@ def optimiseRegion():
 
 def writeEvent(regName):
     #event
-    try:
-        f = open("map/"+regName+"_event.txt","w")
-        for e in map.theMap.regionList[regName].eventList:
-            line = str(e)+"\n"
-            f.write(line)
-    except Exception as e:
-        print("except :",e)
-    else:
-        f.close()
+    if map.theMap.regionList[regName].eventList != []:
+        try:
+            f = open("map/"+regName+"_event.txt","w")
+            for e in map.theMap.regionList[regName].eventList:
+                line = str(e)+"\n"
+                f.write(line)
+        except Exception as e:
+            print("except :",e)
+        else:
+            f.close()
 
 #sauvegarde la région en cours d'édition
 def saveChanges():
@@ -335,17 +338,30 @@ def saveChanges():
     else:
         f.close()
     
-    #ennemis
-    try:
-        f = open("map/"+option.editRegion+"_ennemi.txt","w")
-        for e in ennemiList:
-            line = str(e.position[1])+","+str(e.position[2])+","+e.name+"\n"
-            f.write(line)
-    except Exception as e:
-        print("except :",e)
-    else:
-        f.close()
+    #items
+    if itemList != []:
+        try:
+            f = open("map/"+option.editRegion+"_item.txt","w")
+            for item in regionEditee.itemList:
+                line = str(item[0])+","+str(item[1])+","+item[2]+"\n"
+                f.write(line)
+        except Exception as e:
+            print("except :",e)
+        else:
+            f.close()
         
+    #ennemis
+    if ennemiList != []:
+        try:
+            f = open("map/"+option.editRegion+"_ennemi.txt","w")
+            for e in ennemiList:
+                line = str(e.position[1])+","+str(e.position[2])+","+e.name+"\n"
+                f.write(line)
+        except Exception as e:
+            print("except :",e)
+        else:
+            f.close()
+    
     writeEvent(option.editRegion)
     
     if teleportCaseReg != "":#édition d'une case de téléportation

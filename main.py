@@ -25,7 +25,6 @@ import keybinding
 import mouse
 import option
 import string
-import debug
 import save
 import texte
 import editGame
@@ -238,9 +237,6 @@ while running:
                             state = ETAT_MENU
                 elif state == ETAT_QUIT:
                     running = False
-                elif state == ETAT_GAME and option.debugMode:
-                    debug.caseSel = list( debug.getCellAt(x,y) )
-                    print("click en",debug.caseSel)
                 elif state == ETAT_EDIT:
                     editGame.clickL(x,y)
             elif event.button == 3:#bouton droit

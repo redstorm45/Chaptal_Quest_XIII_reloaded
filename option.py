@@ -21,5 +21,5 @@ debugSave = True
 
 #mode d'édition
 editMode = True
-editRegion = "escalier/1.7"
+editRegion = "couloir/2.V1"
 
