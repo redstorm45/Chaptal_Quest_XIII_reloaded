@@ -32,16 +32,12 @@ def trajectoire(positionJoueur, ennemi):
         mvtX = speed
     elif positionIA[1] - positionJoueur[1] > 0:
         mvtX = -speed
-    
     elif positionIA[1] - positionJoueur[1] == 0:
         pass
-        
     if positionIA[2] - positionJoueur[2] < 0:
         mvtY = speed
-    
     if positionIA[2] - positionJoueur[2] > 0:
         mvtY = -speed
-    
     if positionIA[2] - positionJoueur[2] == 0:
         pass
         
@@ -59,7 +55,7 @@ def attackIA(joueur,ennemi,projectileList):
             joueur.hp = joueur.hp - (ennemi.dammage*exp(-joueur.armure/300))
         elif ennemi.typeAttaque == 1:
             projectileList.append( projectile.Projectile(ennemi,joueur) )
-        ennemi.attackTimer = 1
+        ennemi.attackTimer = 2.5
     
         
     

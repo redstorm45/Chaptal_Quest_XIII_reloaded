@@ -17,6 +17,7 @@ import mouse
 import option
 import option as opt
 import texte
+import save
 import elementDessin as elt
 
 SCR_WIDTH   = 20   #largeur de l'écran (en termes de nombre de cases)
@@ -87,6 +88,8 @@ newGameSelectedInfo = "PTSI"
 chargeBack = None
 chargeTitle = None
 chargeName = None
+chargeCadre = None
+chargeBoutons = []
 
 #surfaces avant de quitter
 quitSurf = None
@@ -194,13 +197,18 @@ def initDraw(fenetre):
     newGameInfo["PCSI"] = renderMultiLine(buttonFontS,texte.getTexte("nouveau","PCSI"),30,(240,240,240),(0,0,0) )
     newGameInfo["MPSI"] = renderMultiLine(buttonFontS,texte.getTexte("nouveau","MPSI"),30,(240,240,240),(0,0,0) )
     
-    #écran de nouveau jeu
-    global chargeBack , chargeTitle , chargeName
+    #écran de chargement de jeu
+    global chargeBack , chargeTitle , chargeCadre , chargeBoutons
     chargeBack = pygame.Surface( ( fenetre.get_width(),fenetre.get_height()) )
     chargeBack.fill( (0,0,0) )
     
     chargeTitle = buttonFontM.render("Choisissez votre partie",True,(240,240,240))
-    chargeName = elt.BoutonTexte( fenetre.get_width()//2,int(fenetre.get_height()*0.18),10,10,10,(0,0,0),(0,0,0),buttonFontM,"",(81,88,220) )
+    currPosY = 0
+    listNames = save.getAllNames()
+    for i in range(len(listNames)):
+        chargeBoutons.append( elt.BoutonTexte( 0,currPosY,10,10,10,(0,0,0),(0,0,0),buttonFontS,listNames[i],(250,250,250) ,centerAlign = False) )
+        currPosY += chargeBoutons[i].h
+    chargeCadre = elt.Cadre( 50,120,chargeBoutons ,centerAlign=False)
     
     #édition ratée du nom de la nouvelle sauvegarde
     global overlayFail , overlayFailOk
@@ -336,6 +344,10 @@ def loadAllSprites():
     sprites["eclairG"] = getLoaded("hacheurG.png")
     sprites["eclairD"] = getLoaded("hacheurD.png")
     
+    sprites["eclairBH"] = getLoaded("eclairBH.bmp")
+    sprites["eclairDG"] = getLoaded("eclairDG.png")
+    sprites["eclairBHDG"] = getLoaded("eclairBHDG.bmp")
+    
     sprites["Laplace"] = getLoaded("Laplace.png")
     
     # *** charges les Ennemis/Joueurs ***
@@ -419,7 +431,7 @@ def drawNewGame(fenetre):
 def drawCharge(fenetre):
     fenetre.blit( chargeBack, (0,0) )
     fenetre.blit( chargeTitle , (int(SCR_WIDTH*opt.SPRITE_SIZE/2-chargeTitle.get_width()/2),20) )
-    chargeName.drawOn( fenetre )
+    chargeCadre.drawOn(fenetre)
 
 def drawQuit(fenetre):
     fenetre.blit( quitSurf , (0,0) )

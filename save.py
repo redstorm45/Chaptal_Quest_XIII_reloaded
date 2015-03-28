@@ -38,6 +38,7 @@ def create(name):
         saveFile.write("1")
         saveFile.write(str(player.capacite2Lvl))
         saveFile.write(str(player.pointbonus))
+        saveFile.write(str(player.lvl))
     except:
         return False
     else:
@@ -65,6 +66,7 @@ def load(name,player):
             player.capacite1Lvl = int( saveFile.readline().strip() )
             player.capacite2Lvl = int( saveFile.readline().strip() )
             player.pointbonus = int( saveFile.readline().strip() )
+            player.lvl = int( saveFile.readline().strip() )
         except Exception as e:
             return False
         else:
@@ -86,6 +88,7 @@ def save(player):
         saveFile.write(str(player.capacite1Lvl)+"\n")
         saveFile.write(str(player.capacite2Lvl)+"\n")
         saveFile.write(str(player.pointbonus)+"\n")
+        saveFile.write(str(player.lvl)+"\n")
     except:
         return False
     else:

@@ -1,1 +1,10 @@
 4,0,tableau
+3,2,bureau1B
+2,4,table1H
+3,4,table1H
+4,4,table1H
+5,4,table1H
+2,5,chaise1H
+3,5,chaise1H
+4,5,chaise1H
+5,5,chaise1H

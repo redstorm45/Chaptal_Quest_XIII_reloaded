@@ -17,9 +17,9 @@ SPRITE_SIZE = 64
 debugMode = True
 
 #charge la sauvegarde de débogguage plutôt qu'une sauvegarde normale
-debugSave = True
+debugSave = False
 
 #mode d'édition
-editMode = True
+editMode = False
 editRegion = "couloir/2.V1"
 

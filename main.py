@@ -92,6 +92,7 @@ while running:
         dessin.drawNewGame(fenetre)
     elif state == ETAT_NOUVEAU_FAIL:
         dessin.drawNewGame(fenetre)
+        dessin.drawOverlayFail(fenetre)
     elif state == ETAT_CHARGE:
         dessin.drawCharge(fenetre)
     elif state == ETAT_OVERLAY:
@@ -131,7 +132,7 @@ while running:
                     state = ETAT_QUIT
                 elif state == ETAT_NOUVEAU:
                     state = ETAT_MENU
-                    dessin.newGameName.updateText("")
+                    dessin.newGameName.updateTexte("")
                 elif state == ETAT_CHARGE:
                     state = ETAT_MENU
                 elif state == ETAT_OPTION:
@@ -189,7 +190,7 @@ while running:
                                 game.init()
                                 state = ETAT_GAME
                                 dessin.newGameName.updateTexte("")
-                            elif not dessin.newGameName.texte:
+                            elif dessin.newGameName.texte == "":
                                 state = ETAT_NOUVEAU_FAIL
                             elif dessin.newGameName.texte in save.getAllNames():
                                 state = ETAT_NOUVEAU_FAIL
