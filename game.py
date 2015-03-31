@@ -26,6 +26,9 @@ projectileList = []
 #liste des ennemis
 ennemiList = []
 
+#inventaire ouvert et affiché
+inventaireOuvert = None
+
 #initialisation du jeu
 def init():
     global ennemiList

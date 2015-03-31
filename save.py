@@ -22,6 +22,8 @@ def getAllNames():
     for item in l:
         if item.endswith(".save"):
             lnames.append(item[:-5])
+    if "debugSave_" in lnames:
+        lnames.remove("debugSave_")
     return lnames
 
 #création d'un nouveau fichier de sauvegarde
@@ -32,13 +34,14 @@ def create(name):
         saveFile = open("save/"+name+".save","w")
         saveFile.write("salle/2.V1.1,3,3\n") #position
         saveFile.write("PTSI\n")             #classe
-        saveFile.write("0.5")
-        saveFile.write("RLC")
-        saveFile.write("RDM")
-        saveFile.write("1")
-        saveFile.write(str(player.capacite2Lvl))
-        saveFile.write(str(player.pointbonus))
-        saveFile.write(str(player.lvl))
+        saveFile.write("0.5\n")
+        saveFile.write("RLC\n")
+        saveFile.write("RDM\n")
+        saveFile.write("1\n")
+        saveFile.write(str(player.capacite2Lvl)+"\n")
+        saveFile.write(str(player.pointbonus)+"\n")
+        saveFile.write(str(player.lvl)+"\n")
+        saveFile.write("[]\n")
     except:
         return False
     else:
@@ -59,6 +62,7 @@ def load(name,player):
             player.position = l.strip().split(",")
             player.position[1] = float(player.position[1])
             player.position[2] = float(player.position[2])
+            #infos du joueur
             player.classe = saveFile.readline().strip()
             player.regen = float( saveFile.readline().strip() )
             player.capacite1 = saveFile.readline().strip()
@@ -67,6 +71,8 @@ def load(name,player):
             player.capacite2Lvl = int( saveFile.readline().strip() )
             player.pointbonus = int( saveFile.readline().strip() )
             player.lvl = int( saveFile.readline().strip() )
+            #inventaire
+            player.inventaire.fromString( saveFile.readline().strip() )
         except Exception as e:
             return False
         else:
@@ -89,6 +95,7 @@ def save(player):
         saveFile.write(str(player.capacite2Lvl)+"\n")
         saveFile.write(str(player.pointbonus)+"\n")
         saveFile.write(str(player.lvl)+"\n")
+        saveFile.write(player.inventaire.toString()+"\n")
     except:
         return False
     else:

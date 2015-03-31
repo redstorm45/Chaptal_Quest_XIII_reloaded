@@ -117,6 +117,7 @@ def init(scrW,scrH):
     addBoutCenter("nouveau" ,"MPSI"        ,int(scrW*0.5) , int(scrH*0.3)  , 260,75 )
     addBoutCenter("nouveau" ,"PCSI"        ,int(scrW*0.7) , int(scrH*0.3)  , 230,75 )
     addBoutCenter("nouveau" ,"commencer"   ,int(scrW*0.5) , int(scrH*0.9)  , 260,75 )
+    boutons["charger"] = {}
     #création des editeurs de textes
     tEdits["nouveau"] = {}
 

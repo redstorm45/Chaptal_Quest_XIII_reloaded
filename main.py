@@ -154,9 +154,6 @@ while running:
                     dessin.newGameName.appendTexte( event.unicode )
                 elif state == ETAT_CHARGE:
                     dessin.chargeName.appendTexte( event.unicode )
-            """
-            different deplacement
-            """
         if event.type == MOUSEBUTTONDOWN:
             if event.button == 1:#bouton gauche
                 x,y = event.pos
@@ -168,6 +165,7 @@ while running:
                         elif b.name == "nouveau":
                             state = ETAT_NOUVEAU
                         elif b.name == "charger":
+                            dessin.initCharge(fenetre)
                             state = ETAT_CHARGE
                         elif b.name == "option":
                             state = ETAT_OPTION
@@ -204,6 +202,15 @@ while running:
                                 game.init()
                                 state = ETAT_GAME
                                 dessin.newGameName.updateTexte("")
+                elif state == ETAT_CHARGE:
+                    b = mouse.getBoutonAt("charger",x,y)
+                    saveName = b.name
+                    save.load(saveName,game.player)
+                    dessin.overlaySaved = False
+                    #charge les ennemis sur la map
+                    game.init()
+                    state = ETAT_GAME
+                    
                 elif state == ETAT_OVERLAY:
                     b = mouse.getBoutonAt("overlay",x,y)
                     if b:

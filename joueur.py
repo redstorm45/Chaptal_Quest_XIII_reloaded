@@ -18,6 +18,7 @@ class Joueur(joueurBase.JoueurBase):
         super(Joueur,self).__init__(x,y)
         #caractéristiques
         self.classe = "PTSI"
+        self.inventaire = None
         #variables d'affichage
         self.hitbox     = [ -0.25 , 0.25 , -0.1 , 0.4 ]  # xmin , xmax , ymin , ymax
         self.spriteName = "gobelin"

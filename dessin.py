@@ -36,7 +36,8 @@ listStyleSprites =   ["v" ,"s","p"                               #vide , sol , p
                      ,"ta1","ta2","ta3","ta4","ta5","ta6","ta7","ta8"   #angles tapis
                      ,"tm1","tm2","tm3","tm4","tm5","tm6","tm7","tm8","tm9"]   #plat tapis
 
-listItemSprites = {}
+listItemSprites  = {}
+listObjetSprites = {}
 
 #polices
 menuFont = None
@@ -197,19 +198,6 @@ def initDraw(fenetre):
     newGameInfo["PCSI"] = renderMultiLine(buttonFontS,texte.getTexte("nouveau","PCSI"),30,(240,240,240),(0,0,0) )
     newGameInfo["MPSI"] = renderMultiLine(buttonFontS,texte.getTexte("nouveau","MPSI"),30,(240,240,240),(0,0,0) )
     
-    #écran de chargement de jeu
-    global chargeBack , chargeTitle , chargeCadre , chargeBoutons
-    chargeBack = pygame.Surface( ( fenetre.get_width(),fenetre.get_height()) )
-    chargeBack.fill( (0,0,0) )
-    
-    chargeTitle = buttonFontM.render("Choisissez votre partie",True,(240,240,240))
-    currPosY = 0
-    listNames = save.getAllNames()
-    for i in range(len(listNames)):
-        chargeBoutons.append( elt.BoutonTexte( 0,currPosY,10,10,10,(0,0,0),(0,0,0),buttonFontS,listNames[i],(250,250,250) ,centerAlign = False) )
-        currPosY += chargeBoutons[i].h
-    chargeCadre = elt.Cadre( 50,120,chargeBoutons ,centerAlign=False)
-    
     #édition ratée du nom de la nouvelle sauvegarde
     global overlayFail , overlayFailOk
     textOverlayFail = renderMultiLine(buttonFontS,texte.getTexte("overlay","confirmF"),30,(10,10,10),(230,230,230))
@@ -226,6 +214,24 @@ def initDraw(fenetre):
     quitPython  = getLoaded("python.jpg",False)
     quitPygame  = getLoaded("pygame.png",False)
     quitChaptal = getLoaded("chaptal.jpg",False)
+
+def initCharge(fenetre):
+    #écran de chargement de jeu
+    global chargeBack , chargeTitle , chargeCadre , chargeBoutons
+    chargeBack = pygame.Surface( ( fenetre.get_width(),fenetre.get_height()) )
+    chargeBack.fill( (0,0,0) )
+    
+    chargeTitle = buttonFontM.render("Choisissez votre partie",True,(240,240,240))
+    currPosY = 0
+    listNames = save.getAllNames()
+    for i in range(len(listNames)):
+        chargeBoutons.append( elt.BoutonTexte( 0,currPosY,10,10,10,(0,0,0),(0,0,0),buttonFontS,listNames[i],(250,250,250) ,centerAlign = False) )
+        currPosY += chargeBoutons[i].h
+    chargeCadre = elt.Cadre( 50,120,chargeBoutons ,centerAlign=False)
+    
+    for b in chargeBoutons:
+        mouse.boutons["charger"][b.texte]= mouse.Bouton(b.pos,b.size,b.texte)
+        mouse.boutons["charger"][b.texte].linkElement(b)
 
 #dessine un texte sur plusieurs lignes
 def renderMultiLine(font,text,spacing,color,backColor,align="center"):
@@ -266,11 +272,20 @@ def loadAllItems():
     l = os.listdir("sprites/Items/")
     num = 0
     for item in l:
-        if item.endswith(".bmp"):
+        if item.endswith(".bmp") or item.endswith(".png"):
             listItemSprites[item[:-4]] = getLoaded("Items/"+item)
             num += 1
     print("loaded ",num,"items")
-    print(listItemSprites)
+    
+def loadAllObjets():
+    global listObjetSprites
+    l = os.listdir("sprites/Objets/")
+    num = 0
+    for item in l:
+        if item.endswith(".bmp") or item.endswith(".png"):
+            listObjetSprites[item[:-4]] = getLoaded("Objets/"+item)
+            num += 1
+    print("loaded ",num,"objets")
 
 #charge les sprites animés d'un personnage
 def loadAnimSprite(spriteName,directory):
@@ -328,6 +343,9 @@ def loadAllSprites():
     
     # *** charges les Items ***
     loadAllItems()
+    
+    # *** charges les Objets ***
+    loadAllObjets()
     
     # *** charges les Effets ***
     

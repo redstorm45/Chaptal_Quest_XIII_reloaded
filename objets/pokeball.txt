@@ -1,0 +1,2 @@
+True;    stackable
+misc;    type d'objet (misc/arme/armure)
