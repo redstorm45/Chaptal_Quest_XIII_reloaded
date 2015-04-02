@@ -193,9 +193,26 @@ def clickL(x,y):
                     writeEvent(option.editRegion)
                     option.editRegion = e.dest[0]
                     init()
+                eventSel = None
         if teleportCaseReg != "":
             if [xC,yC] == teleportCase:
                 eventSel = "tel"
+
+def clickMid(x,y):
+    global eventSel
+    #coordonnées de la case
+    xC,yC = x-dessin.xOffset , y-dessin.yOffset
+    xC,yC = xC//opt.SPRITE_SIZE , yC//opt.SPRITE_SIZE
+    
+    if cursor == "event":
+        if eventSel:
+            if eventSel.activate(xC,yC):
+                regionEditee.eventList.remove( eventSel )
+                eventSel = None
+        else:
+            regionEditee.eventList.append( map.EventReg("1,1,1,1:t,couloir/1.V1,1,1") )
+            eventSel = regionEditee.eventList[ len(regionEditee.eventList)-1 ]
+            eventSel.surf = dessin.buttonFontXXS.render( eventSel.__repr__() , True , (60,60,255) )
 
 def mouseWheel(dir):
     global changesSaved
@@ -339,7 +356,7 @@ def saveChanges():
         f.close()
     
     #items
-    if itemList != []:
+    if regionEditee.itemList != []:
         try:
             f = open("map/"+option.editRegion+"_item.txt","w")
             for item in regionEditee.itemList:

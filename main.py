@@ -44,10 +44,16 @@ ETAT_EDIT         = 11 #edition des niveaux
 
 #crée la fenetre
 pygame.init()
+
+import ctypes
+user32 = ctypes.windll.user32
+user32.SetProcessDPIAware()
+theScrWidth,theScrHeight = user32.GetSystemMetrics(0), user32.GetSystemMetrics(1)
+
 if option.debugMode:
-    fenetre = pygame.display.set_mode( (0,0) )
+    fenetre = pygame.display.set_mode( (theScrWidth,theScrHeight) )
 else:
-    fenetre = pygame.display.set_mode( (0,0),FULLSCREEN )
+    fenetre = pygame.display.set_mode( (theScrWidth,theScrHeight),FULLSCREEN )
 pygame.display.set_caption("Chaptal Quest XIII - reloaded")
 
 while not pygame.display.get_init():
@@ -247,6 +253,10 @@ while running:
                     running = False
                 elif state == ETAT_EDIT:
                     editGame.clickL(x,y)
+            elif event.button == 2:#bouton molette
+                x,y = event.pos
+                if state == ETAT_EDIT:
+                    editGame.clickMid(x,y)
             elif event.button == 3:#bouton droit
                 x,y = event.pos
                 if state == ETAT_EDIT:
