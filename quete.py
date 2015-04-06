@@ -27,16 +27,15 @@ class Quete:
         self.objType   = 0         #type d'objectif de la quête
         #lecture du fichier correspondant à l'id
         try:
-            f = open("quete/"+str(id)+".txt")
+            f = open("quete/"+str(id)+".txt",encoding = "utf-8")
+            self.type      = int( self.getNextLine(f) )
+            self.name      = self.getNextLine(f).strip()
+            self.info      = self.getMultiLine(f).strip()
+            self.required  = eval( self.getNextLine(f) )
+            self.objType   = int(self.getNextLine(f).strip())
         except:
             self.id = 0
             return
-        
-        self.type      = int( self.getNextLine(f) )
-        self.name      = self.getNextLine(f).strip()
-        self.info      = self.getMultiLine(f).strip()
-        self.required  = eval( self.getNextLine(f) )
-        self.objType   = int(self.getNextLine(f).strip())
     
     #donne une représentation de l'object sous forme de string
     def __repr__(self):

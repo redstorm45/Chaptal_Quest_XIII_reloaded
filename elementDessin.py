@@ -51,17 +51,23 @@ class _Rectangle():
         self.w , self.h = w,h
         self.size = w,h
     
+    def setCenter(self,x,y):
+        self.setCenterX(x)
+        self.setCenterY(y)
+    
     def setCenterX(self,x):
         if self.intSize:
             self.x = x-self.w//2
         else:
             self.x = x-self.w/2
-            
+        self.pos = self.x,self.y
+        
     def setCenterY(self,y):
         if self.intSize:
             self.y = y-self.h/2
         else:
             self.y = y-self.h/2
+        self.pos = self.x,self.y
     
     def setCSize(self,w,h):
         self.setCWidth(w)
@@ -97,8 +103,21 @@ class _Rectangle():
             return self.x+xc,self.y+yc
         else:
             return self.pos
+            
+    def getCenterPos(self):
+        if self.intSize:
+            return self.x - self.w//2 , self.y - self.h//2
+        else:
+            return self.x - self.w/2 , self.y - self.h/2
+    
+    def isInside(self,x,y):
+        tx,ty = self.getTruePos()
+        return ( x>= tx and y>= ty and x<= tx+self.w and y<= ty+self.h )
+    
+    def __str__(self):
+        return "rect at:"+str(self.pos)+"["+str(self.getTruePos())+"]"+" size "+str(self.size)
 
-def roundedRect(x,y,w,h,radius,color):
+def roundedRect(w,h,radius,color):
     surf = pygame.Surface( (w,h) )
     surf.fill( (255,0,255) )
     surf.set_colorkey( (255,0,255) )
@@ -129,8 +148,8 @@ class RectangleArrondi(_Rectangle):
         self.surf = pygame.Surface( (w,h) )
         self.surf.fill( (255,0,255) )
         self.surf.set_colorkey( (255,0,255) )
-        self.surf.blit( roundedRect(x,y,w,h,radius,self.colorBordure ) , (0,0) )
-        self.surf.blit( roundedRect(x+2,y+2,w-4,h-4,radius-2,self.colorBack ) , (2,2) )
+        self.surf.blit( roundedRect(w,h,radius,self.colorBordure ) , (0,0) )
+        self.surf.blit( roundedRect(w-4,h-4,radius-2,self.colorBack ) , (2,2) )
 
 #un cadre pouvant accueillir d'autres éléments à l'intérieur de celui-ci
 class Cadre(RectangleArrondi):
@@ -140,6 +159,7 @@ class Cadre(RectangleArrondi):
         self.fixedSize = fixedSize
         self.calculateDim()
         self.align = align
+        self.apparent = apparent
         if apparent:
             if align == "center":
                 super(Cadre,self).__init__(xC - self.w//2,yC - self.h//2,self.w,self.h,radius,color,colorBordure)
@@ -169,8 +189,9 @@ class Cadre(RectangleArrondi):
         for w in self.widgets:
             if isinstance(w,RectangleArrondi):
                 w.container = self
+        self.calculateDim(False)
     
-    def calculateDim(self):
+    def calculateDim(self,first = True):
         self.minX = 0
         self.maxX = 0
         self.minY = 0
@@ -198,13 +219,17 @@ class Cadre(RectangleArrondi):
         for w in self.widgets:
             if isinstance(w,RectangleArrondi):
                 w.container = self
-                w.translate( -self.minX,-self.minY )
-            else:
-                surf,x,y = w
-                x -= self.minX
-                y -= self.minY
-                w = surf,x,y
         
+    def drawOn(self,surf):
+        x,y = self.getTruePos()
+        if self.apparent:
+            surf.blit(self.surf,(x,y))
+        for w in self.widgets:
+            if isinstance(w,RectangleArrondi):
+                w.drawOn(surf)
+            else:
+                wX,wY,wS = w
+                surf.blit(wS,(wX,wY))
     
     def redraw(self):
         for w in self.widgets:
@@ -227,10 +252,12 @@ class BoutonRempli(RectangleArrondi):
         x,y,w,h,radius = self.x,self.y,self.w,self.h,self.radius
         inW , inH = self.interieur.get_width() , self.interieur.get_height()
         if inW > w-2*radius or inH > h-2*radius:
+            oldCX,oldCY = _Rectangle.getCenterPos(self)
+            _Rectangle.setSize( self,max( inW+2*radius , w ) , max( inH+2*radius , h ) )
             if self.align == "center":
-                _Rectangle.setCSize( self,max( inW+2*radius , w ) , max( inH+2*radius , h ) )
-            else:
-                _Rectangle.setSize( self,max( inW+2*radius , w ) , max( inH+2*radius , h ) )
+                _Rectangle.setCenter( self,oldCX,oldCY )
+            elif self.align == "centertop":
+                _Rectangle.setCenterX( self,oldCX )
         RectangleArrondi.redraw(self)
         self.xInPos = (self.w - inW) //2
         self.yInPos = (self.h - inH) //2
@@ -240,19 +267,66 @@ class BoutonRempli(RectangleArrondi):
 #la taille s'agrandi si le texte ne rentre pas
 class BoutonTexte(BoutonRempli):
     
-    def __init__(self,x,y,w,h,radius,colorBack,colorBordure,police,texte,colorTexte,align="center"):
+    def __init__(self,x,y,w,h,radius,colorBack,colorBordure,police,texte,colorTexte,align="center",multiLine=False):
         self.police      = police
         self.texte       = texte
         self.colorBack   = colorBack
         self.colorTexte  = colorTexte
         self.align       = align
-        self.interieur  = self.police.render( self.texte , True, self.colorTexte , self.colorBack)
+        self.multiLine   = multiLine
+        self.radius      = radius
+        self.w           = w
+        self.drawInterieur()
         BoutonRempli.__init__(self,x,y,w,h,radius,colorBack,self.interieur,colorBordure,align)
     
     def redraw(self):
         self.interieur  = self.police.render( self.texte , True, self.colorTexte , self.colorBack)
         BoutonRempli.redraw(self)
-        
+    
+    def drawInterieur(self):
+        self.interieur  = self.police.render( self.texte , True, self.colorTexte , self.colorBack)
+        if self.multiLine and self.interieur.get_width()> self.w-2*self.radius:
+            #essaie de couper le texte
+            lines = [self.texte]
+            lastLine = ""
+            current = 0
+            while True:
+                while True:
+                    #enlève 1 mot de la fin
+                    pos = lines[current].rfind(" ")
+                    if lastLine == "":
+                        lastLine = lines[current][pos+1:]
+                    else:
+                        lastLine = lines[current][pos+1:] + " " + lastLine
+                    lines[current] = lines[current][:pos]
+                    #réessaie de dessiner le texte
+                    s = self.police.render( lines[current] , True, self.colorTexte , self.colorBack)
+                    if s.get_width()< self.w-2*self.radius:
+                        break
+                lines.append(lastLine)
+                current += 1
+                lastLine = ""
+                #éssaie de dessiner la dernière ligne
+                s = self.police.render( lines[current] , True, self.colorTexte , self.colorBack)
+                if s.get_width()< self.w-2*self.radius:
+                    break
+            #crée la surface complète
+            surfs = []
+            height = 0
+            width = 0
+            for l in lines:
+                s = self.police.render( l , True, self.colorTexte , self.colorBack)
+                height += s.get_height()
+                width = max(width,s.get_width())
+                surfs.append(s)
+            self.interieur = pygame.Surface( (width,height) )
+            self.interieur.fill( self.colorBack)
+            pos = 0
+            for i in range(len(lines)):
+                self.interieur.blit( surfs[i], (0,pos) )
+                pos += surfs[i].get_height()
+            
+    
     def updateTexte(self,texte):
         self.texte = texte
         BoutonTexte.redraw( self )

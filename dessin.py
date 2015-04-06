@@ -59,6 +59,8 @@ optionTitle = None
 #surfaces de l'interface en jeu
 interfaceQuetes = None
 interfaceBoutonsQuetes = []
+interfaceBoutonsQuetesEtendue = []
+interfaceBoutonsQuetesAffiches = []
 
 #surfaces de l'overlay en jeu
 overlayBack = None
@@ -68,11 +70,9 @@ overlaySaved = False
 
 #surface de validation de quitter
 overlayQuit = None
-overlayQuitCadre = None
 
 #surface de validation de retour au menu
 overlayMenu = None
-overlayMenuCadre = None
 
 #surface de validation de retour à l'édition du menu
 overlayFail = None
@@ -124,7 +124,6 @@ def initDraw(fenetre):
     
     interfaceQuetes = elt.Cadre(fenetre.get_width() ,0 ,[] , align="topright" ,fixedSize=(300,600) ,colorBordure = (220,220,220) ,radius = 10,color = (20,20,20),apparent=True )
     
-    
     #écran overlay
     global overlayBack , overlayTitle , overlayButtons
     
@@ -142,11 +141,11 @@ def initDraw(fenetre):
     
     #validation de quittage de l'overlay, boutons Oui et Non
     global overlayYesNo
-    overlayYes = elt.BoutonTexte( 0,0,10,10,10,(230,230,230),(120,120,120),buttonFontM,"Oui",(20,20,20) )
-    overlayNo  = elt.BoutonTexte( 0,0,10,10,10,(230,230,230),(120,120,120),buttonFontM,"Non",(20,20,20) )
+    overlayYes = elt.BoutonTexte( 0,0,10,10,10,(230,230,230),(120,120,120),buttonFontM,"Oui",(20,20,20),align="centertop")
+    overlayNo  = elt.BoutonTexte( 0,0,10,10,10,(230,230,230),(120,120,120),buttonFontM,"Non",(20,20,20),align="centertop")
     overlayYes.setRight( -overlayNo.w )
     overlayNo.setLeft( overlayYes.w )
-    overlayYesNo = elt.Cadre( fenetre.get_width()//2 , 0 , [ overlayYes,overlayNo ] )
+    overlayYesNo = elt.Cadre( fenetre.get_width()//2 , 0 , [ overlayYes,overlayNo ],align="topleft")
     
     #validation de quittage de l'overlay et du jeu
     global overlayQuit
@@ -244,13 +243,31 @@ def initCharge(fenetre):
         mouse.boutons["charger"][b.texte].linkElement(b)
 
 def initInterface(quetes):
-    global interfaceBoutonsQuetes,interfaceQuetes
+    global interfaceBoutonsQuetes,interfaceBoutonsQuetesEtendue,interfaceBoutonsQuetesAffiches,interfaceQuetes
     pos = 10
     for q in quetes:
-        bt = elt.BoutonTexte(30,pos,100,30,2,(20,20,20),(20,20,20),buttonFontS,q.name,(0,128,255),align="topleft")
+        bt = elt.BoutonTexte(0,0,20,30,2,(20,20,20),(20,20,20),buttonFontXXS,q.name,(0,128,255),align="topleft")
+        bt2 = elt.BoutonTexte(0,30,250,30,2,(20,20,20),(20,20,20),buttonFontXXS,q.info,(128,128,255),align="topleft",multiLine=True)
+        cadre = elt.Cadre(20,pos,[bt],align="topleft")
         interfaceBoutonsQuetes.append(bt)
+        interfaceBoutonsQuetesEtendue.append(bt2)
+        interfaceBoutonsQuetesAffiches.append(cadre)
         pos += bt.h
-    interfaceQuetes.setWidgets(interfaceBoutonsQuetes)
+    interfaceQuetes.setWidgets(interfaceBoutonsQuetesAffiches)
+
+def setQueteEtendue(texte):
+    pos = 10
+    for i in range(len(interfaceBoutonsQuetesAffiches)):
+        interfaceBoutonsQuetesAffiches[i].setTop(pos)
+        #change les widget etendue
+        bt = interfaceBoutonsQuetes[i]
+        if bt.texte == texte:
+            if len( interfaceBoutonsQuetesAffiches[i].widgets ) > 1:
+                interfaceBoutonsQuetesAffiches[i].setWidgets( [interfaceBoutonsQuetes[i]] )
+            else:
+                interfaceBoutonsQuetesAffiches[i].setWidgets( [interfaceBoutonsQuetes[i],interfaceBoutonsQuetesEtendue[i]] )
+        #recalcule les dimensions
+        pos += interfaceBoutonsQuetesAffiches[i].h
 
 #dessine un texte sur plusieurs lignes
 def renderMultiLine(font,text,spacing,color,backColor,align="center"):
@@ -440,8 +457,6 @@ def drawOverlay(fenetre):
 
 def drawInterface(fenetre):
     interfaceQuetes.drawOn(fenetre)
-    for b in interfaceBoutonsQuetes:
-        b.drawOn(fenetre)
 
 def drawOverlayQuit(fenetre):
     overlayQuit.drawOn(fenetre)

@@ -5,9 +5,9 @@
 #3 : quete secrète
 1
 #nom de la quête
-Vers ta destinée!
+Un orc? Quel orc?
 #description de la quête (multi-lignes, jusqu'à #)
-C'est le moment de fuir!
+Un orc terrible sème la terreur
 #
 #quêtes requises avant celle-ci
 []
@@ -15,6 +15,6 @@ C'est le moment de fuir!
 #1 : objectif de position
 #2 : objectif d'objet
 #3 : objectif de monstres
-1
-#position à atteindre
+3
+#
 

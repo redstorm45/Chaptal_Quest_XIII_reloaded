@@ -216,7 +216,10 @@ while running:
                     #charge les ennemis sur la map
                     game.init()
                     state = ETAT_GAME
-                    
+                elif state == ETAT_GAME:
+                    for b in dessin.interfaceBoutonsQuetesAffiches:
+                        if b.isInside(x,y):
+                            dessin.setQueteEtendue(b.widgets[0].texte)
                 elif state == ETAT_OVERLAY:
                     b = mouse.getBoutonAt("overlay",x,y)
                     if b:
