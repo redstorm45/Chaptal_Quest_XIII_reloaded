@@ -44,6 +44,8 @@ def init():
     quete.loadQuetes()
     quete.refreshActive()
     
+    dessin.initInterface(quete.listeQuetesActives)
+    
     #initialisation de la liste d'ennemi
     ennemiList = map.theMap.regionList[ player.position[0] ].ennemiList[:]
 
@@ -68,6 +70,8 @@ def draw(fenetre):
         
     if player.spriteCapacite != '' and player.spriteCapaciteTimer >0:
         dessin.drawCapacite(player,fenetre)
+    
+    dessin.drawInterface(fenetre)
         
 #touches de mouvement
 def actionKeys(listPressed):

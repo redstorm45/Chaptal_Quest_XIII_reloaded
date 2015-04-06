@@ -56,6 +56,10 @@ menuButtons = {}
 optionBack = None
 optionTitle = None
 
+#surfaces de l'interface en jeu
+interfaceQuetes = None
+interfaceBoutonsQuetes = []
+
 #surfaces de l'overlay en jeu
 overlayBack = None
 overlayTitle = None
@@ -103,8 +107,8 @@ def initDraw(fenetre):
     #taille de l'écran
     global SCR_WIDTH , SCR_HEIGHT
     
-    SCR_WIDTH  = fenetre.get_width()  / opt.SPRITE_SIZE
-    SCR_HEIGHT = fenetre.get_height() / opt.SPRITE_SIZE
+    SCR_WIDTH  = fenetre.get_width()  / 64
+    SCR_HEIGHT = fenetre.get_height() / 64
     
     #polices
     global menuFont , buttonFontXXS , buttonFontXS , buttonFontS , buttonFontM , buttonFontL
@@ -114,6 +118,12 @@ def initDraw(fenetre):
     buttonFontS  = pygame.font.SysFont("chillernormal",72)
     buttonFontM  = pygame.font.SysFont("chillernormal",92)
     buttonFontL  = pygame.font.SysFont("chillernormal",120)
+    
+    #interface en jeu
+    global interfaceQuetes
+    
+    interfaceQuetes = elt.Cadre(fenetre.get_width() ,0 ,[] , align="topright" ,fixedSize=(300,600) ,colorBordure = (220,220,220) ,radius = 10,color = (20,20,20),apparent=True )
+    
     
     #écran overlay
     global overlayBack , overlayTitle , overlayButtons
@@ -227,11 +237,20 @@ def initCharge(fenetre):
     for i in range(len(listNames)):
         chargeBoutons.append( elt.BoutonTexte( 0,currPosY,10,10,10,(0,0,0),(0,0,0),buttonFontS,listNames[i],(250,250,250) ,centerAlign = False) )
         currPosY += chargeBoutons[i].h
-    chargeCadre = elt.Cadre( 50,120,chargeBoutons ,centerAlign=False)
+    chargeCadre = elt.Cadre( 50,120,chargeBoutons ,align="topleft")
     
     for b in chargeBoutons:
         mouse.boutons["charger"][b.texte]= mouse.Bouton(b.pos,b.size,b.texte)
         mouse.boutons["charger"][b.texte].linkElement(b)
+
+def initInterface(quetes):
+    global interfaceBoutonsQuetes,interfaceQuetes
+    pos = 10
+    for q in quetes:
+        bt = elt.BoutonTexte(30,pos,100,30,2,(20,20,20),(20,20,20),buttonFontS,q.name,(0,128,255),align="topleft")
+        interfaceBoutonsQuetes.append(bt)
+        pos += bt.h
+    interfaceQuetes.setWidgets(interfaceBoutonsQuetes)
 
 #dessine un texte sur plusieurs lignes
 def renderMultiLine(font,text,spacing,color,backColor,align="center"):
@@ -386,38 +405,43 @@ def centerOffset(player):
     #centrage si taille supèrieure à celle de l'écran
     #selon x
     if SCR_WIDTH > reg.width:
-        xOffset = (SCR_WIDTH - reg.width)*opt.SPRITE_SIZE/2
+        xOffset = (SCR_WIDTH - reg.width)*64/2
     else:
-        xOffset = ((SCR_WIDTH /2) - player.position[1] )*opt.SPRITE_SIZE
+        xOffset = ((SCR_WIDTH /2) - player.position[1] )*64
         if reg.width - player.position[1] < (SCR_WIDTH /2):
-            xOffset = -(reg.width-SCR_WIDTH)*opt.SPRITE_SIZE
+            xOffset = -(reg.width-SCR_WIDTH)*64
         if player.position[1] < (SCR_WIDTH /2):
             xOffset = 0
             
     #selon y
     if SCR_HEIGHT > reg.height:
-        yOffset = (SCR_HEIGHT - reg.height)*opt.SPRITE_SIZE/2
+        yOffset = (SCR_HEIGHT - reg.height)*64/2
     else:
-        yOffset = ((SCR_HEIGHT/2) - player.position[2] )*opt.SPRITE_SIZE
+        yOffset = ((SCR_HEIGHT/2) - player.position[2] )*64
         if reg.height - player.position[2] < (SCR_HEIGHT /2):
-            yOffset = -(reg.height-SCR_HEIGHT)*opt.SPRITE_SIZE
+            yOffset = -(reg.height-SCR_HEIGHT)*64
         if player.position[2] < (SCR_HEIGHT /2):
             yOffset = 0
 
 def drawMenu(fenetre):
     fenetre.blit( menuBack , (0,0) )
-    fenetre.blit( menuTitle , (int(SCR_WIDTH*opt.SPRITE_SIZE/2-menuTitle.get_width()/2),0) )
+    fenetre.blit( menuTitle , (int(SCR_WIDTH*64/2-menuTitle.get_width()/2),0) )
     for k in menuButtons.keys():
         fenetre.blit( menuButtons[k].surf , (menuButtons[k].pX , menuButtons[k].pY) )
 
 def drawOverlay(fenetre):
     fenetre.blit( overlayBack , (0,0) )
-    fenetre.blit( overlayTitle , (int(SCR_WIDTH*opt.SPRITE_SIZE/2-overlayTitle.get_width()/2),0) )
+    fenetre.blit( overlayTitle , (int(SCR_WIDTH*64/2-overlayTitle.get_width()/2),0) )
     for k in overlayButtons.keys():
         if k == "sauvegarder" and overlaySaved:
             fenetre.blit( overlayButtons[k].surf2 , (overlayButtons[k].pX , overlayButtons[k].pY) )
         else:
             fenetre.blit( overlayButtons[k].surf , (overlayButtons[k].pX , overlayButtons[k].pY) )
+
+def drawInterface(fenetre):
+    interfaceQuetes.drawOn(fenetre)
+    for b in interfaceBoutonsQuetes:
+        b.drawOn(fenetre)
 
 def drawOverlayQuit(fenetre):
     overlayQuit.drawOn(fenetre)
@@ -432,11 +456,11 @@ def drawOverlayFail(fenetre):
     
 def drawOption(fenetre):
     fenetre.blit( optionBack, (0,0) )
-    fenetre.blit( optionTitle , (int(SCR_WIDTH*opt.SPRITE_SIZE/2-optionTitle.get_width()/2),0) )
+    fenetre.blit( optionTitle , (int(SCR_WIDTH*64/2-optionTitle.get_width()/2),0) )
     
 def drawNewGame(fenetre):
     fenetre.blit( newGameBack, (0,0) )
-    fenetre.blit( newGameTitle , (int(SCR_WIDTH*opt.SPRITE_SIZE/2-newGameTitle.get_width()/2),20) )
+    fenetre.blit( newGameTitle , (int(SCR_WIDTH*64/2-newGameTitle.get_width()/2),20) )
     newGameName.drawOn( fenetre )
     for k in newGameButtons.keys():
         if k == newGameSelectedInfo or k=="commencer":
@@ -444,11 +468,11 @@ def drawNewGame(fenetre):
         else:
             fenetre.blit( newGameButtons[k].surf2 , (newGameButtons[k].pX , newGameButtons[k].pY) )
     infoTxt = newGameInfo[newGameSelectedInfo]
-    fenetre.blit( infoTxt , (int(SCR_WIDTH*opt.SPRITE_SIZE/2-infoTxt.get_width()/2) ,int(SCR_HEIGHT*opt.SPRITE_SIZE*0.4) ) )
+    fenetre.blit( infoTxt , (int(SCR_WIDTH*64/2-infoTxt.get_width()/2) ,int(SCR_HEIGHT*64*0.4) ) )
     
 def drawCharge(fenetre):
     fenetre.blit( chargeBack, (0,0) )
-    fenetre.blit( chargeTitle , (int(SCR_WIDTH*opt.SPRITE_SIZE/2-chargeTitle.get_width()/2),20) )
+    fenetre.blit( chargeTitle , (int(SCR_WIDTH*64/2-chargeTitle.get_width()/2),20) )
     chargeCadre.drawOn(fenetre)
 
 def drawQuit(fenetre):
@@ -472,16 +496,16 @@ def drawRegion(fenetre,regionName):
         drawItem(fenetre,i[0],i[1],i[2])
 
 def drawItem(fenetre,x,y,name):
-    xEcran = x * opt.SPRITE_SIZE  + xOffset
-    yEcran = y * opt.SPRITE_SIZE  + yOffset
+    xEcran = x * 64  + xOffset
+    yEcran = y * 64  + yOffset
     
     if name in listItemSprites.keys():
         fenetre.blit(listItemSprites[name] , (xEcran,yEcran))
 
 #dessine un sprite seul d'une case
 def drawCase(fenetre,region,x,y):
-    xEcran = x * opt.SPRITE_SIZE  + xOffset
-    yEcran = y * opt.SPRITE_SIZE  + yOffset
+    xEcran = x * 64  + xOffset
+    yEcran = y * 64  + yOffset
     
     #style de dessin
     drawStyle = region.style
@@ -525,8 +549,8 @@ def drawCase(fenetre,region,x,y):
 #dessine le sprite d'un object JoueurBase
 def drawPlayer(fenetre,player):
     x,y = player.position[1] , player.position[2]
-    xEcran = (x-0.5) * opt.SPRITE_SIZE  + xOffset
-    yEcran = (y-0.5) * opt.SPRITE_SIZE  + yOffset
+    xEcran = (x-0.5) * 64  + xOffset
+    yEcran = (y-0.5) * 64  + yOffset
     
     if player.direction == 4:
         fenetre.blit(sprites[player.spriteName + "D"][int(player.anim)%player.spriteNb], (xEcran,yEcran))
@@ -555,8 +579,8 @@ def drawPlayer(fenetre,player):
 def animAttack(fenetre,player):
     
     x,y = player.position[1] , player.position[2]
-    xEcran = (x-0.5) * opt.SPRITE_SIZE  + xOffset
-    yEcran = (y-0.5) * opt.SPRITE_SIZE  + yOffset
+    xEcran = (x-0.5) * 64  + xOffset
+    yEcran = (y-0.5) * 64  + yOffset
     
     if player.direction in [3,4]:
         fenetre.blit(sprites["attack" + "D"], (xEcran+1,yEcran))
@@ -570,15 +594,15 @@ def animAttack(fenetre,player):
 
 def drawProjectile(fenetre,projectile):
     x,y = projectile.position
-    xEcran = x * opt.SPRITE_SIZE  + xOffset
-    yEcran = y * opt.SPRITE_SIZE  + yOffset
+    xEcran = x * 64  + xOffset
+    yEcran = y * 64  + yOffset
     
     fenetre.blit(sprites["projectile"],(xEcran,yEcran))
 
 
 def drawCapacite(player,fenetre):
-    xEcran = player.positionCapacite[0] * opt.SPRITE_SIZE  + xOffset
-    yEcran = player.positionCapacite[1] * opt.SPRITE_SIZE  + yOffset
+    xEcran = player.positionCapacite[0] * 64  + xOffset
+    yEcran = player.positionCapacite[1] * 64  + yOffset
     fenetre.blit(sprites[player.spriteCapacite],(xEcran, yEcran))
         
     

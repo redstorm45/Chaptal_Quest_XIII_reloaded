@@ -1,0 +1,20 @@
+#quête de début de jeu, qui dit de courir vers l'atelier
+#type de quête
+#1 : quete principale
+#2 : quete secondaire
+#3 : quete secrète
+1
+#nom de la quête
+Tuer!
+#description de la quête (multi-lignes, jusqu'à #)
+Combien de gobelins sont en trop?
+#
+#quêtes requises avant celle-ci
+[]
+#type d'objectif de la quête
+#1 : objectif de position
+#2 : objectif d'objet
+#3 : objectif de monstres
+3
+#
+

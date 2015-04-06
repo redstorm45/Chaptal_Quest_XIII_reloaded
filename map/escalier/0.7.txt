@@ -1,13 +1,15 @@
-17	12	style1
-a3	m1	m1	m1	m1	m1	m1	m1	m1	m1	b3	s	s	b1	m1	m1	m1
-m3	s	s	s	p	ta7	e6	e6	e6	e6	e6	tm7	tm7	e6	e6	e6	e6
-m3	s	s	s	p	tm4	e5	e5	e5	e5	e5	tm9	tm9	e5	e5	e5	e5
-m3	s	s	s	p	tm4	e5	e5	e5	e5	e5	tm9	tm9	e5	e5	e5	e5
-m3	s	s	s	p	ta8	e4	e4	e4	e4	e4	tm5	tm5	e4	e4	e4	e4
-m3	s	s	s	s	b7	m5	m5	m5	m5	m5	m5	m5	m5	m5	m5	m5
-m3	s	s	s	s	b1	m1	m1	m1	m1	v	v	v	v	v	v	v
-m3	s	s	s	s	ta7	e10	e10	e10	e10	v	v	v	v	v	v	v
-m3	s	s	s	s	tm4	e11	e11	e11	e11	v	v	v	v	v	v	v
-m3	s	s	s	s	tm4	e11	e11	e11	e11	v	v	v	v	v	v	v
-m3	s	s	s	s	ta8	e12	e12	e12	e12	v	v	v	v	v	v	v
-a5	m5	m5	m5	m5	m5	m5	m5	m5	m5	v	v	v	v	v	v	v
+23	14	style1
+a4	m2	m2	m2	m2	m2	m2	m2	m2	m2	b4	m3	s	s	m7	b2	m2	m2	m2	m2	m2	m2	a2
+m4	a3	m1	m1	m1	m1	m1	m1	m1	m1	m1	b3	p	p	b1	m1	m1	m1	m1	m1	m1	a1	m8
+m4	m3	s	s	s	s	ta7	e6	e6	e6	e6	e6	tm7	tm7	e6	e6	e6	e6	e6	ta4	s	m7	m8
+m4	m3	s	s	s	s	tm4	e5	e5	e5	e5	e5	tm9	tm9	e5	e5	e5	e5	e5	tm2	s	m7	m8
+m4	m3	s	s	s	s	tm4	e5	e5	e5	e5	e5	tm9	tm9	e5	e5	e5	e5	e5	tm2	s	m7	m8
+m4	m3	s	s	s	s	ta8	e4	e4	e4	e4	e4	tm5	tm5	e4	e4	e4	e4	e4	ta3	s	m7	m8
+m4	m3	s	s	s	s	b7	m5	m5	m5	m5	m5	m5	m5	m5	m5	m5	b5	s	s	s	m7	m8
+m4	m3	s	s	s	s	b1	m1	m1	m1	m1	v	v	v	v	v	v	v	v	v	v	v	v
+m4	m3	s	s	s	s	ta7	e10	e10	e10	e10	v	v	v	v	v	v	v	v	v	v	v	v
+m4	m3	s	s	s	s	tm4	e11	e11	e11	e11	v	v	v	v	v	v	v	v	v	v	v	v
+m4	m3	s	s	s	s	tm4	e11	e11	e11	e11	v	v	v	v	v	v	v	v	v	v	v	v
+m4	m3	s	s	s	s	ta8	e12	e12	e12	e12	v	v	v	v	v	v	v	v	v	v	v	v
+m4	a5	m5	m5	m5	m5	m5	m5	m5	m5	m5	v	v	v	v	v	v	v	v	v	v	v	v
+a6	m6	m6	m6	m6	m6	m6	m6	m6	m6	m6	v	v	v	v	v	v	v	v	v	v	v	v

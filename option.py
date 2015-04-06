@@ -10,14 +10,11 @@ ainsi que l'écran d'options
 speed = 1/16
 speedDiag = speed
 
-#taille des sprites
-SPRITE_SIZE = 64
-
 #mode de débogguage
 debugMode = True
 
 #charge la sauvegarde de débogguage plutôt qu'une sauvegarde normale
-debugSave = False
+debugSave = True
 
 #mode d'édition
 editMode = False

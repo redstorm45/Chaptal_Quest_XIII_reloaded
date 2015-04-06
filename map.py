@@ -114,6 +114,15 @@ class EventReg:
         else:
             return ""
 
+class Item:
+    
+    def __init__(self,name):
+        self.name = name
+        try:
+            file = open( "sprites/Items/"+str(name)+".txt" )
+        except:
+            pass
+
 #defini un tableau de cases
 class Region:
     

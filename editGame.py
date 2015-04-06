@@ -85,9 +85,9 @@ def draw(fenetre):
         pygame.draw.rect( fenetre, (255,255,255),(0,0,64,64) )
     
     #dessin du cadre du niveau
-    xEcran = (regionEditee.readOffset[0]-0.5) * opt.SPRITE_SIZE  + dessin.xOffset
-    yEcran = (regionEditee.readOffset[1]-0.5) * opt.SPRITE_SIZE  + dessin.yOffset
-    w,h = (regionEditee.width+1)* opt.SPRITE_SIZE,(regionEditee.height+1)* opt.SPRITE_SIZE
+    xEcran = (regionEditee.readOffset[0]-0.5) * 64  + dessin.xOffset
+    yEcran = (regionEditee.readOffset[1]-0.5) * 64  + dessin.yOffset
+    w,h = (regionEditee.width+1)* 64,(regionEditee.height+1)* 64
     pygame.draw.lines( fenetre , (255,255,255) , True, [(xEcran   ,yEcran   ),
                                                         (xEcran+w ,yEcran   ),
                                                         (xEcran+w ,yEcran+h ),
@@ -99,8 +99,8 @@ def draw(fenetre):
         pygame.draw.rect( fenetre , (0,255,0) ,(xMouse-10,yMouse-2,20,4) )
         
         for xsel,ysel in caseSel:
-            xEcran = xsel * opt.SPRITE_SIZE  + dessin.xOffset
-            yEcran = ysel * opt.SPRITE_SIZE  + dessin.yOffset
+            xEcran = xsel * 64  + dessin.xOffset
+            yEcran = ysel * 64  + dessin.yOffset
             pygame.draw.lines( fenetre , (0,255,0) , True, [(xEcran   ,yEcran   ),
                                                             (xEcran+64,yEcran   ),
                                                             (xEcran+64,yEcran+64),
@@ -117,8 +117,8 @@ def draw(fenetre):
             w,h = e.pB[0]-xA +1 ,e.pB[1]-yA +1
             w,h = w*64 , h*64
             
-            xEcran = xA * opt.SPRITE_SIZE  + dessin.xOffset
-            yEcran = yA * opt.SPRITE_SIZE  + dessin.yOffset
+            xEcran = xA * 64  + dessin.xOffset
+            yEcran = yA * 64  + dessin.yOffset
             if e == eventSel:
                 pygame.draw.line( fenetre , (0,0,255) , (xEcran   ,yEcran   ), (xEcran+w ,yEcran+h ) ,2 )
                 pygame.draw.line( fenetre , (0,0,255) , (xEcran+w ,yEcran   ), (xEcran   ,yEcran+h ) ,2 )
@@ -128,8 +128,8 @@ def draw(fenetre):
                                                             (xEcran+w ,yEcran+h ),
                                                             (xEcran   ,yEcran+h )],2 )
         if teleportCaseReg != "":
-            xEcran = teleportCase[0] * opt.SPRITE_SIZE  + dessin.xOffset
-            yEcran = teleportCase[1] * opt.SPRITE_SIZE  + dessin.yOffset
+            xEcran = teleportCase[0] * 64  + dessin.xOffset
+            yEcran = teleportCase[1] * 64  + dessin.yOffset
             if eventSel == "tel":
                 pygame.draw.circle( fenetre , (100,50,255) , (xEcran+32,yEcran+32) , 24 )
             pygame.draw.circle( fenetre , (50,50,255) , (xEcran+32,yEcran+32) , 16 )
@@ -166,7 +166,7 @@ def clickL(x,y):
     global eventSel,teleportCaseReg,teleportCase,teleportEvent
     #coordonnées de la case
     xC,yC = x-dessin.xOffset , y-dessin.yOffset
-    xC,yC = xC//opt.SPRITE_SIZE , yC//opt.SPRITE_SIZE
+    xC,yC = xC//64 , yC//64
     
     if cursor == "sprite":
         if (xC,yC) in caseSel:
@@ -202,7 +202,7 @@ def clickMid(x,y):
     global eventSel
     #coordonnées de la case
     xC,yC = x-dessin.xOffset , y-dessin.yOffset
-    xC,yC = xC//opt.SPRITE_SIZE , yC//opt.SPRITE_SIZE
+    xC,yC = xC//64 , yC//64
     
     if cursor == "event":
         if eventSel:
@@ -316,8 +316,8 @@ def optimiseRegion():
         x,y = caseSel[i]
         caseSel[i] = ( x - regionEditee.readOffset[0] , y - regionEditee.readOffset[1] )
     #remet l'offset de lecture à 0
-    dessin.xOffset += opt.SPRITE_SIZE * regionEditee.readOffset[0]
-    dessin.yOffset += opt.SPRITE_SIZE * regionEditee.readOffset[1]
+    dessin.xOffset += 64 * regionEditee.readOffset[0]
+    dessin.yOffset += 64 * regionEditee.readOffset[1]
     regionEditee.resetReadOffset()
 
 def writeEvent(regName):
