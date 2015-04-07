@@ -71,9 +71,11 @@ mouse.init(fenetre.get_width(),fenetre.get_height())
 #initialise l'affichage avec la taille de l'écran
 dessin.loadAllSprites()
 dessin.initDraw(fenetre)
+dessin.initMaps(map.theMap)
 
 #initialisation de l'horloge
 clock = pygame.time.Clock()
+fps = 10
 
 #initialisation de l'état avant entrée dans la boucle
 state = ETAT_MENU
@@ -155,11 +157,14 @@ while running:
                     dessin.newGameName.appendTexte( "\b" )
                 elif state == ETAT_CHARGE:
                     dessin.chargeName.appendTexte( "\b" )
-            elif (event.unicode in string.ascii_lowercase) or (event.unicode in string.ascii_uppercase):
+            elif ( (event.unicode in string.ascii_lowercase) or (event.unicode in string.ascii_uppercase) ) and state in [ETAT_NOUVEAU,ETAT_CHARGE]:
                 if state == ETAT_NOUVEAU:
                     dessin.newGameName.appendTexte( event.unicode )
                 elif state == ETAT_CHARGE:
                     dessin.chargeName.appendTexte( event.unicode )
+            elif state == ETAT_GAME:
+                if event.key in keybinding.keys["QUETES"]:
+                    dessin.interfaceQueteOn = not dessin.interfaceQueteOn
         if event.type == MOUSEBUTTONDOWN:
             if event.button == 1:#bouton gauche
                 x,y = event.pos
@@ -217,9 +222,11 @@ while running:
                     game.init()
                     state = ETAT_GAME
                 elif state == ETAT_GAME:
+                    print("click game",x,y)
                     for b in dessin.interfaceBoutonsQuetesAffiches:
                         if b.isInside(x,y):
-                            dessin.setQueteEtendue(b.widgets[0].texte)
+                            dessin.setQueteEtendue(b.widgets[0].id)
+                            print("setting",b.widgets[0].id)
                 elif state == ETAT_OVERLAY:
                     b = mouse.getBoutonAt("overlay",x,y)
                     if b:
@@ -282,6 +289,6 @@ while running:
     if state == ETAT_GAME:
         game.tick()
     #clock
-    clock.tick(60)
+    fps = clock.tick(60)
 
 pygame.quit()

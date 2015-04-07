@@ -57,7 +57,7 @@ def draw(fenetre):
     dessin.centerOffset(player)
     dessin.drawRegion(fenetre,regionAffichee)
     dessin.drawPlayer(fenetre,player)
-    
+    dessin.drawXP(fenetre,player)
     for e in ennemiList:
         dessin.drawPlayer(fenetre,e)
         
@@ -71,7 +71,8 @@ def draw(fenetre):
     if player.spriteCapacite != '' and player.spriteCapaciteTimer >0:
         dessin.drawCapacite(player,fenetre)
     
-    dessin.drawInterface(fenetre)
+    if dessin.interfaceQueteOn:
+        dessin.drawInterface(fenetre)
         
 #touches de mouvement
 def actionKeys(listPressed):
@@ -96,6 +97,7 @@ def actionKeys(listPressed):
         player.mouvement( 0 , -opt.speed )
     else:
         player.mouvement( 0 , 0 )
+        
     #test de teleportation
     t = map.theMap.regionList[ player.position[0] ].eventAt( player.position[1],player.position[2],"teleport" )
     if t:
@@ -109,6 +111,20 @@ def actionKeys(listPressed):
         projectileList = []
         if opt.debugMode:
             print("teleport2",player.position)
+    
+    #test de completion de quete de position
+    modif = False
+    
+    for q in quete.listeQuetesActives:
+        if q.trouvee and q.objType == 1:
+            q.checkCompleted( player )
+            if q.changed:
+                modif = True
+    if modif:
+        quete.refreshActive()
+        dessin.reloadInterface(quete.listeQuetesActives)
+        for q in quete.listeQuetesActives:
+            q.changed = False
     
     #attaque
     if keybinding.isKeyActive( "ATTACK" , listPressed ):
@@ -150,15 +166,19 @@ def tick():
                 projectileList.remove(p)
     
     #IA
+    modifQuete = False
     for e in ennemiList:
         #mort d'un ennemi
         if e.hp < 0:
             ennemiList.remove(e)
             player.levelup += e.exp
-                
+            for q in quete.listeQuetesActives:
+                if q.trouvee and q.objType == 3:
+                    if e.name in q.data["target"].keys():
+                        q.data["current"][e.name] += 1
+                        q.checkCompleted()
                 
         if e.aura != "stun":
-
             #deplacement d'ennemi
             if ia.agro(player.position,e):
                 ia.trajectoire(player.position,e)
@@ -176,12 +196,20 @@ def tick():
             e.auratimer -= 1
         if e.auratimer <= 0:
             e.aura = ""
+            
+    if modifQuete:
+        quete.refreshActive()
+        dessin.reloadInterface(quete.listeQuetesActives)
+        for q in quete.listeQuetesActives:
+            q.changed = False
+        
     #levelup du joueur
     if player.levelup - (100*2**player.lvl) >= 0:
         player.levelup -= (100*2**player.lvl)
         player.lvl += 1
         player.pointbonus += 1
         player.hp = player.lvl * 100
+        player.surfLvl = dessin.buttonFontXXS.render( str(player.lvl) , True , (0,0,255) )
     
     
     

@@ -11,10 +11,10 @@ speed = 1/16
 speedDiag = speed
 
 #mode de débogguage
-debugMode = True
+debugMode = False
 
 #charge la sauvegarde de débogguage plutôt qu'une sauvegarde normale
-debugSave = True
+debugSave = False
 
 #mode d'édition
 editMode = False

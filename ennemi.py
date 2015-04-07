@@ -21,9 +21,11 @@ class Ennemi(joueurBase.JoueurBase):
         self.hp          = self.lvl*100
         self.dammage     = int(file.readline().strip().split(";")[0])
         self.armure      = int(file.readline().strip().split(";")[0])
-        self.hitbox      = [ -1/4 , 1/4 , -1/4 , 1/4 ]
+        self.hitbox      = eval(file.readline().strip().split(";")[0])
+        self.spriteOffset= eval(file.readline().strip().split(";")[0])
         self.spriteName  = str(self.spriteName[0])
         self.exp         = int(file.readline().strip().split(";")[0])
+        self.degatarme = 0
     
         #stats
         self.anim    = 0
@@ -65,4 +67,5 @@ class Ennemi(joueurBase.JoueurBase):
         self.position = r,ox+dx,oy+dy 
 
 typesEnnemis = {"gobelin"  : Ennemi("gobelin") ,
-                "orc"      : Ennemi("orc") }
+                "orc"      : Ennemi("orc")  ,
+                "dragon"   : Ennemi("dragon") }

@@ -21,8 +21,10 @@ class Joueur(joueurBase.JoueurBase):
         self.inventaire = None
         #variables d'affichage
         self.hitbox     = [ -0.25 , 0.25 , -0.1 , 0.4 ]  # xmin , xmax , ymin , ymax
-        self.spriteName = "gobelin"
-        self.spriteNb   = 8
+        self.spriteName = "PTSI"
+        self.spriteNb   = 4
+        self.spriteOffset = [0,0]
+        self.surfLvl    = None
         #variables de compétences
         self.regen          = 0.5
         self.capacite1      = "RLC"
@@ -32,6 +34,7 @@ class Joueur(joueurBase.JoueurBase):
         self.pointbonus     = 0
         self.spriteCapacite = ""
         self.positionCapacite = [0,0]
+        self.degatarme = 30 
         #timers
         self.capacite1timer = 0
         self.levelup = 0

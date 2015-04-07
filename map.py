@@ -163,7 +163,7 @@ class Region:
             raise Exception("FATAL ERROR:\n"+str(e)+"\nat ")
         else:
             file.close()
-                        
+            
         #chargement des items de la région
         try:
             file = open("map/"+name+"_item.txt")
@@ -198,7 +198,7 @@ class Region:
         else:
             fileEvent.close()
         print("loaded region:",self.name)
-    
+        
     #donne la case à un certain endroit
     def at(self,x,y):
         tX,tY = x-self.readOffset[0] , y-self.readOffset[1]

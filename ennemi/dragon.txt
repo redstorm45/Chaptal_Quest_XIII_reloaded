@@ -1,0 +1,12 @@
+dragon
+2;type d'attaque (1:arc / 2:épée)
+3;portée
+20;distance max d'agro
+1.5;distance min d'agro
+4;nb de sprites animes
+20;level
+30;damage
+400;armor
+[ -3/4 , 3/4 , -3/4 , 3/4 ];hitbox
+[ -1,-1 ];offset sprite
+20000;gain dexp

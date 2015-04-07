@@ -13,7 +13,8 @@ keys = {"UP"         : [K_UP    , K_w],
         "INVENTAIRE" : [K_i],
         "ATTACK"     : [K_SPACE],
         "SORT1"      : [K_y],
-        "UPSORT1"    : [K_o] }
+        "UPSORT1"    : [K_o] ,
+        "QUETES"     : [K_e] }
 
 #vrai si toutes les touches demandées sont actives
 def areKeysActive( actionList , listPressed ):

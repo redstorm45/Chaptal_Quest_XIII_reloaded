@@ -11,10 +11,12 @@ C'est le moment de fuir!
 #
 #quêtes requises avant celle-ci
 []
+#auto-trouvée ? (vrai/faux)
+True
 #type d'objectif de la quête
 #1 : objectif de position
 #2 : objectif d'objet
 #3 : objectif de monstres
 1
 #position à atteindre
-
+("base",-1,-1)

@@ -14,36 +14,36 @@ def capacite(typecapacite,joueur,ennemis):
 def RLC(joueur,ennemis):
     
     posJ = [ joueur.position[1],joueur.position[2] ]
-    if joueur.capacite1Lvl >= 3:
+    if joueur.capacite1Lvl >= 5:
         joueur.spriteCapacite = "eclairBHDG"
         joueur.positionCapacite = [posJ[0]-2.5,posJ[1]-2.5]
         
     elif joueur.direction in [1,2]:
-        if joueur.capacite1Lvl == 1:
+        if joueur.capacite1Lvl in [1,2]:
             joueur.spriteCapacite = "eclairB"
             joueur.positionCapacite = [posJ[0]-1,posJ[1]]
-        elif joueur.capacite1Lvl == 2:
+        elif joueur.capacite1Lvl in [3,4]:
             joueur.spriteCapacite = "eclairBH"
             joueur.positionCapacite = [posJ[0]-1,posJ[1]-2.5]
     elif joueur.direction in [3,4]:
-        if joueur.capacite1Lvl == 1:
+        if joueur.capacite1Lvl in [1,2]:
             joueur.positionCapacite = [posJ[0],posJ[1]-1]
             joueur.spriteCapacite = "eclairD"
-        elif joueur.capacite1Lvl == 2:
+        elif joueur.capacite1Lvl in [3,4]:
             joueur.spriteCapacite = "eclairDG"
             joueur.positionCapacite = [posJ[0]-2.5,posJ[1]-1]
     elif joueur.direction in [5,6]:
-        if joueur.capacite1Lvl == 1:
+        if joueur.capacite1Lvl in [1,2]:
             joueur.spriteCapacite = "eclairH"
             joueur.positionCapacite = [posJ[0]-1,posJ[1]-2]
-        elif joueur.capacite1Lvl == 2:
+        elif joueur.capacite1Lvl in [3,4]:
              joueur.spriteCapacite = "eclairBH"
              joueur.positionCapacite = [posJ[0]-1,posJ[1]-2.5]
     elif joueur.direction in [7,8]:
-        if joueur.capacite1Lvl == 1:
+        if joueur.capacite1Lvl in [1,2]:
             joueur.spriteCapacite = "eclairG"
             joueur.positionCapacite = [posJ[0]-2,posJ[1]-1]
-        elif joueur.capacite1Lvl == 2:
+        elif joueur.capacite1Lvl in [3,4]:
             joueur.spriteCapacite = "eclairDG"
             joueur.positionCapacite = [posJ[0]-2.5,posJ[1]-1]
             
@@ -85,7 +85,7 @@ def RDM(joueur,ennemi):
          ennemi.armure = 0
 
 def degatRLC(ennemi,lvl):
-    ennemi.hp = ennemi.hp - 50*lvl
+    ennemi.hp = ennemi.hp -50 - 25*(lvl-1)
     ennemi.aura = "Laplace"
     ennemi.auratimer = 2*30
     

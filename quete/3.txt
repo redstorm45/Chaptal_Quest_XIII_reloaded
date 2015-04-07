@@ -10,11 +10,14 @@ Un orc? Quel orc?
 Un orc terrible sème la terreur
 #
 #quêtes requises avant celle-ci
-[]
+[1]
+#auto-trouvée ? (vrai/faux)
+True
 #type d'objectif de la quête
 #1 : objectif de position
 #2 : objectif d'objet
 #3 : objectif de monstres
 3
-#
+#nombre de monstres à tuer
+{"orc":1}
 

@@ -106,9 +106,9 @@ class _Rectangle():
             
     def getCenterPos(self):
         if self.intSize:
-            return self.x - self.w//2 , self.y - self.h//2
+            return self.x + self.w//2 , self.y + self.h//2
         else:
-            return self.x - self.w/2 , self.y - self.h/2
+            return self.x + self.w/2 , self.y + self.h/2
     
     def isInside(self,x,y):
         tx,ty = self.getTruePos()
@@ -280,7 +280,7 @@ class BoutonTexte(BoutonRempli):
         BoutonRempli.__init__(self,x,y,w,h,radius,colorBack,self.interieur,colorBordure,align)
     
     def redraw(self):
-        self.interieur  = self.police.render( self.texte , True, self.colorTexte , self.colorBack)
+        BoutonTexte.drawInterieur(self)
         BoutonRempli.redraw(self)
     
     def drawInterieur(self):

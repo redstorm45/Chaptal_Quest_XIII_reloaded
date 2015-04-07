@@ -57,6 +57,7 @@ optionBack = None
 optionTitle = None
 
 #surfaces de l'interface en jeu
+interfaceQueteOn = False
 interfaceQuetes = None
 interfaceBoutonsQuetes = []
 interfaceBoutonsQuetesEtendue = []
@@ -193,7 +194,7 @@ def initDraw(fenetre):
     newGameBack.fill( (0,0,0) )
     
     newGameTitle = buttonFontM.render("Choisissez votre classe",True,(240,240,240))
-    newGameName = elt.BoutonTexte( fenetre.get_width()//2,int(fenetre.get_height()*0.18),10,10,10,(0,0,0),(0,0,0),buttonFontM,"",(81,88,220) )
+    newGameName = elt.BoutonTexte( fenetre.get_width()//2,int(fenetre.get_height()*0.18),10,10,10,(0,0,0),(0,0,0),buttonFontM,"",(81,88,220),align="centertop")
     newGameButtons = mouse.boutons["nouveau"]
     newGameButtons["PTSI"].setSurfCenterTop( buttonFontM.render("PTSI" ,True,(240,240,240)) )
     newGameButtons["PTSI"].surf2 = buttonFontM.render("PTSI" ,True,(120,120,120))
@@ -224,6 +225,13 @@ def initDraw(fenetre):
     quitPygame  = getLoaded("pygame.png",False)
     quitChaptal = getLoaded("chaptal.jpg",False)
 
+def initMaps(theMap):
+    for k in theMap.regionList.keys():
+        reg = theMap.regionList[k]
+        reg.preRender = pygame.Surface( ( 64*reg.width , 64*reg.height ) )
+        reg.preRender.fill( (0,0,0) )
+        drawPreRender(reg,reg.preRender)
+
 def initCharge(fenetre):
     #écran de chargement de jeu
     global chargeBack , chargeTitle , chargeCadre , chargeBoutons
@@ -234,7 +242,7 @@ def initCharge(fenetre):
     currPosY = 0
     listNames = save.getAllNames()
     for i in range(len(listNames)):
-        chargeBoutons.append( elt.BoutonTexte( 0,currPosY,10,10,10,(0,0,0),(0,0,0),buttonFontS,listNames[i],(250,250,250) ,centerAlign = False) )
+        chargeBoutons.append( elt.BoutonTexte( 0,currPosY,10,10,10,(0,0,0),(0,0,0),buttonFontS,listNames[i],(250,250,250) ,align = "topleft") )
         currPosY += chargeBoutons[i].h
     chargeCadre = elt.Cadre( 50,120,chargeBoutons ,align="topleft")
     
@@ -244,24 +252,38 @@ def initCharge(fenetre):
 
 def initInterface(quetes):
     global interfaceBoutonsQuetes,interfaceBoutonsQuetesEtendue,interfaceBoutonsQuetesAffiches,interfaceQuetes
+    interfaceBoutonsQuetes = []
+    interfaceBoutonsQuetesEtendue = []
+    interfaceBoutonsQuetesAffiches = []
     pos = 10
     for q in quetes:
-        bt = elt.BoutonTexte(0,0,20,30,2,(20,20,20),(20,20,20),buttonFontXXS,q.name,(0,128,255),align="topleft")
-        bt2 = elt.BoutonTexte(0,30,250,30,2,(20,20,20),(20,20,20),buttonFontXXS,q.info,(128,128,255),align="topleft",multiLine=True)
-        cadre = elt.Cadre(20,pos,[bt],align="topleft")
-        interfaceBoutonsQuetes.append(bt)
-        interfaceBoutonsQuetesEtendue.append(bt2)
-        interfaceBoutonsQuetesAffiches.append(cadre)
-        pos += bt.h
+        if q.trouvee:
+            if q.completed:
+                bt = elt.BoutonTexte(0,0,20,30,2,(20,20,20),(20,20,20),buttonFontXXS,q.name, (30,128,30) ,align="topleft" )
+            else:
+                bt = elt.BoutonTexte(0,0,20,30,2,(20,20,20),(20,20,20),buttonFontXXS,q.name, (0,128,255) ,align="topleft")
+            bt2 = elt.BoutonTexte(0,30,250,30,2,(20,20,20),(20,20,20),buttonFontXXS,q.info,(64,64,255),align="topleft",multiLine=True)
+            cadre = elt.Cadre(20,pos,[bt],align="topleft")
+            bt.id = q.id
+            interfaceBoutonsQuetes.append(bt)
+            interfaceBoutonsQuetesEtendue.append(bt2)
+            interfaceBoutonsQuetesAffiches.append(cadre)
+            pos += bt.h
     interfaceQuetes.setWidgets(interfaceBoutonsQuetesAffiches)
+    print(interfaceBoutonsQuetes)
+    print(interfaceBoutonsQuetesEtendue)
+    print(interfaceBoutonsQuetesAffiches)
 
-def setQueteEtendue(texte):
+def reloadInterface(quetes):
+    initInterface(quetes)
+
+def setQueteEtendue(id):
     pos = 10
     for i in range(len(interfaceBoutonsQuetesAffiches)):
         interfaceBoutonsQuetesAffiches[i].setTop(pos)
-        #change les widget etendue
+        #change le widget etendue
         bt = interfaceBoutonsQuetes[i]
-        if bt.texte == texte:
+        if bt.id == id:
             if len( interfaceBoutonsQuetesAffiches[i].widgets ) > 1:
                 interfaceBoutonsQuetesAffiches[i].setWidgets( [interfaceBoutonsQuetes[i]] )
             else:
@@ -410,6 +432,8 @@ def loadAllSprites():
         
     loadAnimSprite("gobelin","Ennemis/gobelin/")
     loadAnimSprite("orc"    ,"Ennemis/orc/"    )
+    loadAnimSprite("dragon" ,"Ennemis/dragon/" )
+    loadAnimSprite("PTSI"   ,"perso/"    )
     
     
 #gère le décalage de l'écran à partir de la position du joueur
@@ -503,12 +527,15 @@ def drawRegion(fenetre,regionName):
     #recupère le tableau
     region = map.theMap.regionList[regionName]
     #dessine les sols
-    for x in range( region.width ):
-        for y in range( region.height ):
-            drawCase(fenetre,region,x+region.readOffset[0],y+region.readOffset[1])
+    fenetre.blit( region.preRender , (xOffset,yOffset) )
     #dessine les items par dessus
     for i in region.itemList:
         drawItem(fenetre,i[0],i[1],i[2])
+
+def drawPreRender(region,surface):
+    for x in range( region.width ):
+        for y in range( region.height ):
+            drawCase(surface,region,x+region.readOffset[0],y+region.readOffset[1],False)
 
 def drawItem(fenetre,x,y,name):
     xEcran = x * 64  + xOffset
@@ -518,9 +545,13 @@ def drawItem(fenetre,x,y,name):
         fenetre.blit(listItemSprites[name] , (xEcran,yEcran))
 
 #dessine un sprite seul d'une case
-def drawCase(fenetre,region,x,y):
-    xEcran = x * 64  + xOffset
-    yEcran = y * 64  + yOffset
+def drawCase(fenetre,region,x,y,activeOffset = True):
+    xEcran = x * 64
+    yEcran = y * 64
+    
+    if activeOffset:
+        xEcran += xOffset
+        yEcran += yOffset
     
     #style de dessin
     drawStyle = region.style
@@ -564,8 +595,8 @@ def drawCase(fenetre,region,x,y):
 #dessine le sprite d'un object JoueurBase
 def drawPlayer(fenetre,player):
     x,y = player.position[1] , player.position[2]
-    xEcran = (x-0.5) * 64  + xOffset
-    yEcran = (y-0.5) * 64  + yOffset
+    xEcran = (x-0.5 + player.spriteOffset[0]) * 64  + xOffset
+    yEcran = (y-0.5 + player.spriteOffset[1]) * 64  + yOffset
     
     if player.direction == 4:
         fenetre.blit(sprites[player.spriteName + "D"][int(player.anim)%player.spriteNb], (xEcran,yEcran))
@@ -590,6 +621,16 @@ def drawPlayer(fenetre,player):
     pygame.draw.rect( fenetre , (255,0,0) , (xEcran,yEcran-10,64,10) )
     pygame.draw.rect( fenetre , (0,255,0) , (xEcran,yEcran-10,64*player.hp/(100*player.lvl),10) )
 
+def drawXP(fenetre,player):
+    x,y = player.position[1] , player.position[2]
+    xEcran = (x-0.5) * 64  + xOffset
+    yEcran = (y-0.5) * 64  + yOffset
+    pygame.draw.rect( fenetre , (100,100,0) , (xEcran,yEcran-15,64,5) )
+    pygame.draw.rect( fenetre , (255,255,0) , (xEcran,yEcran-15,64*player.levelup/(100*2**player.lvl),5) )
+    
+    if not player.surfLvl:
+        player.surfLvl = buttonFontXXS.render( str(player.lvl) , True , (0,0,255) )
+    fenetre.blit( player.surfLvl , (xEcran-player.surfLvl.get_width()-5, yEcran -player.surfLvl.get_height()) )
 
 def animAttack(fenetre,player):
     
