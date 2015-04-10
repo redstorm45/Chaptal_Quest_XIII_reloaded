@@ -26,6 +26,14 @@ def checkJoueur(joueur,dx,dy):
         return False
     if not checkCase(joueur.position[0],newX+joueur.hitbox[1],newY+joueur.hitbox[2]):
         return False
+    #si hitbox très grande (w ou h > 1) , check des bords
+    hitW = joueur.hitbox[1]-joueur.hitbox[0]
+    if hitW > 1:
+        for i in range( int(hitW) +1 ):
+            if not checkCase(joueur.position[0],newX+joueur.hitbox[0]+ (i/(int(hitW)+1))*hitW,newY+joueur.hitbox[2]):
+                return False
+            if not checkCase(joueur.position[0],newX+joueur.hitbox[0]+ (i/(int(hitW)+1))*hitW,newY+joueur.hitbox[3]):
+                return False
     return True
 
 def checkProjectile(projectile,joueur):

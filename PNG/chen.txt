@@ -1,2 +1,3 @@
-chêne
-professeurchen
+chêne;nom
+chen;sprite
+chen;fichier de dialogue

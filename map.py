@@ -133,6 +133,8 @@ class Region:
         self.ennemiBaseList = []   #position de spawn des ennemis
         self.ennemiList     = []   #liste des ennemis sur la carte
         self.eventList      = []   #liste des points d'évenements
+        self.PNGbaseList    = []
+        self.PNGlist        = []
         
         self.readOffset = [0,0]
         
@@ -187,12 +189,22 @@ class Region:
             pass
         else:
             fileEnnemi.close()
-            
+        #chargement PNG
+        try:
+            filePNG = open("map/"+name+"_PNG.txt")
+            for l in filePNG:
+                linePNG = l.strip().split(",")
+                self.PNGbaseList.append( ( linePNG[2], int(linePNG[0]) , int(linePNG[1])))
+        except:
+            pass
+        else:
+            filePNG.close()    
         #chargement des points d'évenements
         try:
             fileEvent = open("map/"+name+"_event.txt")
             for line in fileEvent:
                 self.eventList.append( EventReg(line) )
+        
         except:
             pass
         else:

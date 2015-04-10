@@ -270,9 +270,6 @@ def initInterface(quetes):
             interfaceBoutonsQuetesAffiches.append(cadre)
             pos += bt.h
     interfaceQuetes.setWidgets(interfaceBoutonsQuetesAffiches)
-    print(interfaceBoutonsQuetes)
-    print(interfaceBoutonsQuetesEtendue)
-    print(interfaceBoutonsQuetesAffiches)
 
 def reloadInterface(quetes):
     initInterface(quetes)
@@ -435,6 +432,7 @@ def loadAllSprites():
     loadAnimSprite("dragon" ,"Ennemis/dragon/" )
     loadAnimSprite("PTSI"   ,"perso/"    )
     
+    sprites["chen"] = getLoaded("chen.png")
     
 #gère le décalage de l'écran à partir de la position du joueur
 def centerOffset(player):
@@ -531,6 +529,9 @@ def drawRegion(fenetre,regionName):
     #dessine les items par dessus
     for i in region.itemList:
         drawItem(fenetre,i[0],i[1],i[2])
+    #dessine les pnj
+    for e in region.PNGlist:
+        drawPNG(e,fenetre)   
 
 def drawPreRender(region,surface):
     for x in range( region.width ):
@@ -595,8 +596,8 @@ def drawCase(fenetre,region,x,y,activeOffset = True):
 #dessine le sprite d'un object JoueurBase
 def drawPlayer(fenetre,player):
     x,y = player.position[1] , player.position[2]
-    xEcran = (x-0.5 + player.spriteOffset[0]) * 64  + xOffset
-    yEcran = (y-0.5 + player.spriteOffset[1]) * 64  + yOffset
+    xEcran = (x-0.5) * 64  + xOffset
+    yEcran = (y-0.5) * 64  + yOffset
     
     if player.direction == 4:
         fenetre.blit(sprites[player.spriteName + "D"][int(player.anim)%player.spriteNb], (xEcran,yEcran))
@@ -611,15 +612,25 @@ def drawPlayer(fenetre,player):
     
     #affiche l'aura
     if player.auratimer > 0 :
-        fenetre.blit(sprites[player.aura], (xEcran-150,yEcran))
+        fenetre.blit(sprites[player.aura], (xEcran,yEcran))
         player.auratimer -= 1
     else:
         player.aura = ""
-        
+    
+    if option.affHitbox:
+        hitX = xEcran+ 64*player.hitbox[0]+32
+        hitY = yEcran+ 64*player.hitbox[2]+32
+        hitW = 64*( player.hitbox[1] - player.hitbox[0] )
+        hitH = 64*( player.hitbox[3] - player.hitbox[2] )
+        pygame.draw.lines(fenetre , (255,255,255) ,True , [(hitX,hitY) ,
+                                                        (hitX+hitW,hitY) ,
+                                                        (hitX+hitW,hitY+hitH),
+                                                        (hitX,hitY+hitH) ] )
     
     #affiche la vie au dessus du sprite
-    pygame.draw.rect( fenetre , (255,0,0) , (xEcran,yEcran-10,64,10) )
-    pygame.draw.rect( fenetre , (0,255,0) , (xEcran,yEcran-10,64*player.hp/(100*player.lvl),10) )
+    size = sprites[player.spriteName+"D"][0].get_width()
+    pygame.draw.rect( fenetre , (255,0,0) , (xEcran,yEcran-10,size,10) )
+    pygame.draw.rect( fenetre , (0,255,0) , (xEcran,yEcran-10,size*player.hp/(100*player.lvl),10) )
 
 def drawXP(fenetre,player):
     x,y = player.position[1] , player.position[2]
@@ -655,14 +666,17 @@ def drawProjectile(fenetre,projectile):
     
     fenetre.blit(sprites["projectile"],(xEcran,yEcran))
 
-
 def drawCapacite(player,fenetre):
     xEcran = player.positionCapacite[0] * 64  + xOffset
     yEcran = player.positionCapacite[1] * 64  + yOffset
     fenetre.blit(sprites[player.spriteCapacite],(xEcran, yEcran))
         
-    
-
+def drawPNG(player,fenetre):
+    x,y = player.position[0] , player.position[1]
+    xEcran = (x-0.5) * 64  + xOffset
+    yEcran = (y-0.5) * 64  + yOffset
+    print(player.spriteName)
+    fenetre.blit(sprites[player.spriteName],(xEcran, yEcran))
 
 
     

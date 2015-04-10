@@ -16,6 +16,7 @@ import option as opt
 import attackJoueur
 import capacite
 import collision
+import PNG
 
 #defini un joueur
 player = joueur.Joueur(4,4)
@@ -39,7 +40,9 @@ def init():
         for e in r.ennemiBaseList:
             type,posX,posY = e
             r.ennemiList.append( ennemi.typesEnnemis[type].copyAt( (r.name,posX,posY) ) )
-        
+        for e in r.PNGbaseList:
+            type,posX,posY = e
+            r.PNGlist.append( PNG.PNG(type,(posX,posY)))
     #chargement des quêtes
     quete.loadQuetes()
     quete.refreshActive()
@@ -101,9 +104,13 @@ def actionKeys(listPressed):
     #test de teleportation
     t = map.theMap.regionList[ player.position[0] ].eventAt( player.position[1],player.position[2],"teleport" )
     if t:
+        #supprime les ennemis tués
+        map.theMap.regionList[ player.position[0] ].ennemiList = ennemiList[:]
         if opt.debugMode:
             print("teleport",player.position)
+        #change de region
         player.position = t[0].dest[:]
+        #récupère les ennemis de la nouvelle région
         ennemiList = map.theMap.regionList[ player.position[0] ].ennemiList[:]
         for e in ennemiList:
             if e.hp <= 0:
@@ -144,12 +151,21 @@ def actionKeys(listPressed):
         
     if player.capacite1timer > 0:
         player.capacite1timer -= 1
-    #print(player.capacite1timer)
+
+def findPNJ():
+    region = map.theMap.regionList[player.position[0]]
+    px , py = player.position[1] , player.position[2]
     
+    for p in region.PNGlist:
+        if (px-p.position[0])**2 + (py-p.position[1])**2 < 2 ** 2:
+            print(p.name)
+            print(p.texte)
 
 #evenement de mise à jour (ia et animations)    
 def tick():
     player.anim += 0.25
+    if player.hp < player.lvl*100:
+        player.hp += 0.1*player.lvl
     
     if player.spriteCapaciteTimer > 0:
         player.spriteCapaciteTimer -= 1
@@ -210,6 +226,8 @@ def tick():
         player.pointbonus += 1
         player.hp = player.lvl * 100
         player.surfLvl = dessin.buttonFontXXS.render( str(player.lvl) , True , (0,0,255) )
+    
+    
     
     
     

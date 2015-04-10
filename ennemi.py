@@ -22,7 +22,6 @@ class Ennemi(joueurBase.JoueurBase):
         self.dammage     = int(file.readline().strip().split(";")[0])
         self.armure      = int(file.readline().strip().split(";")[0])
         self.hitbox      = eval(file.readline().strip().split(";")[0])
-        self.spriteOffset= eval(file.readline().strip().split(";")[0])
         self.spriteName  = str(self.spriteName[0])
         self.exp         = int(file.readline().strip().split(";")[0])
         self.degatarme = 0

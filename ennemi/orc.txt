@@ -8,5 +8,4 @@ orc
 5;damage
 100;armor
 [ -1/4 , 1/4 , -1/4 , 1/4 ];hitbox
-[ 0,0 ];offset sprite
 200;gain dexp

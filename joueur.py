@@ -23,7 +23,6 @@ class Joueur(joueurBase.JoueurBase):
         self.hitbox     = [ -0.25 , 0.25 , -0.1 , 0.4 ]  # xmin , xmax , ymin , ymax
         self.spriteName = "PTSI"
         self.spriteNb   = 4
-        self.spriteOffset = [0,0]
         self.surfLvl    = None
         #variables de compétences
         self.regen          = 0.5

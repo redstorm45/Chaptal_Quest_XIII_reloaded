@@ -165,6 +165,8 @@ while running:
             elif state == ETAT_GAME:
                 if event.key in keybinding.keys["QUETES"]:
                     dessin.interfaceQueteOn = not dessin.interfaceQueteOn
+                if event.key in keybinding.keys["DIALOGUE"]:
+                    game.findPNG()
         if event.type == MOUSEBUTTONDOWN:
             if event.button == 1:#bouton gauche
                 x,y = event.pos
@@ -215,12 +217,13 @@ while running:
                                 dessin.newGameName.updateTexte("")
                 elif state == ETAT_CHARGE:
                     b = mouse.getBoutonAt("charger",x,y)
-                    saveName = b.name
-                    save.load(saveName,game.player)
-                    dessin.overlaySaved = False
-                    #charge les ennemis sur la map
-                    game.init()
-                    state = ETAT_GAME
+                    if b:
+                        saveName = b.name
+                        save.load(saveName,game.player)
+                        dessin.overlaySaved = False
+                        #charge les ennemis sur la map
+                        game.init()
+                        state = ETAT_GAME
                 elif state == ETAT_GAME:
                     print("click game",x,y)
                     for b in dessin.interfaceBoutonsQuetesAffiches:

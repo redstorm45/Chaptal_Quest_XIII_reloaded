@@ -7,6 +7,5 @@ dragon
 20;level
 30;damage
 400;armor
-[ -3/4 , 3/4 , -3/4 , 3/4 ];hitbox
-[ -1,-1 ];offset sprite
+[ -3/4 , 2+3/4 , -3/4+2 , 3/4+2 ];hitbox
 20000;gain dexp
