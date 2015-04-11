@@ -437,6 +437,8 @@ def loadAllSprites():
     
     # *** charges l'ATH ***
     sprites["ATH"] = getLoaded("ATH.bmp")
+    sprites["hacheurIcone"] = getLoaded("hacheurIcone.png")
+    sprites["hacheurIconeCD"] = getLoaded("hacheurIconeCD.png")
     
 #gère le décalage de l'écran à partir de la position du joueur
 def centerOffset(player):
@@ -615,7 +617,7 @@ def drawPlayer(fenetre,player):
         fenetre.blit(sprites[player.spriteName][player.direction-1], (xEcran,yEcran))
     
     #affiche l'aura
-    if player.auratimer > 0 :
+    if player.auratimer > 0 and player.aura != "" :
         fenetre.blit(sprites[player.aura], (xEcran,yEcran))
         player.auratimer -= 1
     else:
@@ -683,12 +685,32 @@ def drawPNG(player,fenetre):
     fenetre.blit(sprites[player.spriteName],(xEcran, yEcran))
 
 def drawATH(fenetre,player):
-    fenetre.blit(sprites["ATH"],(750,900+32)) #¸valeur mise a l'arache
+    fenetre.blit(sprites["ATH"],(750,932)) #¸valeur mise a l'arache
     
     
     xEcran = 750 + 33
-    yEcran = 900+118+32
+    yEcran = 900+118+32+20
     size = 403-33 #oui j'ai la fleme de faire le calcul
+    
+    #affiche la barre d'exp et de PV
     pygame.draw.rect( fenetre , (255,0,0) , (xEcran,yEcran-10,size,17) )
     pygame.draw.rect( fenetre , (0,255,0) , (xEcran,yEcran-10,size*player.hp/(100*player.lvl),17) )
+    
+    
+    pygame.draw.rect( fenetre , (100,100,0) , (xEcran,yEcran-30,size,17) )
+    pygame.draw.rect( fenetre , (255,255,0) , (xEcran,yEcran-30,size*player.levelup/(100*2**player.lvl),17) )
+    
+    if not player.surfLvl:
+        player.surfLvl = buttonFontXXS.render( str(player.lvl) , True , (255,0,0) )
+    fenetre.blit( player.surfLvl , (xEcran-player.surfLvl.get_width()-5+50, yEcran -player.surfLvl.get_height()-75) )
+    
+    
+    
+    #affiche les capacite
+    
+    if player.capacite1timer == 0:
+        fenetre.blit(sprites["hacheurIcone"],(846,958))
+    else :
+        fenetre.blit(sprites["hacheurIconeCD"],(846,958))
+    
     

@@ -86,6 +86,6 @@ def RDM(joueur,ennemi):
 
 def degatRLC(ennemi,lvl):
     ennemi.hp = ennemi.hp -50 - 25*(lvl-1)
-    ennemi.aura = "Laplace"
+    ennemi.aura = ""
     ennemi.auratimer = 2*30
     
