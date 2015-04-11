@@ -76,7 +76,7 @@ def draw(fenetre):
     
     if dessin.interfaceQueteOn:
         dessin.drawInterface(fenetre)
-        
+    dessin.drawATH(fenetre,player)
 #touches de mouvement
 def actionKeys(listPressed):
     global player,ennemiList,projectileList
@@ -141,16 +141,28 @@ def actionKeys(listPressed):
             player.attackanim  = 0.2*60
         else:
             player.attackTimer = max( 0, player.attackTimer - 1/16)
+    
+    #sort
     if keybinding.isKeyActive( "SORT1" , listPressed ) and player.capacite1timer == 0:
         capacite.capacite('RLC',player,map.theMap.regionList[player.position[0]].ennemiList)
         player.capacite1timer = player.capacite1timer + 60*3
-        
+    elif keybinding.isKeyActive( "SORT2" , listPressed ) and player.capacite2timer == 0:
+        capacite.capacite('PFS',player,map.theMap.regionList[player.position[0]].ennemiList)
+        player.capacite2timer = player.capacite2timer + 60*3
+    elif keybinding.isKeyActive( "ULTI" , listPressed ) and player.ULTITimer == 0:
+        capacite.capacite('Laplace',player,map.theMap.regionList[player.position[0]].ennemiList)
+        player.ULTITimer = player.ULTITimer + 60*3
+    
     if keybinding.isKeyActive( "UPSORT1" , listPressed ) and player.pointbonus > 0:
         player.capacite1Lvl += 1
         player.pointbonus -=1
         
     if player.capacite1timer > 0:
         player.capacite1timer -= 1
+    if player.capacite2timer > 0:
+        player.capacite2timer -= 1
+    if player.ULTITimer > 0:
+        player.ULTITimer -= 1
 
 def findPNG():
     region = map.theMap.regionList[player.position[0]]
@@ -164,12 +176,15 @@ def findPNG():
 #evenement de mise à jour (ia et animations)    
 def tick():
     player.anim += 0.25
-    if player.hp < player.lvl*100:
+    if player.hp < player.lvl*100 and player.combat <= 0:
         player.hp += 0.1*player.lvl
-    
+    if player.combat > 0 and player.hp < player.lvl*100:
+        player.hp += 0*player.lvl
+    if player.combat > 0:
+        player.combat -= 1
     if player.spriteCapaciteTimer > 0:
         player.spriteCapaciteTimer -= 1
-    
+    print(player.combat)
     #avancement de projectiles
     for p in projectileList:
         p.avancer()
@@ -180,6 +195,7 @@ def tick():
             if collision.checkProjectile(p,player):
                 player.hp -= p.tireur.dammage
                 projectileList.remove(p)
+                player.combat = 3*60
     
     #IA
     modifQuete = False
@@ -206,6 +222,7 @@ def tick():
             #attaque d'ennemi
             if e.attackTimer == 0:
                 ia.attackIA(player,e,projectileList)
+                
             else:
                 e.attackTimer = max( 0, e.attackTimer - 1/16)
         else:
