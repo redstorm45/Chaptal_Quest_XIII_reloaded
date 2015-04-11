@@ -28,16 +28,23 @@ class Joueur(joueurBase.JoueurBase):
         self.regen          = 0.5
         self.capacite1      = "RLC"
         self.capacite1Lvl   = 1
-        self.capacite2      = "RDM"
-        self.capacite2Lvl   = 1
+        self.capacite2      = "PFS"
+        self.capacite1Lvl   = 1
+        self.capacite3      = "RDM"
+        self.capacite3Lvl   = 1
+        self.ULTI           = "Laplace"
+        self.ULTILvl        = 1
         self.pointbonus     = 0
         self.spriteCapacite = ""
         self.positionCapacite = [0,0]
         self.degatarme = 30 
         #timers
         self.capacite1timer = 0
+        self.capacite2timer = 0
+        self.ULTITimer = 0
         self.levelup = 0
         self.spriteCapaciteTimer = 0
+        self.combat = 0
         
     
     def mouvement(self,x,y,):

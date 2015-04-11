@@ -35,6 +35,8 @@ class Ennemi(joueurBase.JoueurBase):
         self.auratimer   = 0
         self.attackanim  = 0
         
+        #offset
+        self.auraoffset = [0,0]
     def copyAt(self,position):
         newEnnemi = copy.deepcopy(self)
         newEnnemi.position = list(position)

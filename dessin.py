@@ -439,6 +439,10 @@ def loadAllSprites():
     sprites["ATH"] = getLoaded("ATH.bmp")
     sprites["hacheurIcone"] = getLoaded("hacheurIcone.png")
     sprites["hacheurIconeCD"] = getLoaded("hacheurIconeCD.png")
+    sprites["PFSIcone"] = getLoaded("PFSIcone.png")
+    sprites["PFSIconeCD"] = getLoaded("PFSIconeCD.png")
+    sprites["LaplaceIcone"] = getLoaded("LaplaceIcone.png")
+    sprites["LaplaceIconeCD"] = getLoaded("LaplaceIconeCD.png")
     
 #gère le décalage de l'écran à partir de la position du joueur
 def centerOffset(player):
@@ -618,7 +622,7 @@ def drawPlayer(fenetre,player):
     
     #affiche l'aura
     if player.auratimer > 0 and player.aura != "" :
-        fenetre.blit(sprites[player.aura], (xEcran,yEcran))
+        fenetre.blit(sprites[player.aura], (xEcran + player.auraoffset[0],yEcran + player.auraoffset[1]))
         player.auratimer -= 1
     else:
         player.aura = ""
@@ -712,5 +716,14 @@ def drawATH(fenetre,player):
         fenetre.blit(sprites["hacheurIcone"],(846,958))
     else :
         fenetre.blit(sprites["hacheurIconeCD"],(846,958))
+    if player.capacite2timer == 0:
+        fenetre.blit(sprites["PFSIcone"],(846+52+12,958))
+    else :
+        fenetre.blit(sprites["PFSIconeCD"],(846+52+12,958))
+    
+    if player.ULTITimer == 0:
+        fenetre.blit(sprites["LaplaceIcone"],(846+156+36,958))
+    else :
+        fenetre.blit(sprites["LaplaceIconeCD"],(846+156+36,958))
     
     
