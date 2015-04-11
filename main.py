@@ -165,7 +165,7 @@ while running:
             elif state == ETAT_GAME:
                 if event.key in keybinding.keys["QUETES"]:
                     dessin.interfaceQueteOn = not dessin.interfaceQueteOn
-                if event.key in keybinding.keys["DIALOGUE"]:
+                elif event.key in keybinding.keys["DIALOGUE"]:
                     game.findPNG()
         if event.type == MOUSEBUTTONDOWN:
             if event.button == 1:#bouton gauche

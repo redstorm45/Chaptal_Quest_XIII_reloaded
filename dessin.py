@@ -675,7 +675,6 @@ def drawPNG(player,fenetre):
     x,y = player.position[0] , player.position[1]
     xEcran = (x-0.5) * 64  + xOffset
     yEcran = (y-0.5) * 64  + yOffset
-    print(player.spriteName)
     fenetre.blit(sprites[player.spriteName],(xEcran, yEcran))
 
 

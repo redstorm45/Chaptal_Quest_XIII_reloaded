@@ -152,13 +152,13 @@ def actionKeys(listPressed):
     if player.capacite1timer > 0:
         player.capacite1timer -= 1
 
-def findPNJ():
+def findPNG():
     region = map.theMap.regionList[player.position[0]]
     px , py = player.position[1] , player.position[2]
     
     for p in region.PNGlist:
         if (px-p.position[0])**2 + (py-p.position[1])**2 < 2 ** 2:
-            print(p.name)
+            print(p.name+":")
             print(p.texte)
 
 #evenement de mise à jour (ia et animations)    

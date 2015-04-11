@@ -16,6 +16,7 @@ debugMode = True
 #charge la sauvegarde de débogguage plutôt qu'une sauvegarde normale
 debugSave = False
 
+#affiche la hitbox des joueurs et ennemis
 affHitbox = False
 
 #mode d'édition
