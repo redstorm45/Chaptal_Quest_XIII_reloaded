@@ -432,7 +432,11 @@ def loadAllSprites():
     loadAnimSprite("dragon" ,"Ennemis/dragon/" )
     loadAnimSprite("PTSI"   ,"perso/"    )
     
+    # *** charges les PNJ ***
     sprites["chen"] = getLoaded("chen.png")
+    
+    # *** charges l'ATH ***
+    sprites["ATH"] = getLoaded("ATH.bmp")
     
 #gère le décalage de l'écran à partir de la position du joueur
 def centerOffset(player):
@@ -678,5 +682,13 @@ def drawPNG(player,fenetre):
     print(player.spriteName)
     fenetre.blit(sprites[player.spriteName],(xEcran, yEcran))
 
-
+def drawATH(fenetre,player):
+    fenetre.blit(sprites["ATH"],(750,900+32)) #¸valeur mise a l'arache
+    
+    
+    xEcran = 750 + 33
+    yEcran = 900+118+32
+    size = 403-33 #oui j'ai la fleme de faire le calcul
+    pygame.draw.rect( fenetre , (255,0,0) , (xEcran,yEcran-10,size,17) )
+    pygame.draw.rect( fenetre , (0,255,0) , (xEcran,yEcran-10,size*player.hp/(100*player.lvl),17) )
     

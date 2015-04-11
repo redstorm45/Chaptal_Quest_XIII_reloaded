@@ -76,7 +76,7 @@ def draw(fenetre):
     
     if dessin.interfaceQueteOn:
         dessin.drawInterface(fenetre)
-        
+    dessin.drawATH(fenetre,player)
 #touches de mouvement
 def actionKeys(listPressed):
     global player,ennemiList,projectileList
