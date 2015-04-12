@@ -688,41 +688,41 @@ def drawPNG(player,fenetre):
     fenetre.blit(sprites[player.spriteName],(xEcran, yEcran))
 
 def drawATH(fenetre,player):
-    fenetre.blit(sprites["ATH"],(750,932)) #¸valeur mise a l'arache
+    xEcran = fenetre.get_width()//2 -214 +33
+    yEcran = fenetre.get_height()
     
+    fenetre.blit(sprites["ATH"],(xEcran-33 ,yEcran-157)) #¸valeur mise a l'arache
     
-    xEcran = 750 + 33
-    yEcran = 900+118+32+20
+    # 1900 * 1080
+    
     size = 403-33 #oui j'ai la fleme de faire le calcul
     
     #affiche la barre d'exp et de PV
-    pygame.draw.rect( fenetre , (255,0,0) , (xEcran,yEcran-10,size,17) )
-    pygame.draw.rect( fenetre , (0,255,0) , (xEcran,yEcran-10,size*player.hp/(100*player.lvl),17) )
+    pygame.draw.rect( fenetre , (255,0,0) , (xEcran,yEcran-31,size,17) )
+    pygame.draw.rect( fenetre , (0,255,0) , (xEcran,yEcran-31,size*player.hp/(100*player.lvl),17) )
     
     
-    pygame.draw.rect( fenetre , (100,100,0) , (xEcran,yEcran-30,size,17) )
-    pygame.draw.rect( fenetre , (255,255,0) , (xEcran,yEcran-30,size*player.levelup/(100*2**player.lvl),17) )
+    pygame.draw.rect( fenetre , (100,100,0) , (xEcran,yEcran-51,size,17) )
+    pygame.draw.rect( fenetre , (255,255,0) , (xEcran,yEcran-51,size*player.levelup/(100*2**player.lvl),17) )
     
     if not player.surfLvl:
         player.surfLvl = buttonFontXXS.render( str(player.lvl) , True , (255,0,0) )
-    fenetre.blit( player.surfLvl , (xEcran-player.surfLvl.get_width()-5+50, yEcran -player.surfLvl.get_height()-75) )
-    
-    
+    fenetre.blit( player.surfLvl , (xEcran-player.surfLvl.get_width()-5+50, yEcran -player.surfLvl.get_height()-95) )
     
     #affiche les capacite
     
     if player.capacite1timer == 0:
-        fenetre.blit(sprites["hacheurIcone"],(846,958))
+        fenetre.blit(sprites["hacheurIcone"],(xEcran-2+64,yEcran-131))
     else :
-        fenetre.blit(sprites["hacheurIconeCD"],(846,958))
+        fenetre.blit(sprites["hacheurIconeCD"],(xEcran-2+64,yEcran-131))
     if player.capacite2timer == 0:
-        fenetre.blit(sprites["PFSIcone"],(846+52+12,958))
+        fenetre.blit(sprites["PFSIcone"],(xEcran-2+52+12+64,yEcran-131))
     else :
-        fenetre.blit(sprites["PFSIconeCD"],(846+52+12,958))
+        fenetre.blit(sprites["PFSIconeCD"],(xEcran-2+52+12+64,yEcran-131))
     
     if player.ULTITimer == 0:
-        fenetre.blit(sprites["LaplaceIcone"],(846+156+36,958))
+        fenetre.blit(sprites["LaplaceIcone"],(xEcran-2+156+36+64,yEcran-131))
     else :
-        fenetre.blit(sprites["LaplaceIconeCD"],(846+156+36,958))
+        fenetre.blit(sprites["LaplaceIconeCD"],(xEcran-2+156+36+64,yEcran-131))
     
     
