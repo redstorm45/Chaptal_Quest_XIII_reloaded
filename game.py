@@ -184,7 +184,7 @@ def tick():
         player.combat -= 1
     if player.spriteCapaciteTimer > 0:
         player.spriteCapaciteTimer -= 1
-    print(player.combat)
+    
     #avancement de projectiles
     for p in projectileList:
         p.avancer()
@@ -209,8 +209,16 @@ def tick():
                     if e.name in q.data["target"].keys():
                         q.data["current"][e.name] += 1
                         q.checkCompleted()
-                
-        if e.aura != "stun":
+        
+        
+        
+        if e.aura == 'Laplace':
+            e.hp -= 0.1/60 * 100*2**e.lvl
+            
+        
+        
+        
+        elif e.aura != "stun":
             #deplacement d'ennemi
             if ia.agro(player.position,e):
                 ia.trajectoire(player.position,e)
@@ -229,7 +237,8 @@ def tick():
             e.auratimer -= 1
         if e.auratimer <= 0:
             e.aura = ""
-            
+        
+        print(e.armure)
     if modifQuete:
         quete.refreshActive()
         dessin.reloadInterface(quete.listeQuetesActives)

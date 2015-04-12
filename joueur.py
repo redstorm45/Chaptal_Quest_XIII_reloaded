@@ -37,7 +37,7 @@ class Joueur(joueurBase.JoueurBase):
         self.pointbonus     = 0
         self.spriteCapacite = ""
         self.positionCapacite = [0,0]
-        self.degatarme = 30 
+        self.degatarme = -20
         #timers
         self.capacite1timer = 0
         self.capacite2timer = 0
