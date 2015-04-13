@@ -28,6 +28,11 @@ import string
 import save
 import texte
 import editGame
+import son
+
+music = son.musique()
+
+music.play()
 
 #definition des différents états du jeu
 ETAT_MENU         = 1  #menu
@@ -293,5 +298,5 @@ while running:
         game.tick()
     #clock
     fps = clock.tick(60)
-
+music.stop()
 pygame.quit()
