@@ -711,16 +711,16 @@ def drawATH(fenetre,player):
     
     #affiche les capacite
     
-    if player.capacite1timer == 0:
+    if player.capacite1timer == 0 and player.capacite1Lvl > 0:
         fenetre.blit(sprites["hacheurIcone"],(xEcran-2+64,yEcran-131))
     else :
         fenetre.blit(sprites["hacheurIconeCD"],(xEcran-2+64,yEcran-131))
-    if player.capacite2timer == 0:
+    if player.capacite2timer == 0 and player.capacite2Lvl > 0:
         fenetre.blit(sprites["PFSIcone"],(xEcran-2+52+12+64,yEcran-131))
     else :
         fenetre.blit(sprites["PFSIconeCD"],(xEcran-2+52+12+64,yEcran-131))
     
-    if player.ULTITimer == 0:
+    if player.ULTITimer == 0 and player.ULTILvl > 0:
         fenetre.blit(sprites["LaplaceIcone"],(xEcran-2+156+36+64,yEcran-131))
     else :
         fenetre.blit(sprites["LaplaceIconeCD"],(xEcran-2+156+36+64,yEcran-131))

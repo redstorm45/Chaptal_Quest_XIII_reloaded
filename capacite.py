@@ -89,10 +89,10 @@ def degatRLC(ennemi,lvl):
                 
                 
 def RDM(joueur,ennemi):
-    #if  ennemi.armure - joueur.lvl*5 > 0:
-    ennemi.armure = ennemi.armure - joueur.capacite2Lvl*10
-    #else:
-        #ennemi.armure = 0
+    if  ennemi.armure - joueur.lvl*5 > 0:
+        ennemi.armure = ennemi.armure - joueur.capacite2Lvl*10
+    else:
+        ennemi.armure = 0
 
 def PFS(joueur,ennemis):
     joueur.spriteCapacite = ''
