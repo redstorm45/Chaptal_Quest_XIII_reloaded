@@ -30,10 +30,6 @@ import texte
 import editGame
 import son
 
-music = son.musique()
-
-music.play()
-
 #definition des différents états du jeu
 ETAT_MENU         = 1  #menu
 ETAT_GAME         = 2  #en jeu
@@ -48,6 +44,7 @@ ETAT_QUIT         = 10 #fin du programme
 ETAT_EDIT         = 11 #edition des niveaux
 
 #crée la fenetre
+pygame.mixer.pre_init(44100, 16, 2, 4096)
 pygame.init()
 
 import ctypes
@@ -87,6 +84,11 @@ state = ETAT_MENU
 if option.editMode:
     editGame.init()
     state = ETAT_EDIT
+
+#démarre la musique!
+music = son.musique()
+music.play()
+
 
 #main loop
 running = True
