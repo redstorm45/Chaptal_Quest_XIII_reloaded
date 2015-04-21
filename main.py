@@ -29,6 +29,16 @@ import save
 import texte
 import editGame
 import son
+import inventaire
+
+
+
+
+classe = "PTSI"
+inventaireOuvert = False
+
+
+
 
 #definition des différents états du jeu
 ETAT_MENU         = 1  #menu
@@ -194,14 +204,17 @@ while running:
                     if b:
                         if b.name == "PTSI":
                             dessin.newGameSelectedInfo = "PTSI"
+                            classe = "PTSI"
                         elif b.name == "PCSI":
                             dessin.newGameSelectedInfo = "PCSI"
+                            classe = "PCSI"
                         elif b.name == "MPSI":
                             dessin.newGameSelectedInfo = "MPSI"
+                            classe = "MPSI"
                         elif b.name == "commencer":
                             if option.debugSave:
                                 game.player.classe = dessin.newGameSelectedInfo
-                                save.create("debugSave_")
+                                save.create("debugSave_","PTSI")
                                 save.load("debugSave_",game.player)
                                 dessin.overlaySaved = False
                                 #charge les ennemis sur la map
@@ -215,7 +228,7 @@ while running:
                             else:
                                 saveName = dessin.newGameName.texte
                                 game.player.classe = dessin.newGameSelectedInfo
-                                save.create(saveName)
+                                save.create(saveName,classe)
                                 save.load(saveName,game.player)
                                 dessin.overlaySaved = False
                                 #charge les ennemis sur la map
@@ -290,7 +303,7 @@ while running:
     #gestion des déplacements
     if state == ETAT_GAME:
         listPressed = pygame.key.get_pressed()
-        game.actionKeys(listPressed)
+        game.actionKeys(listPressed,fenetre,inventaireOuvert)
     elif state == ETAT_EDIT:
         listPressed = pygame.key.get_pressed()
         editGame.actionKeys(listPressed)

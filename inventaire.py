@@ -5,19 +5,27 @@ ainsi que l'inventaire du joueur
 
 """
 
-class objet:
-    self.name = ""
+class objet():
+    
     
     def __init__(self,name):
         self.name = name
+        
         try:
-            file = open( "objet/" + name + ".txt")
+            file = open( "objets/" + name + ".txt")
             self.stackable = bool( file.readline().strip().split(";")[0] )
+            self.sprite = file.readline().strip().split(";")[0]
+            self.type      = file.readline().strip().split(";")[0]
             if self.stackable:
                 self.stackSize = 1
             else:
                 self.stackSize = 0
-            self.type      = file.readline().strip().split(";")[0]
+            
+            if self.type == 'arme':
+                self.degatarme = file.readline().strip().split(";")[0]
+            if self.type in ["casque","armure"]:
+                self.defense = file.readline().strip().split(";")[0]
+                
             file.close()
         except:
             print("défaut d'un objet:",name)

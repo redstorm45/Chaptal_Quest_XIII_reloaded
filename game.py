@@ -17,6 +17,10 @@ import attackJoueur
 import capacite
 import collision
 import PNG
+import son
+
+
+
 
 #defini un joueur
 player = joueur.Joueur(4,4)
@@ -28,7 +32,7 @@ projectileList = []
 ennemiList = []
 
 #inventaire ouvert et affiché
-inventaireOuvert = None
+inventaireOuvert = False
 
 #initialisation du jeu
 def init():
@@ -78,7 +82,7 @@ def draw(fenetre):
         dessin.drawInterface(fenetre)
     dessin.drawATH(fenetre,player)
 #touches de mouvement
-def actionKeys(listPressed):
+def actionKeys(listPressed,fenetre,inventaireOuvert):
     global player,ennemiList,projectileList
     
     #mouvement du joueur
@@ -172,7 +176,18 @@ def actionKeys(listPressed):
         player.capacite2timer -= 1
     if player.ULTITimer > 0:
         player.ULTITimer -= 1
-
+    
+    #inventaire
+    if keybinding.isKeyActive( "INVENTAIRE" , listPressed ):        #tu peux sans doute ameliorer ce que je fais
+        if inventaireOuvert == False:
+            inventaireOuvert == True
+        else:
+            inventaireOuvert = False
+    if inventaireOuvert == False:
+        
+        dessin.drawInventaire(player,fenetre)
+    
+    
 def findPNG():
     region = map.theMap.regionList[player.position[0]]
     px , py = player.position[1] , player.position[2]
@@ -211,6 +226,8 @@ def tick():
     for e in ennemiList:
         #mort d'un ennemi
         if e.hp < 0:
+            mort = son.mort()
+            mort.play()
             ennemiList.remove(e)
             player.levelup += e.exp
             for q in quete.listeQuetesActives:
@@ -247,7 +264,7 @@ def tick():
         if e.auratimer <= 0:
             e.aura = ""
         
-        print(e.armure)
+        
     if modifQuete:
         quete.refreshActive()
         dessin.reloadInterface(quete.listeQuetesActives)

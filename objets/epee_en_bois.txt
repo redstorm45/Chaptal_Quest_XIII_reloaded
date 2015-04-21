@@ -1,0 +1,4 @@
+False;    stackable
+epee_en_bois;	 sprite
+arme;    type d'objet (misc/arme/armure/casque)
+10;	 degat de l'arme

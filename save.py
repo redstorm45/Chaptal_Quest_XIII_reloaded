@@ -27,20 +27,44 @@ def getAllNames():
     return lnames
 
 #création d'un nouveau fichier de sauvegarde
-def create(name):
+def create(name,classe):
     if check(name):
         return False
     try:
         saveFile = open("save/"+name+".save","w")
         saveFile.write("salle/2.V1.1,3,3\n") #position
-        saveFile.write("PTSI\n")             #classe
-        saveFile.write("0.5\n")
-        saveFile.write("RLC\n")
-        saveFile.write("RDM\n")
-        saveFile.write("1\n")
-        saveFile.write(str(player.capacite2Lvl)+"\n")
-        saveFile.write(str(player.pointbonus)+"\n")
-        saveFile.write(str(player.lvl)+"\n")
+        saveFile.write("1;  lvl joueur\n")
+        saveFile.write(classe +";   classe\n")             #classe
+        if classe == "PTSI":
+            saveFile.write("RLC;    capacite 1\n")
+            saveFile.write("0;  lvl cap 1\n")
+            saveFile.write("PFS;    capacite 2\n")
+            saveFile.write("0;  lvl cap 2\n")
+            saveFile.write("RDM;    capacite 3")
+            saveFile.write("0;  lvl cap 3\n")
+            saveFile.write("Laplace;    ulti\n")
+            saveFile.write("0;  ulti lvl\n")
+        elif classe == "MPSI":
+            saveFile.write("RLC;    capacite 1\n")
+            saveFile.write("0;  lvl cap 1\n")
+            saveFile.write("PFS;    capacite 2\n")
+            saveFile.write("0;  lvl cap 2\n")
+            saveFile.write("RDM;    capacite 3")
+            saveFile.write("0;  lvl cap 3\n")
+            saveFile.write("Laplace;    ulti\n")
+            saveFile.write("0;  ulti lvl\n")
+        elif classe == "PCSI":
+            saveFile.write("RLC;    capacite 1\n")
+            saveFile.write("0;  lvl cap 1\n")
+            saveFile.write("PFS;    capacite 2\n")
+            saveFile.write("0;  lvl cap 2\n")
+            saveFile.write("RDM;    capacite 3")
+            saveFile.write("0;  lvl cap 3\n")
+            saveFile.write("Laplace;    ulti\n")
+            saveFile.write("0;  ulti lvl\n")
+        
+        saveFile.write("1;  point bonus/n")
+        
         saveFile.write("[]\n")
     except:
         return False
@@ -63,14 +87,18 @@ def load(name,player):
             player.position[1] = float(player.position[1])
             player.position[2] = float(player.position[2])
             #infos du joueur
-            player.classe = saveFile.readline().strip()
-            player.regen = float( saveFile.readline().strip() )
-            player.capacite1 = saveFile.readline().strip()
-            player.capacite2 = saveFile.readline().strip()
-            player.capacite1Lvl = int( saveFile.readline().strip() )
-            player.capacite2Lvl = int( saveFile.readline().strip() )
-            player.pointbonus = int( saveFile.readline().strip() )
-            player.lvl = int( saveFile.readline().strip() )
+            player.lvl = int( saveFile.readline().strip().split(";")[0] )
+            player.classe = saveFile.readline().strip().split(";")[0]
+            player.capacite1 = saveFile.readline().strip().split(";")[0]
+            player.capacite1Lvl = int( saveFile.readline().strip().split(";")[0] )
+            player.capacite2 = saveFile.readline().strip().split(";")[0]            
+            player.capacite2Lvl = int( saveFile.readline().strip().split(";")[0] )
+            player.capacite3 = saveFile.readline().strip().split(";")[0]            
+            player.capacite3Lvl = int( saveFile.readline().strip().split(";")[0] )
+            player.ULTI = saveFile.readline().strip().split(";")[0]            
+            player.ULTILvl = int( saveFile.readline().strip().split(";")[0] )
+            player.pointbonus = int( saveFile.readline().strip().split(";")[0] )
+            
             #inventaire
             player.inventaire.fromString( saveFile.readline().strip() )
         except Exception as e:
@@ -87,14 +115,16 @@ def save(player):
     try:
         saveFile = open("save/"+currentSaveName+".save","w")
         saveFile.write(player.position[0]+","+str(player.position[1])+","+str(player.position[2])+"\n") #position
-        saveFile.write(player.classe+"\n")
-        saveFile.write(str(player.regen)+"\n")
-        saveFile.write(str(player.capacite1)+"\n")
-        saveFile.write(str(player.capacite2)+"\n")
-        saveFile.write(str(player.capacite1Lvl)+"\n")
-        saveFile.write(str(player.capacite2Lvl)+"\n")
-        saveFile.write(str(player.pointbonus)+"\n")
-        saveFile.write(str(player.lvl)+"\n")
+        saveFile.write(str(player.lvl)+";   lvl joueur\n")
+        saveFile.write(player.classe+"; classe\n")
+        saveFile.write(str(player.capacite1)+";    capacite 1\n")
+        saveFile.write(str(player.capacite1Lvl)+"   Lvl capacite 1 \n")
+        saveFile.write(str(player.capacite2)+";    capacite 2\n")
+        saveFile.write(str(player.capacite2Lvl)+"   Lvl capacite 2 \n")
+        saveFile.write(str(player.capacite3)+";    capacite 3\n")
+        saveFile.write(str(player.capacite3Lvl)+"   Lvl capacite 3 \n")                
+        saveFile.write(str(player.pointbonus)+";    point bonus\n")
+        
         saveFile.write(player.inventaire.toString()+"\n")
     except:
         return False

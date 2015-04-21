@@ -437,12 +437,19 @@ def loadAllSprites():
     
     # *** charges l'ATH ***
     sprites["ATH"] = getLoaded("ATH.bmp")
-    sprites["hacheurIcone"] = getLoaded("hacheurIcone.png")
-    sprites["hacheurIconeCD"] = getLoaded("hacheurIconeCD.png")
+    sprites["RLCIcone"] = getLoaded("hacheurIcone.png")
+    sprites["RLCIconeCD"] = getLoaded("hacheurIconeCD.png")
     sprites["PFSIcone"] = getLoaded("PFSIcone.png")
     sprites["PFSIconeCD"] = getLoaded("PFSIconeCD.png")
     sprites["LaplaceIcone"] = getLoaded("LaplaceIcone.png")
     sprites["LaplaceIconeCD"] = getLoaded("LaplaceIconeCD.png")
+    sprites["RDMIcone"] = getLoaded("RDMIcone.bmp")
+    sprites["RDMIconeCD"] = getLoaded("RDMIconeCD.bmp")
+    
+    
+    # *** charges l'inventaire ***
+    
+    sprites["inventaire"] = getLoaded("inventaire.png")
     
 #gère le décalage de l'écran à partir de la position du joueur
 def centerOffset(player):
@@ -698,12 +705,12 @@ def drawATH(fenetre,player):
     size = 403-33 #oui j'ai la fleme de faire le calcul
     
     #affiche la barre d'exp et de PV
-    pygame.draw.rect( fenetre , (255,0,0) , (xEcran,yEcran-31,size,17) )
-    pygame.draw.rect( fenetre , (0,255,0) , (xEcran,yEcran-31,size*player.hp/(100*player.lvl),17) )
+    pygame.draw.rect( fenetre , (255,0,0) , (xEcran,yEcran-30,size,17) )
+    pygame.draw.rect( fenetre , (0,255,0) , (xEcran,yEcran-30,size*player.hp/(100*player.lvl),17) )
     
     
-    pygame.draw.rect( fenetre , (100,100,0) , (xEcran,yEcran-51,size,17) )
-    pygame.draw.rect( fenetre , (255,255,0) , (xEcran,yEcran-51,size*player.levelup/(100*2**player.lvl),17) )
+    pygame.draw.rect( fenetre , (100,100,0) , (xEcran,yEcran-50,size,17) )
+    pygame.draw.rect( fenetre , (255,255,0) , (xEcran,yEcran-50,size*player.levelup/(100*2**player.lvl),17) )
     
     if not player.surfLvl:
         player.surfLvl = buttonFontXXS.render( str(player.lvl) , True , (255,0,0) )
@@ -712,17 +719,28 @@ def drawATH(fenetre,player):
     #affiche les capacite
     
     if player.capacite1timer == 0 and player.capacite1Lvl > 0:
-        fenetre.blit(sprites["hacheurIcone"],(xEcran-2+64,yEcran-131))
+        fenetre.blit(sprites[player.capacite1 + "Icone"],(xEcran-2+64,yEcran-131))
     else :
-        fenetre.blit(sprites["hacheurIconeCD"],(xEcran-2+64,yEcran-131))
+        fenetre.blit(sprites[player.capacite1 + "IconeCD"],(xEcran-2+64,yEcran-131))
+        
     if player.capacite2timer == 0 and player.capacite2Lvl > 0:
-        fenetre.blit(sprites["PFSIcone"],(xEcran-2+52+12+64,yEcran-131))
+        fenetre.blit(sprites[player.capacite1 +"Icone"],(xEcran-2+52+12+64,yEcran-131))
     else :
-        fenetre.blit(sprites["PFSIconeCD"],(xEcran-2+52+12+64,yEcran-131))
+        fenetre.blit(sprites[player.capacite2 + "IconeCD"],(xEcran-2+52+12+64,yEcran-131))
+        
+    if player.capacite3timer == 0 and player.capacite3Lvl > 0:
+        fenetre.blit(sprites[player.capacite3 +"Icone"],(xEcran-2+104+24+64,yEcran-131))
+    else :
+        fenetre.blit(sprites[player.capacite3 +"IconeCD"],(xEcran-2+104+24+64,yEcran-131))
     
     if player.ULTITimer == 0 and player.ULTILvl > 0:
-        fenetre.blit(sprites["LaplaceIcone"],(xEcran-2+156+36+64,yEcran-131))
+        fenetre.blit(sprites[player.ULTI + "Icone"],(xEcran-2+156+36+64,yEcran-131))
     else :
-        fenetre.blit(sprites["LaplaceIconeCD"],(xEcran-2+156+36+64,yEcran-131))
-    
+        fenetre.blit(sprites[player.ULTI + "IconeCD"],(xEcran-2+156+36+64,yEcran-131))
+
+
+def drawInventaire(player,fenetre):
+    fenetre.blit(sprites["ATH"],(4*64,4*64))
+    print("hello")
+        
     
