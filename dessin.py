@@ -741,6 +741,5 @@ def drawATH(fenetre,player):
 
 def drawInventaire(player,fenetre):
     fenetre.blit(sprites["ATH"],(4*64,4*64))
-    print("hello")
         
     

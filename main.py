@@ -184,6 +184,8 @@ while running:
                     dessin.interfaceQueteOn = not dessin.interfaceQueteOn
                 elif event.key in keybinding.keys["DIALOGUE"]:
                     game.findPNG()
+                elif event.key in keybinding.keys["INVENTAIRE"]:
+                    game.inventaireOuvert = not game.inventaireOuvert
         if event.type == MOUSEBUTTONDOWN:
             if event.button == 1:#bouton gauche
                 x,y = event.pos
@@ -303,7 +305,7 @@ while running:
     #gestion des déplacements
     if state == ETAT_GAME:
         listPressed = pygame.key.get_pressed()
-        game.actionKeys(listPressed,fenetre,inventaireOuvert)
+        game.actionKeys(listPressed)
     elif state == ETAT_EDIT:
         listPressed = pygame.key.get_pressed()
         editGame.actionKeys(listPressed)

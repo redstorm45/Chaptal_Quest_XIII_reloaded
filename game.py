@@ -81,8 +81,13 @@ def draw(fenetre):
     if dessin.interfaceQueteOn:
         dessin.drawInterface(fenetre)
     dessin.drawATH(fenetre,player)
+    
+    #inventaire
+    if inventaireOuvert:
+        dessin.drawInventaire(player,fenetre)
+        
 #touches de mouvement
-def actionKeys(listPressed,fenetre,inventaireOuvert):
+def actionKeys(listPressed):
     global player,ennemiList,projectileList
     
     #mouvement du joueur
@@ -176,16 +181,6 @@ def actionKeys(listPressed,fenetre,inventaireOuvert):
         player.capacite2timer -= 1
     if player.ULTITimer > 0:
         player.ULTITimer -= 1
-    
-    #inventaire
-    if keybinding.isKeyActive( "INVENTAIRE" , listPressed ):        #tu peux sans doute ameliorer ce que je fais
-        if inventaireOuvert == False:
-            inventaireOuvert == True
-        else:
-            inventaireOuvert = False
-    if inventaireOuvert == False:
-        
-        dessin.drawInventaire(player,fenetre)
     
     
 def findPNG():
