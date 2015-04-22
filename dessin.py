@@ -740,6 +740,8 @@ def drawATH(fenetre,player):
 
 
 def drawInventaire(player,fenetre):
-    fenetre.blit(sprites["ATH"],(4*64,4*64))
+    xPos = (fenetre.get_width()-sprites["inventaire"].get_width())//2
+    yPos = (fenetre.get_height()-sprites["inventaire"].get_height())//2
+    fenetre.blit(sprites["inventaire"],(xPos,yPos))
         
     
