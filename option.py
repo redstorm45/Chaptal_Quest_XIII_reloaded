@@ -19,6 +19,10 @@ debugSave = False
 #affiche la hitbox des joueurs et ennemis
 affHitbox = False
 
+#musique
+musiqueActive = True
+musiqueVolume = 50
+
 #mode d'édition
 editMode = False
 editRegion = "couloir/2.V1"

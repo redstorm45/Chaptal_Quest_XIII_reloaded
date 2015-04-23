@@ -67,6 +67,7 @@ class inventaire:
             if len(i) > 0:
                 infos = i.split(",")
                 obj = objet( infos[0] )
-                self.listObjets.append( obj.fromString(infos) )
+                obj.fromString(infos)
+                self.listObjets.append( obj )
     
     

@@ -221,8 +221,7 @@ def tick():
     for e in ennemiList:
         #mort d'un ennemi
         if e.hp < 0:
-            mort = son.mort()
-            mort.play()
+            son.play("mort")
             ennemiList.remove(e)
             player.levelup += e.exp
             for q in quete.listeQuetesActives:

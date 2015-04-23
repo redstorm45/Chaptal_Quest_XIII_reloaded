@@ -1,2 +1,3 @@
 True;    stackable
+pokeball; sprite
 misc;    type d'objet (misc/arme/armure)

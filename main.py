@@ -77,6 +77,9 @@ map.theMap = map.Map()
 #charge les textes
 texte.loadTextes()
 
+#charge les musiques
+son.init()
+
 #initialise les boutons
 mouse.init(fenetre.get_width(),fenetre.get_height())
 
@@ -96,9 +99,7 @@ if option.editMode:
     state = ETAT_EDIT
 
 #démarre la musique!
-music = son.musique()
-music.play()
-
+son.playMusique("pirate")
 
 #main loop
 running = True
@@ -315,5 +316,7 @@ while running:
         game.tick()
     #clock
     fps = clock.tick(60)
-music.stop()
+
+son.stop()
+pygame.mixer.quit()
 pygame.quit()

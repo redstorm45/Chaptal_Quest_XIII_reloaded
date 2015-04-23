@@ -7,6 +7,7 @@ sur une partie (avancement des quetes, fillière etc...)
 
 import option
 import os
+import inventaire
 
 currentSaveName = None
 
@@ -40,7 +41,7 @@ def create(name,classe):
             saveFile.write("0;  lvl cap 1\n")
             saveFile.write("PFS;    capacite 2\n")
             saveFile.write("0;  lvl cap 2\n")
-            saveFile.write("RDM;    capacite 3")
+            saveFile.write("RDM;    capacite 3\n")
             saveFile.write("0;  lvl cap 3\n")
             saveFile.write("Laplace;    ulti\n")
             saveFile.write("0;  ulti lvl\n")
@@ -49,7 +50,7 @@ def create(name,classe):
             saveFile.write("0;  lvl cap 1\n")
             saveFile.write("PFS;    capacite 2\n")
             saveFile.write("0;  lvl cap 2\n")
-            saveFile.write("RDM;    capacite 3")
+            saveFile.write("RDM;    capacite 3\n")
             saveFile.write("0;  lvl cap 3\n")
             saveFile.write("Laplace;    ulti\n")
             saveFile.write("0;  ulti lvl\n")
@@ -58,7 +59,7 @@ def create(name,classe):
             saveFile.write("0;  lvl cap 1\n")
             saveFile.write("PFS;    capacite 2\n")
             saveFile.write("0;  lvl cap 2\n")
-            saveFile.write("RDM;    capacite 3")
+            saveFile.write("RDM;    capacite 3\n")
             saveFile.write("0;  lvl cap 3\n")
             saveFile.write("Laplace;    ulti\n")
             saveFile.write("0;  ulti lvl\n")
@@ -100,8 +101,11 @@ def load(name,player):
             player.pointbonus = int( saveFile.readline().strip().split(";")[0] )
             
             #inventaire
+            player.inventaire = inventaire.inventaire()
             player.inventaire.fromString( saveFile.readline().strip() )
+            player.inventaire.fromString("[pokeball,1;pokeball,2;epee_en_bois,2;pokeball,8;pokeball,2]")
         except Exception as e:
+            print("could not load save:",e)
             return False
         else:
             saveFile.close()

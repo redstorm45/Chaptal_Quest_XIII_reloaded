@@ -738,10 +738,28 @@ def drawATH(fenetre,player):
     else :
         fenetre.blit(sprites[player.ULTI + "IconeCD"],(xEcran-2+156+36+64,yEcran-131))
 
+def drawObjetInventaire(obj,x,y,fenetre):
+    fenetre.blit(listObjetSprites[obj.sprite],(x,y))
+    if obj.stackable:
+        pass
 
 def drawInventaire(player,fenetre):
     xPos = (fenetre.get_width()-sprites["inventaire"].get_width())//2
     yPos = (fenetre.get_height()-sprites["inventaire"].get_height())//2
+    posInv = [(86,25),
+              (86,130),(186,130),
+              (86,245),(186,245),(286,245),(386,245),
+              (86,360),(186,360),(286,360),(386,360)]
     fenetre.blit(sprites["inventaire"],(xPos,yPos))
+    for i in range(len(player.inventaire.listObjets)):
+        item = player.inventaire.listObjets[i]
+        pos = posInv[i]
+        drawObjetInventaire(item,xPos+pos[0],yPos+pos[1],fenetre)
+        
+        
+        
+        
+        
+        
         
     
