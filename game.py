@@ -18,7 +18,8 @@ import capacite
 import collision
 import PNG
 import son
-
+import random
+import inventaire
 
 
 
@@ -78,6 +79,11 @@ def draw(fenetre):
     if player.spriteCapacite != '' and player.spriteCapaciteTimer >0:
         dessin.drawCapacite(player,fenetre)
     
+    for s,l,o in dessin.interfaceDrops:
+        posX = (fenetre.get_width()-s.get_width())//2
+        posY = (fenetre.get_height()-s.get_height())//2-o
+        fenetre.blit(s,(posX,posY))
+    
     if dessin.interfaceQueteOn:
         dessin.drawInterface(fenetre)
     dessin.drawATH(fenetre,player)
@@ -85,7 +91,7 @@ def draw(fenetre):
     #inventaire
     if inventaireOuvert:
         dessin.drawInventaire(player,fenetre)
-        
+
 #touches de mouvement
 def actionKeys(listPressed):
     global player,ennemiList,projectileList
@@ -192,6 +198,38 @@ def findPNG():
             print(p.name+":")
             print(p.texte)
 
+#supprime un ennemi, et gère le reste
+def mortEnnemi(ennemi):
+    #tue l'ennemi
+    son.play("mort")
+    ennemiList.remove(ennemi)
+    player.levelup += ennemi.exp
+    #check quêtes
+    for q in quete.listeQuetesActives:
+        if q.trouvee and q.objType == 3:
+            if ennemi.name in q.data["target"].keys():
+                q.data["current"][ennemi.name] += 1
+                q.checkCompleted()
+    #génère des drops
+    drops = []
+    for k in ennemi.drops.keys():
+        obj = inventaire.objet(k)
+        #nombre d'objets:
+        nbObj = 0
+        if ennemi.drops[k] <= 1:
+            if random.random() < ennemi.drops[k]:
+                nbObj = 1
+        else:
+            nbObj = random.randint(0,ennemi.drops[k])
+        
+        if nbObj >= 1:
+            if nbObj > 1:
+                obj.stackSize = nbObj
+            drops.append(obj)
+    for d in drops:
+        player.inventaire.add(d)
+    dessin.addTooltipDrop(drops)
+    
 #evenement de mise à jour (ia et animations)    
 def tick():
     player.anim += 0.25
@@ -221,16 +259,7 @@ def tick():
     for e in ennemiList:
         #mort d'un ennemi
         if e.hp < 0:
-            son.play("mort")
-            ennemiList.remove(e)
-            player.levelup += e.exp
-            for q in quete.listeQuetesActives:
-                if q.trouvee and q.objType == 3:
-                    if e.name in q.data["target"].keys():
-                        q.data["current"][e.name] += 1
-                        q.checkCompleted()
-        
-        
+            mortEnnemi(e)
         
         if e.aura == 'Laplace':
             e.hp -= 0.1/60 * 100*2**e.lvl
@@ -272,9 +301,18 @@ def tick():
         player.pointbonus += 1
         player.hp = player.lvl * 100
         player.surfLvl = dessin.buttonFontXXS.render( str(player.lvl) , True , (0,0,255) )
+        
+    #tooltip interface
+    for i in range(len(dessin.interfaceDrops)):
+        t = dessin.interfaceDrops[i]
+        [surf,life,offset] = t
+        dessin.interfaceDrops[i][1] -= 1
+        if life> 0:
+            dessin.interfaceDrops[i][2]+=1
     
-   
-    
+    for t in dessin.interfaceDrops:
+        if t[1]<=0:
+            dessin.interfaceDrops.remove(t)
     
     
     

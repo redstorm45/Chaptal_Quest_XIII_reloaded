@@ -9,3 +9,4 @@ orc
 100;armor
 [ -1/4 , 1/4 , -1/4 , 1/4 ];hitbox
 200;gain dexp
+{"pokeball":20} ;objets pouvant êtres dropés, et chances de drop (>1 :nb max)

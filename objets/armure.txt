@@ -1,4 +1,5 @@
-False;    stackable
+armure;  nom en jeu
+0;    stackable
 armure;	 sprite
 armure;    type d'objet (misc/arme/armure/casque)
 100;	 armure

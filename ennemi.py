@@ -24,6 +24,7 @@ class Ennemi(joueurBase.JoueurBase):
         self.hitbox      = eval(file.readline().strip().split(";")[0])
         self.spriteName  = str(self.spriteName[0])
         self.exp         = int(file.readline().strip().split(";")[0])
+        self.drops       = eval(file.readline().strip().split(";")[0])
         self.degatarme = 0
     
         #stats

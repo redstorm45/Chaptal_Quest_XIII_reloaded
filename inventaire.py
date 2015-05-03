@@ -12,8 +12,9 @@ class objet():
         self.name = name
         
         try:
-            file = open( "objets/" + name + ".txt")
-            self.stackable = bool( file.readline().strip().split(";")[0] )
+            file = open( "objets/" + name + ".txt",encoding = "utf-8")
+            self.gameName = file.readline().strip().split(";")[0]
+            self.stackable = bool(int(file.readline().strip().split(";")[0]))
             self.sprite = file.readline().strip().split(";")[0]
             self.type      = file.readline().strip().split(";")[0]
             if self.stackable:
@@ -31,10 +32,10 @@ class objet():
             print("défaut d'un objet:",name)
     
     def toString(self):
-        return self.name+","+self.stackSize
+        return self.name+","+str(self.stackSize)
         
     def fromString(self,s):
-        self.stackSize = s[1]
+        self.stackSize = int( s[1] )
 
 class inventaire:
     
@@ -43,18 +44,22 @@ class inventaire:
     
     def add(self,obj):
         if obj.stackable:
-            for i in listObjets:
+            found = False
+            for i in self.listObjets:
                 if i.type == obj.type:
                     i.stackSize += 1
+                    found = True
                     break
+            if not found:
+                self.listObjets.append(obj)
         else:
             self.listObjets.append(obj)
     
     def toString(self):
-        str = "["
+        str = ""
         for i in self.listObjets:
             str += ";"+i.toString()
-        str = str + "]"
+        str = "["+str[1:] + "]"
         return str
     
     def fromString(self,str):

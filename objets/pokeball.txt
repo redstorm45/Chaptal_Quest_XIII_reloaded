@@ -1,3 +1,4 @@
-True;    stackable
+boule rouge et blanche;  nom en jeu
+1;    stackable
 pokeball; sprite
 misc;    type d'objet (misc/arme/armure)

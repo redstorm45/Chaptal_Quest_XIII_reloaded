@@ -103,7 +103,7 @@ def load(name,player):
             #inventaire
             player.inventaire = inventaire.inventaire()
             player.inventaire.fromString( saveFile.readline().strip() )
-            player.inventaire.fromString("[pokeball,1;pokeball,2;epee_en_bois,2;pokeball,8;pokeball,2]")
+            #player.inventaire.fromString("[pokeball,1;pokeball,2;epee_en_bois,2;pokeball,8;pokeball,2]")
         except Exception as e:
             print("could not load save:",e)
             return False
@@ -122,15 +122,17 @@ def save(player):
         saveFile.write(str(player.lvl)+";   lvl joueur\n")
         saveFile.write(player.classe+"; classe\n")
         saveFile.write(str(player.capacite1)+";    capacite 1\n")
-        saveFile.write(str(player.capacite1Lvl)+"   Lvl capacite 1 \n")
+        saveFile.write(str(player.capacite1Lvl)+";   Lvl capacite 1 \n")
         saveFile.write(str(player.capacite2)+";    capacite 2\n")
-        saveFile.write(str(player.capacite2Lvl)+"   Lvl capacite 2 \n")
+        saveFile.write(str(player.capacite2Lvl)+";   Lvl capacite 2 \n")
         saveFile.write(str(player.capacite3)+";    capacite 3\n")
-        saveFile.write(str(player.capacite3Lvl)+"   Lvl capacite 3 \n")                
+        saveFile.write(str(player.capacite3Lvl)+";   Lvl capacite 3 \n")      
+        saveFile.write(str(player.ULTI)+";    ulti\n")
+        saveFile.write(str(player.ULTILvl)+";   Lvl ulti \n")      
         saveFile.write(str(player.pointbonus)+";    point bonus\n")
-        
         saveFile.write(player.inventaire.toString()+"\n")
-    except:
+    except Exception as e:
+        print("except:",e)
         return False
     else:
         saveFile.close()

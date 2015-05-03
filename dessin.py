@@ -62,6 +62,7 @@ interfaceQuetes = None
 interfaceBoutonsQuetes = []
 interfaceBoutonsQuetesEtendue = []
 interfaceBoutonsQuetesAffiches = []
+interfaceDrops = []
 
 #surfaces de l'overlay en jeu
 overlayBack = None
@@ -194,7 +195,7 @@ def initDraw(fenetre):
     newGameBack.fill( (0,0,0) )
     
     newGameTitle = buttonFontM.render("Choisissez votre classe",True,(240,240,240))
-    newGameName = elt.BoutonTexte( fenetre.get_width()//2,int(fenetre.get_height()*0.18),10,10,10,(0,0,0),(0,0,0),buttonFontM,"",(81,88,220),align="centertop")
+    newGameName = elt.BoutonTexte( fenetre.get_width()//2,int(fenetre.get_height()*0.14),10,10,10,(0,0,0),(0,0,0),buttonFontM,"",(81,88,220),align="centertop")
     newGameButtons = mouse.boutons["nouveau"]
     newGameButtons["PTSI"].setSurfCenterTop( buttonFontM.render("PTSI" ,True,(240,240,240)) )
     newGameButtons["PTSI"].surf2 = buttonFontM.render("PTSI" ,True,(120,120,120))
@@ -273,6 +274,21 @@ def initInterface(quetes):
 
 def reloadInterface(quetes):
     initInterface(quetes)
+
+def addTooltipDrop(listDrops):
+    global interfaceDrops
+    #trouve le dernier affichage
+    lastOffset = 0
+    for t in interfaceDrops:
+        lastOffset = min(lastOffset,t[2])
+    #crée les différents affichages
+    lastOffset = max(0,lastOffset-20)
+    for i in range(len(listDrops)):
+        txt = listDrops[i].gameName
+        if listDrops[i].stackable:
+            txt += " x"+str(listDrops[i].stackSize)
+        e = buttonFontXS.render(txt,True,(230,230,30))
+        interfaceDrops.append([e,250,i*30+lastOffset])
 
 def setQueteEtendue(id):
     pos = 10
@@ -705,12 +721,12 @@ def drawATH(fenetre,player):
     size = 403-33 #oui j'ai la fleme de faire le calcul
     
     #affiche la barre d'exp et de PV
-    pygame.draw.rect( fenetre , (255,0,0) , (xEcran,yEcran-30,size,17) )
-    pygame.draw.rect( fenetre , (0,255,0) , (xEcran,yEcran-30,size*player.hp/(100*player.lvl),17) )
+    pygame.draw.rect( fenetre , (255,0,0) , (xEcran,yEcran-30,size,18) )
+    pygame.draw.rect( fenetre , (0,255,0) , (xEcran,yEcran-30,size*player.hp/(100*player.lvl),18) )
     
     
-    pygame.draw.rect( fenetre , (100,100,0) , (xEcran,yEcran-50,size,17) )
-    pygame.draw.rect( fenetre , (255,255,0) , (xEcran,yEcran-50,size*player.levelup/(100*2**player.lvl),17) )
+    pygame.draw.rect( fenetre , (100,100,0) , (xEcran,yEcran-50,size,18) )
+    pygame.draw.rect( fenetre , (255,255,0) , (xEcran,yEcran-50,size*player.levelup/(100*2**player.lvl),18) )
     
     if not player.surfLvl:
         player.surfLvl = buttonFontXXS.render( str(player.lvl) , True , (255,0,0) )
@@ -740,8 +756,11 @@ def drawATH(fenetre,player):
 
 def drawObjetInventaire(obj,x,y,fenetre):
     fenetre.blit(listObjetSprites[obj.sprite],(x,y))
-    if obj.stackable:
-        pass
+    if obj.stackable:#affichage du nb d'items
+        surfNb = buttonFontXS.render(str(obj.stackSize),True,(255,255,255))
+        posX = x+64-surfNb.get_width()
+        posY = y+70-surfNb.get_height()
+        fenetre.blit(surfNb,(posX,posY) )
 
 def drawInventaire(player,fenetre):
     xPos = (fenetre.get_width()-sprites["inventaire"].get_width())//2

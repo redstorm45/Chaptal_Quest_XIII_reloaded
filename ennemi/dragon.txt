@@ -9,3 +9,4 @@ dragon
 400;armor
 [ -3/4 , 2+3/4 , -3/4+2 , 3/4+2 ];hitbox
 20000;gain dexp
+{"casque":1,"armure":1} ;objets pouvant êtres dropés, et chances de drop

@@ -248,7 +248,6 @@ while running:
                         game.init()
                         state = ETAT_GAME
                 elif state == ETAT_GAME:
-                    print("click game",x,y)
                     for b in dessin.interfaceBoutonsQuetesAffiches:
                         if b.isInside(x,y):
                             dessin.setQueteEtendue(b.widgets[0].id)

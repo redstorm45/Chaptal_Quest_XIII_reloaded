@@ -1,4 +1,5 @@
-False;      stackable
+casque;  nom en jeu
+0;      stackable
 casque;	    sprite
 casque;     type d'objet (misc/arme/armure/casque)
 100;	    defense

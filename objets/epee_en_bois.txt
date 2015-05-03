@@ -1,4 +1,5 @@
-False;    stackable
+épée en bois;  nom en jeu
+0;    stackable
 epee_en_bois;	 sprite
 arme;    type d'objet (misc/arme/armure/casque)
 10;	 degat de l'arme

@@ -11,7 +11,7 @@ speed = 1/16
 speedDiag = speed
 
 #mode de débogguage
-debugMode = True
+debugMode = False
 
 #charge la sauvegarde de débogguage plutôt qu'une sauvegarde normale
 debugSave = False
@@ -20,7 +20,7 @@ debugSave = False
 affHitbox = False
 
 #musique
-musiqueActive = True
+musiqueActive = False
 musiqueVolume = 50
 
 #mode d'édition
