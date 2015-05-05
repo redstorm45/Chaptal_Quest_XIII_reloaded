@@ -11,7 +11,7 @@ speed = 1/16
 speedDiag = speed
 
 #mode de débogguage
-debugMode = False
+debugMode = True
 
 #charge la sauvegarde de débogguage plutôt qu'une sauvegarde normale
 debugSave = False
@@ -24,6 +24,6 @@ musiqueActive = False
 musiqueVolume = 50
 
 #mode d'édition
-editMode = False
+editMode = True
 editRegion = "couloir/2.V1"
 

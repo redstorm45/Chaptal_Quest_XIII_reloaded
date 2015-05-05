@@ -33,7 +33,7 @@ cursor = "sprite"
 
 #cases selectionnées (sprites)
 caseSel = []
-#item selectionnées (item)
+#item selectionnée (item)
 itemSel = []
 #event selectionné  (event)
 eventSel = None
@@ -108,6 +108,23 @@ def draw(fenetre):
     elif cursor == "item":
         pygame.draw.rect( fenetre , (255,0,0) ,(xMouse-2,yMouse-10,4,20) )
         pygame.draw.rect( fenetre , (255,0,0) ,(xMouse-10,yMouse-2,20,4) )
+        
+        if itemSel:
+            [xI,yI,type] = itemSel
+            surf = dessin.listItemSprites[type]
+            w,h = surf.get_width(),surf.get_height()
+            
+            xEcran = xI * 64  + dessin.xOffset
+            yEcran = yI * 64  + dessin.yOffset
+            
+            pygame.draw.lines( fenetre , (255,0,0) , True, [(xEcran   ,yEcran   ),
+                                                            (xEcran+w ,yEcran   ),
+                                                            (xEcran+w ,yEcran+h ),
+                                                            (xEcran   ,yEcran+h )],2 )
+                                                            
+            pygame.draw.line(fenetre,(255,0,0),(xEcran   ,yEcran), (xEcran+w,yEcran+h ) ,2 )
+            pygame.draw.line(fenetre,(255,0,0),(xEcran+w ,yEcran), (xEcran  ,yEcran+h ) ,2 )
+        
     elif cursor == "event":
         pygame.draw.rect( fenetre , (0,0,255) ,(xMouse-2,yMouse-10,4,20) )
         pygame.draw.rect( fenetre , (0,0,255) ,(xMouse-10,yMouse-2,20,4) )
@@ -163,7 +180,7 @@ def clickR(x,y):
         
 #clique gauche à un endroit: selectionne la case
 def clickL(x,y):
-    global eventSel,teleportCaseReg,teleportCase,teleportEvent
+    global eventSel,teleportCaseReg,teleportCase,teleportEvent,itemSel
     #coordonnées de la case
     xC,yC = x-dessin.xOffset , y-dessin.yOffset
     xC,yC = xC//64 , yC//64
@@ -179,6 +196,33 @@ def clickL(x,y):
                     canAdd = False
             if canAdd:
                 caseSel.append( (xC,yC) )
+    elif cursor == "item":
+        underMouse = []
+        for i in regionEditee.itemList:
+            [x,y,name] = i
+            sprite = dessin.listItemSprites[name]
+            w,h = sprite.get_width()//64-1,sprite.get_height()//64-1
+            if xC >= x and xC <= x+w and yC >= y and yC <= y+h:
+                underMouse.append(i)
+        
+        if not itemSel and underMouse:
+            itemSel = underMouse[0]
+        elif underMouse:
+            if itemSel in underMouse:
+                i = underMouse.index(itemSel)
+                if len(underMouse)> i+2:
+                    itemSel = underMouse[i+1]
+                else:
+                    itemSel = []
+            else:
+                itemSel = []
+        currentS = regionEditee.at(xC,yC)
+        canAdd = True
+        for xsel,ysel in caseSel:
+            if regionEditee.at(xsel,ysel) != currentS:
+                canAdd = False
+        if canAdd:
+            caseSel.append( (xC,yC) )
     elif cursor == "event":
         for e in regionEditee.eventList:
             if e.activate(xC,yC) and eventSel != e:
@@ -199,7 +243,7 @@ def clickL(x,y):
                 eventSel = "tel"
 
 def clickMid(x,y):
-    global eventSel
+    global eventSel,itemSel
     #coordonnées de la case
     xC,yC = x-dessin.xOffset , y-dessin.yOffset
     xC,yC = xC//64 , yC//64
@@ -213,10 +257,14 @@ def clickMid(x,y):
             regionEditee.eventList.append( map.EventReg("1,1,1,1:t,couloir/1.V1,1,1") )
             eventSel = regionEditee.eventList[ len(regionEditee.eventList)-1 ]
             eventSel.surf = dessin.buttonFontXXS.render( eventSel.__repr__() , True , (60,60,255) )
+    elif cursor == "item":#copie l'item
+        if itemSel:
+            newI = [itemSel[i] for i in range(3)]
+            regionEditee.itemList.append(newI)
 
 def mouseWheel(dir):
     global changesSaved
-    global eventSel,teleportCaseReg,teleportCase,teleportEvent
+    global eventSel,teleportCaseReg,teleportCase,teleportEvent,itemSel
     if cursor == "sprite":
         for xC,yC in caseSel:
             if dir > 0:
@@ -259,6 +307,13 @@ def mouseWheel(dir):
                         eventSel.pA[1] -= dir
                         eventSel.pB[1] -= dir
                 changesSaved = False
+    elif cursor == "item":
+        if itemSel:
+            if pygame.key.get_mods() & pygame.locals.KMOD_CTRL:
+                itemSel[0] += dir
+            else:
+                itemSel[1] += dir
+            changesSaved = False
 
 #réduit la taille de la région en enlevant les bords vides inutiles
 def optimiseStep():

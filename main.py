@@ -22,35 +22,32 @@ objectifs:
 
 ce qui n'est pas à faire:
 
- changer les prites pour les rendres plus beau (trop de temps)
+ changer les sprites pour les rendres plus beau (trop de temps)
 
 """
 
 import pygame
 from pygame.locals import *
 
-import map
+#modules systèmes
+import math,string,ctypes
+
+#modules du programme
+#E/S
 import dessin
-import game
-import math
 import keybinding
 import mouse
+#données sous forme de variables
+import map
+import game
 import option
-import string
+#données à charger
 import save
 import texte
-import editGame
 import son
 import inventaire
-
-
-
-
-classe = "PTSI"
-inventaireOuvert = False
-
-
-
+#édition
+import editGame
 
 #definition des différents états du jeu
 ETAT_MENU         = 1  #menu
@@ -65,14 +62,13 @@ ETAT_CHARGE       = 9  #selection invalide (nom de sauvagarde déjà utilisé)
 ETAT_QUIT         = 10 #fin du programme
 ETAT_EDIT         = 11 #edition des niveaux
 
-#crée la fenetre
-pygame.mixer.pre_init(44100, 16, 2, 4096)
-pygame.init()
-
-import ctypes
+#trouve la vraie taille de l'écran
 user32 = ctypes.windll.user32
 user32.SetProcessDPIAware()
 theScrWidth,theScrHeight = user32.GetSystemMetrics(0), user32.GetSystemMetrics(1)
+#crée la fenetre
+pygame.mixer.pre_init(44100, 16, 2, 4096)
+pygame.init()
 
 if option.debugMode:
     fenetre = pygame.display.set_mode( (theScrWidth,theScrHeight) )
@@ -80,6 +76,7 @@ else:
     fenetre = pygame.display.set_mode( (theScrWidth,theScrHeight),FULLSCREEN )
 pygame.display.set_caption("Chaptal Quest XIII - reloaded")
 
+#attend l'initialisation de pygame
 while not pygame.display.get_init():
     pass
 
@@ -96,13 +93,13 @@ son.init()
 mouse.init(fenetre.get_width(),fenetre.get_height())
 
 #initialise l'affichage avec la taille de l'écran
-dessin.loadAllSprites()
-dessin.initDraw(fenetre)
-dessin.initMaps(map.theMap)
+dessin.loadAllSprites()     #charge tous les sprites
+dessin.initDraw(fenetre)    #prédessine toutes les entitées
+dessin.initMaps(map.theMap) #prédessine chaque région
 
 #initialisation de l'horloge
 clock = pygame.time.Clock()
-fps = 10
+fps = 60
 
 #initialisation de l'état avant entrée dans la boucle
 state = ETAT_MENU
@@ -199,6 +196,7 @@ while running:
                     game.findPNG()
                 elif event.key in keybinding.keys["INVENTAIRE"]:
                     game.inventaireOuvert = not game.inventaireOuvert
+        #appui sur un bouton de souris
         if event.type == MOUSEBUTTONDOWN:
             if event.button == 1:#bouton gauche
                 x,y = event.pos
@@ -328,6 +326,7 @@ while running:
     #clock
     fps = clock.tick(60)
 
+#arrêt du programme
 son.stop()
 pygame.mixer.quit()
 pygame.quit()
