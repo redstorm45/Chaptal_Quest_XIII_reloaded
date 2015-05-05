@@ -3,14 +3,26 @@
 Fichier principal du programme
 Il gère les évènements, et la fenêtre
 
-à faire:
 
-+ecran de chargement
-+module d'animations
-+interface utilisateur (en jeu)
-+ajouter du son
-+ajouter des objets
-+agrandir la map
+objectifs:
+
+ avoir une séquence complète de jeu jouable
+ (intro, + début de 1ère quête)
+
+>ajouter des objets (sprites)
+ utilisables, avec capacitées etc..(armes/obj spé...)
+
+>ajouter la map nécéssaire
+
+>faire un affichage de l'histoire
+
+>optimiser les collisions et les ennemis (pour la jouabilitée)
+
+>ajuster les dégats
+
+ce qui n'est pas à faire:
+
+ changer les prites pour les rendres plus beau (trop de temps)
 
 """
 

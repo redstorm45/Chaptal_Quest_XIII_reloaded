@@ -52,3 +52,12 @@ def checkCase(regionName,x,y):
     if map.theMap.regionList[regionName].at( int(x) , int(y) ) in collideList:
         return False
     return True
+    
+    
+    
+def hitbox(player):
+    x,y = player.position[1],player.position[2]
+    hitbox = [(x+player.hitbox[0],y+player.hitbox[2]),
+              (x+player.hitbox[1],y+player.hitbox[2]),
+              (x+player.hitbox[1],y+player.hitbox[3]),
+              (x+player.hitbox[0],y+player.hitbox[3])]

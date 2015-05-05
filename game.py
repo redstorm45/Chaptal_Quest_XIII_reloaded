@@ -206,7 +206,7 @@ def mortEnnemi(ennemi):
     player.levelup += ennemi.exp
     #check quêtes
     for q in quete.listeQuetesActives:
-        if q.trouvee and q.objType == 3:
+        if q.trouvee and q.objType == 3 and not q.completed:
             if ennemi.name in q.data["target"].keys():
                 q.data["current"][ennemi.name] += 1
                 q.checkCompleted()
