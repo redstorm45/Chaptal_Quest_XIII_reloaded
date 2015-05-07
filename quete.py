@@ -62,7 +62,20 @@ class Quete:
                 break
         return line
     
+    #donne plusieurs lignes de texte à la suite
+    def getMultiLine(self,f):
+        line = self.getNextLine(f)
+        while True:
+            l = f.readline()
+            if not l.startswith("#"):
+                line += l
+            else:
+                break
+        return line
+        
     def checkCompleted(self,player = None):
+        if self.completed:
+            return
         if player:
             pos = player.position
         else:
@@ -70,6 +83,7 @@ class Quete:
         if self.objType == 1:
             if self.data["target"][0] == pos[0]:
                 if self.data["target"][1] == self.data["target"][2] == -1:
+                    print("quest",self.id,"completee")
                     self.completed = True
                     self.changed = True
                 elif int(pos[0]) == self.data["target"][0] and int(pos[1]) == self.data["target"][1]:
@@ -83,17 +97,7 @@ class Quete:
             if compl:
                 self.completed = True
                 self.changed = True
-    
-    #donne plusieurs lignes de texte à la suite
-    def getMultiLine(self,f):
-        line = self.getNextLine(f)
-        while True:
-            l = f.readline()
-            if not l.startswith("#"):
-                line += l
-            else:
-                break
-        return line
+                print("quete d'ennemi",self.id,"completee")
         
 #charge toutes les quêtes disponibles
 def loadQuetes():

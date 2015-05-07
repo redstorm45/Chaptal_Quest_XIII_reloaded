@@ -261,7 +261,6 @@ while running:
                     for b in dessin.interfaceBoutonsQuetesAffiches:
                         if b.isInside(x,y):
                             dessin.setQueteEtendue(b.widgets[0].id)
-                            print("setting",b.widgets[0].id)
                 elif state == ETAT_OVERLAY:
                     b = mouse.getBoutonAt("overlay",x,y)
                     if b:

@@ -273,7 +273,35 @@ def initInterface(quetes):
     interfaceQuetes.setWidgets(interfaceBoutonsQuetesAffiches)
 
 def reloadInterface(quetes):
-    initInterface(quetes)
+    global interfaceBoutonsQuetes,interfaceBoutonsQuetesEtendue
+    global interfaceBoutonsQuetesAffiches,interfaceQuetes
+    #suppression des bt quetes finies à insérer ici
+    qExistantes = {}
+    for i in range(len(interfaceBoutonsQuetes)):
+        qExistantes[interfaceBoutonsQuetes[i].id] = i
+    pos = 10
+    for q in quetes:
+        if q.trouvee:
+            color = (0,128,255)
+            if q.completed:
+                color = (30,128,30)
+            bt = elt.BoutonTexte(0,0,20,30,2,(20,20,20),(20,20,20),buttonFontXXS,q.name, color ,align="topleft")
+            bt.id = q.id
+            if not q.id in qExistantes.keys():
+                bt2 = elt.BoutonTexte(0,30,250,30,2,(20,20,20),(20,20,20),buttonFontXXS,q.info,(64,64,255),align="topleft",multiLine=True)
+                cadre = elt.Cadre(20,pos,[bt],align="topleft")
+                interfaceBoutonsQuetes.append(bt)
+                interfaceBoutonsQuetesEtendue.append(bt2)
+                interfaceBoutonsQuetesAffiches.append(cadre)
+            else:
+                posList = qExistantes[q.id]
+                interfaceBoutonsQuetes[posList] = bt
+                interfaceBoutonsQuetesAffiches[posList].setWidgets([bt])
+                interfaceBoutonsQuetesAffiches[posList].setTop(pos)
+            pos += bt.h
+                
+    interfaceQuetes.setWidgets(interfaceBoutonsQuetesAffiches)
+
 
 def addTooltipDrop(listDrops):
     global interfaceDrops

@@ -138,7 +138,7 @@ def actionKeys(listPressed):
     modif = False
     
     for q in quete.listeQuetesActives:
-        if q.trouvee and q.objType == 1:
+        if q.trouvee and q.objType == 1 and not q.completed:
             q.checkCompleted( player )
             if q.changed:
                 modif = True
