@@ -276,29 +276,41 @@ def reloadInterface(quetes):
     global interfaceBoutonsQuetes,interfaceBoutonsQuetesEtendue
     global interfaceBoutonsQuetesAffiches,interfaceQuetes
     #suppression des bt quetes finies à insérer ici
+    #trouver l'id des quêtes dont le bouton est déjà affiché
     qExistantes = {}
+    qEtendues = []
     for i in range(len(interfaceBoutonsQuetes)):
+        if len(interfaceBoutonsQuetesAffiches[i].widgets) == 2:
+            qEtendues.append( interfaceBoutonsQuetes[i].id )
         qExistantes[interfaceBoutonsQuetes[i].id] = i
+    #refresh pour toutes les quêtes
     pos = 10
     for q in quetes:
         if q.trouvee:
+            #crée le texte: nom de la quête
             color = (0,128,255)
             if q.completed:
                 color = (30,128,30)
             bt = elt.BoutonTexte(0,0,20,30,2,(20,20,20),(20,20,20),buttonFontXXS,q.name, color ,align="topleft")
             bt.id = q.id
+            #crée les widgets si ils n'existent pas
             if not q.id in qExistantes.keys():
                 bt2 = elt.BoutonTexte(0,30,250,30,2,(20,20,20),(20,20,20),buttonFontXXS,q.info,(64,64,255),align="topleft",multiLine=True)
                 cadre = elt.Cadre(20,pos,[bt],align="topleft")
                 interfaceBoutonsQuetes.append(bt)
                 interfaceBoutonsQuetesEtendue.append(bt2)
                 interfaceBoutonsQuetesAffiches.append(cadre)
+            #référence le nouveau texte pour tous les widgets
             else:
                 posList = qExistantes[q.id]
                 interfaceBoutonsQuetes[posList] = bt
-                interfaceBoutonsQuetesAffiches[posList].setWidgets([bt])
+                desc = interfaceBoutonsQuetesEtendue[posList]
+                if q.id in qEtendues:
+                    interfaceBoutonsQuetesAffiches[posList].setWidgets([bt,desc])
+                else:
+                    interfaceBoutonsQuetesAffiches[posList].setWidgets([bt])
                 interfaceBoutonsQuetesAffiches[posList].setTop(pos)
-            pos += bt.h
+            pos += interfaceBoutonsQuetesAffiches[posList].h
                 
     interfaceQuetes.setWidgets(interfaceBoutonsQuetesAffiches)
 
