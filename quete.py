@@ -121,11 +121,11 @@ class Quete:
     
 #charge toutes les quêtes disponibles
 def loadQuetes():
-    global listQuetes
-    global listQuetesActives
+    global listeQuetes
+    global listeQuetesActives
     i = 0
-    listQuetes = []
-    listQuetesActives = []
+    listeQuetes = []
+    listeQuetesActives = []
     while True:
         i += 1
         q = Quete(i)
@@ -157,8 +157,6 @@ def refreshActive():
                 if q.autoTrouve:
                     q.trouvee = True
                 listeQuetesActives.append(q)
-    print("refresh actives:")
-    print(listQuetesActives)
 
 #représente les quêtes pour les sauvegarder
 def getTextRepr():
@@ -172,8 +170,6 @@ def fromTextRepr(txt):
     list = txt[1:-1].split(";")
     for i in list:
         [qID,statut] = i.split(",")
-        print("getting ",qID," at ",statut)
-        print("in",listeQuetes)
         quest = getQuete( int(qID) )
         quest.fromStatus(statut)
         if quest.active:

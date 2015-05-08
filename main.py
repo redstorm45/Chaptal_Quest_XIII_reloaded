@@ -275,11 +275,15 @@ while running:
                     if b:
                         if b.name == "quitter":
                             if dessin.overlaySaved:
+                                save.unload(game.joueur)
+                                game.quit()
                                 state = ETAT_QUIT
                             else:
                                 state = ETAT_OVERLAY_Q
                         elif b.name == "menu":
                             if dessin.overlaySaved:
+                                save.unload(game.joueur)
+                                game.quit()
                                 state = ETAT_MENU
                             else:
                                 state = ETAT_OVERLAY_M

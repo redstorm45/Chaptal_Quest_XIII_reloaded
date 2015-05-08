@@ -151,11 +151,10 @@ def save(player):
     return True
 
 #déchargement du fichier courrant de la mémoire
-def unload():
+def unload(player):
     global currentSaveName
     currentSaveName = None
-    #RAZ des quetes
-
+    player.inventaire = None
 
 
 

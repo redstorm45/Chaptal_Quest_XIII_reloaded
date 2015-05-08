@@ -6,8 +6,8 @@ m3	s	s	s	s	tm4	e5	e5	e5	e5
 m3	s	s	s	s	ta8	e4	e4	e4	e4
 m3	s	s	s	s	b7	m5	m5	m5	m5
 m3	s	s	s	s	b1	m1	m1	m1	m1
-m3	s	s	s	p	ta7	e10	e10	e10	e10
-m3	s	s	s	p	tm4	e11	e11	e11	e11
-m3	s	s	s	p	tm4	e11	e11	e11	e11
-m3	s	s	s	p	ta8	e12	e12	e12	e12
+m3	s	s	s	m3	ta7	e10	e10	e10	e10
+m3	s	s	s	m3	tm4	e11	e11	e11	e11
+m3	s	s	v	m3	tm4	e11	e11	e11	e11
+m3	s	s	s	m3	ta8	e12	e12	e12	e12
 a5	m5	m5	m5	m5	m5	m5	m5	m5	m5

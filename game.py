@@ -54,6 +54,15 @@ def init():
     #initialisation de la liste d'ennemi
     ennemiList = map.theMap.regionList[ player.position[0] ].ennemiList[:]
 
+def quit():
+    global ennemiList
+    
+    ennemiList = []
+    for k in map.theMap.regionList.keys():
+        r = map.theMap.regionList[k]
+        r.ennemiList = []
+        r.PNGlist = []
+
 #dessin de la scène
 def draw(fenetre):
     global player

@@ -5,7 +5,6 @@ ainsi que l'écran d'options
 
 """
 
-
 #vitesse du déplacement
 speed = 1/16
 speedDiag = speed

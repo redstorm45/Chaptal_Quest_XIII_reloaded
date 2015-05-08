@@ -285,6 +285,8 @@ def mouseWheel(dir):
                     next = dessin.listStyleSprites[ dessin.listStyleSprites.index(curr) -1 ]
                 regionEditee.setAt(xC,yC,next)
                 changesSaved = False
+        regionEditee.preRender =  pygame.Surface( ( 64*regionEditee.width , 64*regionEditee.height ) )
+        dessin.drawPreRender(regionEditee,regionEditee.preRender)
     elif cursor == "event":
         if eventSel:
             if eventSel == "tel":
