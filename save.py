@@ -8,6 +8,7 @@ sur une partie (avancement des quetes, fillière etc...)
 import option
 import os
 import inventaire
+import quete
 
 currentSaveName = None
 
@@ -67,6 +68,7 @@ def create(name,classe):
         saveFile.write("1;  point bonus/n")
         
         saveFile.write("[]\n")
+        saveFile.write("[1,t;2,t]")
     except:
         return False
     else:
@@ -103,7 +105,10 @@ def load(name,player):
             #inventaire
             player.inventaire = inventaire.inventaire()
             player.inventaire.fromString( saveFile.readline().strip() )
-            #player.inventaire.fromString("[pokeball,1;pokeball,2;epee_en_bois,2;pokeball,8;pokeball,2]")
+            
+            #quêtes
+            quete.fromTextRepr( saveFile.readline().strip() )
+            
         except Exception as e:
             print("could not load save:",e)
             return False
@@ -118,7 +123,9 @@ def save(player):
     global currentSaveName
     try:
         saveFile = open("save/"+currentSaveName+".save","w")
-        saveFile.write(player.position[0]+","+str(player.position[1])+","+str(player.position[2])+"\n") #position
+        #position
+        saveFile.write(player.position[0]+","+str(player.position[1])+","+str(player.position[2])+"\n")
+        #stats
         saveFile.write(str(player.lvl)+";   lvl joueur\n")
         saveFile.write(player.classe+"; classe\n")
         saveFile.write(str(player.capacite1)+";    capacite 1\n")
@@ -130,7 +137,10 @@ def save(player):
         saveFile.write(str(player.ULTI)+";    ulti\n")
         saveFile.write(str(player.ULTILvl)+";   Lvl ulti \n")      
         saveFile.write(str(player.pointbonus)+";    point bonus\n")
+        #inventaire
         saveFile.write(player.inventaire.toString()+"\n")
+        #quêtes
+        saveFile.write(quete.getTextRepr()+"\n")
     except Exception as e:
         print("except:",e)
         return False

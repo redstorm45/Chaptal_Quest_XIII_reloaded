@@ -1,4 +1,4 @@
-escalier/0.7,14.5,4.75
+atelier,10.125,7.5625
 1;   lvl joueur
 PTSI; classe
 RLC;    capacite 1
@@ -11,3 +11,4 @@ Laplace;    ulti
 0;   Lvl ulti 
 1;    point bonus
 []
+[1,c;2,t;3,t]

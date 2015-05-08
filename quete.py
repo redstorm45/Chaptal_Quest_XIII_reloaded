@@ -72,7 +72,8 @@ class Quete:
             else:
                 break
         return line
-        
+    
+    #valide la quête si tous les objectifs ont étés remplis
     def checkCompleted(self,player = None):
         if self.completed:
             return
@@ -80,16 +81,17 @@ class Quete:
             pos = player.position
         else:
             pos = ("",0,0)
+        #objectif de position
         if self.objType == 1:
             if self.data["target"][0] == pos[0]:
                 if self.data["target"][1] == self.data["target"][2] == -1:
-                    print("quest",self.id,"completee")
                     self.completed = True
                     self.changed = True
-                elif int(pos[0]) == self.data["target"][0] and int(pos[1]) == self.data["target"][1]:
+                elif int(pos[1]) == self.data["target"][1] and int(pos[2]) == self.data["target"][2]:
                     self.completed = True
                     self.changed = True
-        if self.objType == 3:
+        #objectif d'ennemi
+        elif self.objType == 3:
             compl = True
             for k in self.data["target"].keys():
                 if self.data["current"][k] < self.data["target"][k]:
@@ -97,11 +99,33 @@ class Quete:
             if compl:
                 self.completed = True
                 self.changed = True
-                print("quete d'ennemi",self.id,"completee")
-        
+    
+    #donne un identificateur de statut pour stocker la quête dans la sauvegarde
+    def status(self):
+        if self.completed:
+            return "c"
+        elif self.trouvee:
+            return "t"
+        elif self.active:
+            return "a"
+        return "x"
+    
+    #change le statut de la quête à partir d'un identificateur
+    def fromStatus(self,s):
+        if s in ["a","t","c"]:
+            self.active = True
+        if s in ["t","c"]:
+            self.trouvee = True
+        if s in ["c"]:
+            self.completed = True
+    
 #charge toutes les quêtes disponibles
 def loadQuetes():
+    global listQuetes
+    global listQuetesActives
     i = 0
+    listQuetes = []
+    listQuetesActives = []
     while True:
         i += 1
         q = Quete(i)
@@ -115,7 +139,7 @@ def loadQuetes():
 
 #donne une quete par son id
 def getQuete(id):
-    for q in listeQuetesActives:
+    for q in listeQuetes:
         if q.id == id:
             return q
     return None
@@ -133,8 +157,27 @@ def refreshActive():
                 if q.autoTrouve:
                     q.trouvee = True
                 listeQuetesActives.append(q)
+    print("refresh actives:")
+    print(listQuetesActives)
 
+#représente les quêtes pour les sauvegarder
+def getTextRepr():
+    txt = ""
+    for q in listeQuetes:
+        txt += ";"+str(q.id)+","+q.status()
+    return "["+txt[1:]+"]"
 
-
+#charge la représentation
+def fromTextRepr(txt):
+    list = txt[1:-1].split(";")
+    for i in list:
+        [qID,statut] = i.split(",")
+        print("getting ",qID," at ",statut)
+        print("in",listeQuetes)
+        quest = getQuete( int(qID) )
+        quest.fromStatus(statut)
+        if quest.active:
+            listeQuetesActives.append(quest)
+        
 
 

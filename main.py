@@ -40,6 +40,7 @@ import mouse
 #données sous forme de variables
 import map
 import game
+import quete
 import option
 #données à charger
 import save
@@ -241,8 +242,10 @@ while running:
                             else:
                                 saveName = dessin.newGameName.texte
                                 game.player.classe = dessin.newGameSelectedInfo
+                                quete.loadQuetes()
                                 save.create(saveName,classe)
                                 save.load(saveName,game.player)
+                                quete.refreshActive()
                                 dessin.overlaySaved = False
                                 #charge les ennemis sur la map
                                 game.init()
@@ -252,7 +255,9 @@ while running:
                     b = mouse.getBoutonAt("charger",x,y)
                     if b:
                         saveName = b.name
+                        quete.loadQuetes()
                         save.load(saveName,game.player)
+                        quete.refreshActive()
                         dessin.overlaySaved = False
                         #charge les ennemis sur la map
                         game.init()

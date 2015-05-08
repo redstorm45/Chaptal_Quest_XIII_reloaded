@@ -48,9 +48,6 @@ def init():
         for e in r.PNGbaseList:
             type,posX,posY = e
             r.PNGlist.append( PNG.PNG(type,(posX,posY)))
-    #chargement des quêtes
-    quete.loadQuetes()
-    quete.refreshActive()
     
     dessin.initInterface(quete.listeQuetesActives)
     
