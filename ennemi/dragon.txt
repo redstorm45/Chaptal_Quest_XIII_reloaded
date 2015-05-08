@@ -1,5 +1,6 @@
 dragon
 2;type d'attaque (1:arc / 2:épée)
+none;sprite projectile
 3;portée
 20;distance max d'agro
 1.5;distance min d'agro

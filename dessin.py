@@ -445,6 +445,7 @@ def loadAllSprites():
     sprites["tapis"]={}
     sprites["tapis"]["plat"]=[]
     sprites["tapis"]["angle"]=[]
+    sprites["projectile"] = {}
     for i in range(8):
         sprites["tapis"]["plat"].append(  getLoaded( "Tiles/tapis/tapis"+str(i+1)+".bmp") )
         sprites["tapis"]["angle"].append( getLoaded( "Tiles/tapis/angle"+str(i+1)+".bmp") )
@@ -481,7 +482,8 @@ def loadAllSprites():
     
     # *** charges les Ennemis/Joueurs ***
     
-    sprites["projectile"] = getLoaded("projectile.png")
+    sprites["projectile"]["pokeball"] = getLoaded("projectile/pokeball.png")
+    sprites["projectile"]["boule_de_feu"] = getLoaded("projectile/boule_de_feu.png")
         
     loadAnimSprite("gobelin","Ennemis/gobelin/")
     loadAnimSprite("orc"    ,"Ennemis/orc/"    )
@@ -737,7 +739,7 @@ def drawProjectile(fenetre,projectile):
     xEcran = x * 64  + xOffset
     yEcran = y * 64  + yOffset
     
-    fenetre.blit(sprites["projectile"],(xEcran,yEcran))
+    fenetre.blit(sprites["projectile"][projectile.spriteName],(xEcran,yEcran))
 
 def drawCapacite(player,fenetre):
     xEcran = player.positionCapacite[0] * 64  + xOffset

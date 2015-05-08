@@ -1,5 +1,6 @@
 gobelin
 1;type d'attaque (1:arc / 2:épée)
+boule_de_feu;sprite projectile
 5;portée
 8;distance max d'agro
 4;distance min d'agro

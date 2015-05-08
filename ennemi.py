@@ -12,6 +12,7 @@ class Ennemi(joueurBase.JoueurBase):
         file = open( "ennemi/" + name + ".txt")
         self.spriteName  = file.readline().strip().split(";")
         self.typeAttaque = int(file.readline().strip().split(";")[0])
+        self.projectileSpriteName = str(file.readline().strip().split(";")[0])
         self.direction   = 1
         self.portee      = float(file.readline().strip().split(";")[0])
         self.dMaxAgro    = float(file.readline().strip().split(";")[0])

@@ -14,6 +14,8 @@ class Projectile():
         self.position = tireur.position[1] , tireur.position[2]
         
         self.life = 100
+        
+        self.spriteName = tireur.projectileSpriteName
     
     def avancer(self):
         self.life -= 1

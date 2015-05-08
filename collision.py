@@ -61,3 +61,4 @@ def hitbox(player):
               (x+player.hitbox[1],y+player.hitbox[2]),
               (x+player.hitbox[1],y+player.hitbox[3]),
               (x+player.hitbox[0],y+player.hitbox[3])]
+    return(hitbox)

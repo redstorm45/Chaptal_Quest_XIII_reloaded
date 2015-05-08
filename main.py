@@ -50,6 +50,10 @@ import inventaire
 #édition
 import editGame
 
+
+classe = "PTSI"
+
+
 #definition des différents états du jeu
 ETAT_MENU         = 1  #menu
 ETAT_GAME         = 2  #en jeu

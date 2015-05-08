@@ -1,5 +1,6 @@
 orc
 2;type d'attaque (1:arc / 2:épée)
+none;sprite projectile
 0.75;portée
 3;distance max d'agro
 0.5;distance min d'agro
