@@ -201,6 +201,8 @@ while running:
                     game.findPNG()
                 elif event.key in keybinding.keys["INVENTAIRE"]:
                     game.inventaireOuvert = not game.inventaireOuvert
+            elif state == ETAT_EDIT:
+                editGame.keyPressed( event.unicode )
         #appui sur un bouton de souris
         if event.type == MOUSEBUTTONDOWN:
             if event.button == 1:#bouton gauche

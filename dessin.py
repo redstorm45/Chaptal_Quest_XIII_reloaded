@@ -445,7 +445,6 @@ def loadAllSprites():
     sprites["tapis"]={}
     sprites["tapis"]["plat"]=[]
     sprites["tapis"]["angle"]=[]
-    sprites["projectile"] = {}
     for i in range(8):
         sprites["tapis"]["plat"].append(  getLoaded( "Tiles/tapis/tapis"+str(i+1)+".bmp") )
         sprites["tapis"]["angle"].append( getLoaded( "Tiles/tapis/angle"+str(i+1)+".bmp") )
@@ -480,11 +479,13 @@ def loadAllSprites():
     
     sprites["Laplace"] = getLoaded("Laplace.png")
     
-    # *** charges les Ennemis/Joueurs ***
+    # *** charge les projectiles
     
+    sprites["projectile"] = {}
     sprites["projectile"]["pokeball"] = getLoaded("projectile/pokeball.png")
     sprites["projectile"]["boule_de_feu"] = getLoaded("projectile/boule_de_feu.png")
         
+    # *** charges les Ennemis/Joueurs ***
     loadAnimSprite("gobelin","Ennemis/gobelin/")
     loadAnimSprite("orc"    ,"Ennemis/orc/"    )
     loadAnimSprite("dragon" ,"Ennemis/dragon/" )

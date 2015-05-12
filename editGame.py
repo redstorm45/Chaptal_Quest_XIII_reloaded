@@ -262,6 +262,32 @@ def clickMid(x,y):
             newI = [itemSel[i] for i in range(3)]
             regionEditee.itemList.append(newI)
 
+def keyPressed(key):
+    global itemSel
+    if cursor == "event":
+        pass
+        """
+        if key == "t":
+            name = input("region d'arrivée")
+            if not name in map.theMap.regionList.keys():
+                return
+            """
+    elif cursor == "item":
+        if key == "4":
+            itemSel[0] -= 1
+        elif key == "6":
+            itemSel[0] += 1
+        elif key == "8":
+            itemSel[1] += 1
+        elif key == "2":
+            itemSel[1] -= 1
+        elif key == "n":
+            name = input("nom de l'objet")
+            x,y = [ int(x) for x in input("coordonnées").split(",") ]
+            itemSel = [x,y,name]
+            print("added : ",itemSel)
+            regionEditee.itemList.append(itemSel)
+
 def mouseWheel(dir):
     global changesSaved
     global eventSel,teleportCaseReg,teleportCase,teleportEvent,itemSel
