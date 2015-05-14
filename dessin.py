@@ -20,15 +20,15 @@ import texte
 import save
 import elementDessin as elt
 
-SCR_WIDTH   = 20   #largeur de l'écran (en termes de nombre de cases)
-SCR_HEIGHT  = 10   #hauteur de l'écran
+SCR_WIDTH   = 0   #largeur de l'écran (pixels)
+SCR_HEIGHT  = 0   #hauteur de l'écran (pixels)
 
 xOffset = 0
 yOffset = 0
 
 sprites = {}
 
-listStyleSprites =   ["v" ,"s","p"                               #vide , sol , planches
+listStyleSprites =   ["v" ,"s" ,"s2","p"                         #vide , sol 1/2 , planches
                      ,"m1","m2","m3","m4","m5","m6","m7","m8"    #murs
                      ,"a1","a2","a3","a4","a5","a6","a7","a8"    #angles interieurs
                      ,"b1","b2","b3","b4","b5","b6","b7","b8"    #angles exterieurs
@@ -63,6 +63,7 @@ interfaceBoutonsQuetes = []
 interfaceBoutonsQuetesEtendue = []
 interfaceBoutonsQuetesAffiches = []
 interfaceDrops = []
+interfaceDialoguePNJ = None
 
 #surfaces de l'overlay en jeu
 overlayBack = None
@@ -252,6 +253,7 @@ def initCharge(fenetre):
         mouse.boutons["charger"][b.texte].linkElement(b)
 
 def initInterface(quetes):
+    #initialise l'interface des quêtes
     global interfaceBoutonsQuetes,interfaceBoutonsQuetesEtendue,interfaceBoutonsQuetesAffiches,interfaceQuetes
     interfaceBoutonsQuetes = []
     interfaceBoutonsQuetesEtendue = []
@@ -271,6 +273,10 @@ def initInterface(quetes):
             interfaceBoutonsQuetesAffiches.append(cadre)
             pos += bt.h
     interfaceQuetes.setWidgets(interfaceBoutonsQuetesAffiches)
+    #crée le bouton texte des PNJs
+    global interfaceDialoguePNJ
+    interfaceDialoguePNJ = elt.BoutonTexte(0,0,int(64*SCR_WIDTH),100,10,(20,20,20),(200,200,200),buttonFontXXS," ",(0,128,255),multiLine = True)
+    interfaceDialoguePNJ.setBot( int(64*SCR_HEIGHT) )
 
 def reloadInterface(quetes):
     global interfaceBoutonsQuetes,interfaceBoutonsQuetesEtendue
@@ -416,7 +422,8 @@ def loadAnimSprite(spriteName,directory):
 
 def loadStyle(styleName):
     sprites[styleName] = {}
-    sprites[styleName]["sol"] = getLoaded( "Tiles/"+styleName+"/sol.bmp" )
+    sprites[styleName]["sol"]  = getLoaded( "Tiles/"+styleName+"/sol.bmp" )
+    sprites[styleName]["sol2"] = getLoaded( "Tiles/"+styleName+"/sol2.bmp" )
     
     sprites[styleName]["mur"]    = []
     for i in range(8):
@@ -556,6 +563,9 @@ def drawOverlay(fenetre):
 def drawInterface(fenetre):
     interfaceQuetes.drawOn(fenetre)
 
+def drawDialogue(fenetre):
+    interfaceDialoguePNJ.drawOn(fenetre)
+
 def drawOverlayQuit(fenetre):
     overlayQuit.drawOn(fenetre)
     overlayYesNo.drawOn(fenetre)
@@ -637,6 +647,8 @@ def drawCase(fenetre,region,x,y,activeOffset = True):
         pass
     elif region.at(x,y) == "s":
         fenetre.blit(sprites[drawStyle]["sol"] , (xEcran,yEcran))
+    elif region.at(x,y) == "s2":
+        fenetre.blit(sprites[drawStyle]["sol2"] , (xEcran,yEcran))
     elif region.at(x,y) == "p":
         fenetre.blit(sprites[drawStyle]["sol"] , (xEcran,yEcran))
         fenetre.blit(sprites["planche"] , (xEcran,yEcran))

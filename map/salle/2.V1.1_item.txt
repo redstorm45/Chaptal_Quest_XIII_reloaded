@@ -7,7 +7,7 @@
 2,5,chaise1H
 3,5,chaise1H
 4,5,chaise1H
-6,8,chaise1H
+8,9,chaise1H
 5,4,table1H
 8,8,table1H
 8,4,table1H

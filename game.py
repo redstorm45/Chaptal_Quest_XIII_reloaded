@@ -35,6 +35,9 @@ ennemiList = []
 #inventaire ouvert et affiché
 inventaireOuvert = False
 
+#dialogue
+dialogueActif = [None,""]
+
 #initialisation du jeu
 def init():
     global ennemiList
@@ -90,9 +93,12 @@ def draw(fenetre):
         posY = (fenetre.get_height()-s.get_height())//2-o
         fenetre.blit(s,(posX,posY))
     
+    dessin.drawATH(fenetre,player)
     if dessin.interfaceQueteOn:
         dessin.drawInterface(fenetre)
-    dessin.drawATH(fenetre,player)
+    
+    if dialogueActif[0]:
+        dessin.drawDialogue(fenetre)
     
     #inventaire
     if inventaireOuvert:
@@ -196,13 +202,22 @@ def actionKeys(listPressed):
     
     
 def findPNG():
+    global dialogueActif
     region = map.theMap.regionList[player.position[0]]
     px , py = player.position[1] , player.position[2]
     
+    trouve = False
     for p in region.PNGlist:
         if (px-p.position[0])**2 + (py-p.position[1])**2 < 2 ** 2:
-            print(p.name+":")
-            print(p.texte)
+            if p == dialogueActif[0]:
+                dialogueActif = [p,p.getNextId(dialogueActif[1])]
+            else:
+                dialogueActif = [p,p.getNextId()]
+            txt = p.name+": "+p.getText(dialogueActif[1])
+            dessin.interfaceDialoguePNJ.updateTexte(txt)
+            trouve = True
+    if not trouve:
+        dialogueActif = [None,""]
 
 #supprime un ennemi, et gère le reste
 def mortEnnemi(ennemi):

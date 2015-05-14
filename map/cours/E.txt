@@ -1,16 +1,16 @@
-22	30	style2
+22	32	style2
 a4	m2	m2	m2	m2	m2	m2	m2	m2	m2	m2	m2	m2	m2	m2	m2	m2	m2	m2	m2	m2	a2
 m4	a3	m1	m1	m1	m1	m1	m1	m1	m1	m1	m1	m1	m1	m1	m1	m1	m1	m1	m1	a1	m8
 m4	m3	s	s	s	s	s	s	s	s	s	s	s	s	s	s	s	s	s	s	m7	m8
 m4	m3	s	s	s	s	s	s	s	s	s	s	s	s	s	s	s	s	s	s	m7	m8
-m4	m3	m1	m1	m1	m1	v	m1	m1	m1	m1	s	s	m1	m1	m1	m1	m1	m1	m1	m7	m8
-m4	m3	s	s	s	s	s	s	s	s	s	s	s	s	m7	m8	v	v	v	v	m7	m8
-m4	m3	s	s	s	s	s	s	s	s	s	s	s	s	m7	m8	v	v	v	v	m7	m8
+m4	m3	m1	m1	m1	m1	m1	m1	m1	m1	m1	s	s	m1	m1	m1	m1	m1	m1	m1	m7	m8
+m4	m3	s	s	s	s	s	s	s	s	s	s	s	s	m7	m8	v	v	v	v	s2	s2
+m4	m3	s	s	s	s	s	s	s	s	s	s	s	s	m7	m8	v	v	v	v	s2	s2
 m4	m3	s	s	s	s	s	s	s	s	s	s	s	s	m7	m8	v	v	v	v	v	v
 m4	m3	s	s	s	s	s	s	s	s	s	s	s	s	m7	b2	m2	m2	m2	m2	m2	a2
 m4	m3	s	s	s	s	s	s	s	s	s	s	s	s	b1	m1	m1	m1	m1	m1	a1	m8
-m4	m3	m5	m5	m5	m5	m5	m5	m5	b5	s	s	s	s	s	s	s	s	s	s	m7	m8
-m4	m3	m6	m6	m6	m6	m6	m6	b6	m3	s	s	s	s	s	s	s	s	s	s	m7	m8
+m4	a5	m5	m5	m5	m5	m5	m5	m5	b5	s	s	s	s	s	s	s	s	s	s	m7	m8
+a6	m6	m6	m6	m6	m6	m6	m6	b6	m3	s	s	s	s	s	s	s	s	s	s	m7	m8
 v	v	s	s	s	s	s	s	m4	m3	s	s	s	s	s	s	s	s	s	s	m7	m8
 v	v	s	s	s	s	s	s	m4	m3	s	s	s	s	s	s	s	s	s	s	m7	m8
 v	v	s	s	s	s	s	s	m4	m3	s	s	s	s	s	s	s	s	s	s	m7	m8
@@ -23,9 +23,11 @@ m4	m3	s	s	s	s	s	s	s	s	s	s	s	s	s	s	s	s	s	s	m7	m8
 m4	m3	s	s	s	s	s	s	s	s	s	s	s	s	s	s	s	s	s	s	m7	m8
 m4	m3	s	s	s	s	s	s	s	s	s	s	s	s	s	s	s	s	s	s	m7	m8
 m4	m3	s	s	s	s	b7	m5	m5	m5	m5	m5	m5	e3	e3	m5	m5	m5	m5	m5	m7	m8
-m4	m3	s	s	s	s	m7	s	s	s	s	s	s	s	s	s	s	s	s	s	m7	m8
-m4	m3	s	s	s	s	m7	s	s	s	s	s	s	s	s	s	s	s	s	s	m7	m8
-m4	m3	s	s	s	s	m7	s	s	s	s	s	s	s	s	s	s	s	s	s	m7	m8
-m4	m3	s	s	s	s	m7	s	s	s	s	s	s	s	s	s	s	s	s	s	m7	m8
-m4	m3	s	s	s	s	m7	s	s	s	s	s	s	s	s	s	s	s	s	s	m7	m8
-m4	m3	s	s	s	s	m5	m5	m5	m5	m5	m5	m5	m5	m5	m5	m5	m5	m5	m5	a7	m8
+b4	m3	s	s	s	s	m7	s	s	s	s	s	s	s	s	s	s	s	s	s	m7	m8
+m1	b3	s	s	s	s	m7	s	s	s	s	s	s	s	s	s	s	s	s	s	m7	m8
+s	s	s	s	s	s	m7	s	s	s	s	s	s	s	s	s	s	s	s	s	m7	m8
+s	s	s	s	s	s	m7	s	s	s	s	s	s	s	s	s	s	s	s	s	m7	m8
+s	s	s	s	s	s	m7	s	s	s	s	s	s	s	s	s	s	s	s	s	m7	m8
+s	s	s	s	s	s	m7	m5	m5	m5	m5	m5	m5	m5	m5	m5	m5	m5	m5	m5	a7	m8
+m5	m5	m5	m5	m5	m5	a7	m8	v	v	v	v	v	v	v	v	v	v	v	v	v	v
+m6	m6	m6	m6	m6	m6	m6	a8	v	v	v	v	v	v	v	v	v	v	v	v	v	v

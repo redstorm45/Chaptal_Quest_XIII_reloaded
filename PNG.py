@@ -17,3 +17,10 @@ class PNG():
             print("no load pnj",e)
         else:
             file.close()
+    
+    def getText(self,id):
+        return self.texte
+    
+    #trouve le prochain texte à afficher
+    def getNextId(self,prev=0):
+        return prev+1
