@@ -103,6 +103,12 @@ def draw(fenetre):
     #inventaire
     if inventaireOuvert:
         dessin.drawInventaire(player,fenetre)
+    
+    #mort joueur
+    if player.hp < 0:
+        dessin.drawGameOver(fenetre)
+        state = 12
+        break
 
 #touches de mouvement
 def actionKeys(listPressed):

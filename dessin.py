@@ -511,6 +511,7 @@ def loadAllSprites():
     sprites["LaplaceIconeCD"] = getLoaded("LaplaceIconeCD.png")
     sprites["RDMIcone"] = getLoaded("RDMIcone.bmp")
     sprites["RDMIconeCD"] = getLoaded("RDMIconeCD.bmp")
+    sprites["GameOver"] = getLoaded("gameover.png")
     
     
     # *** charges l'inventaire ***
@@ -834,7 +835,8 @@ def drawInventaire(player,fenetre):
         
         
         
-        
+def drawGameOver(fenetre):
+    fenetre.blit(sprites["GameOver"],(600,200))
         
         
         

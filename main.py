@@ -66,6 +66,7 @@ ETAT_NOUVEAU_FAIL = 8  #selection invalide (nom de sauvagarde déjà utilisé)
 ETAT_CHARGE       = 9  #selection invalide (nom de sauvagarde déjà utilisé)
 ETAT_QUIT         = 10 #fin du programme
 ETAT_EDIT         = 11 #edition des niveaux
+ETAT_GAME_OVER    = 12 #mort du joueur
 
 #trouve la vraie taille de l'écran
 user32 = ctypes.windll.user32
