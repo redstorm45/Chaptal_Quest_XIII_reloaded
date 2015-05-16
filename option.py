@@ -24,5 +24,5 @@ musiqueVolume = 50
 
 #mode d'édition
 editMode = False
-editRegion = "couloir/2.V1"
+editRegion = "cours/D"
 

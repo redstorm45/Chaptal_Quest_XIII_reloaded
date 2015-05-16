@@ -1,8 +1,13 @@
-28	7	style1
-m4	m3	s2	s2	s2	m7	b2	b4	m3	s2	s2	s2	s2	s2	s2	s2	s2	s2	v	v	v	v	v	v	v	v	v	v
-m4	m3	s2	s2	s2	b1	m1	m1	b3	s2	s2	s2	s2	s2	s2	s2	s2	s2	v	v	v	v	v	v	v	v	v	v
-m4	m3	s2	s2	s2	s2	s2	s2	s2	s2	s2	s2	s2	s2	s2	s2	s2	s2	v	v	v	v	v	v	v	v	v	v
-m4	m3	s2	s2	s2	s2	s2	s2	s2	s2	s2	s2	s2	s2	s2	s2	s2	s2	v	v	v	v	v	v	v	v	v	v
-m4	m3	s2	s2	s2	s2	s2	s2	s2	s2	s2	s2	s2	s2	s2	s2	s2	s2	v	v	v	v	v	v	v	v	v	v
-m4	a5	m5	m5	m5	m5	m5	m5	m5	m5	m5	m5	m5	m5	m5	m5	m5	m5	m5	m5	m5	m5	m5	m5	m5	m5	m5	m5
-a6	m6	m6	m6	m6	m6	m6	m6	m6	m6	m6	m6	m6	m6	m6	m6	m6	m6	m6	m6	m6	m6	m6	m6	m6	m6	m6	m6
+31	12	style1
+v	v	v	v	v	v	v	m4	m3	s2	s2	s2	s2	s2	s2	s2	s2	s2	s2	s2	s2	s2	s2	s2	s2	s2	s2	s2	s2	m7	m8
+v	v	v	v	v	v	v	m4	m3	s2	s2	s2	s2	s2	s2	s2	s2	s2	s2	s2	s2	s2	s2	s2	s2	s2	s2	s2	s2	m7	m8
+v	v	v	v	v	v	v	m4	m3	s2	s2	s2	s2	s2	s2	s2	s2	s2	s2	s2	s2	s2	s2	s2	s2	s2	s2	s2	s2	m7	m8
+v	v	v	v	v	v	v	m4	m3	s2	s2	s2	s2	s2	s2	s2	s2	s2	s2	s2	s2	s2	s2	s2	s2	s2	s2	s2	s2	m7	m8
+v	v	v	v	v	v	v	m4	m3	s2	s2	s2	s2	s2	s2	s2	s2	s2	s2	s2	s2	s2	s2	s2	s2	s2	s2	s2	s2	m7	b2
+m4	m3	s2	s2	s2	m7	b2	b4	m3	p	p	p	p	p	p	p	p	p	p	p	p	p	p	p	p	p	p	p	p	b1	m1
+m4	m3	s2	s2	s2	b1	m1	m1	b3	s2	s2	s2	s2	s2	s2	s2	s2	s2	s2	s2	s2	s2	s2	s2	s2	s2	s2	s2	s2	s2	s2
+m4	m3	s2	s2	s2	s2	s2	s2	s2	s2	s2	s2	s2	s2	s2	s2	s2	s2	s2	s2	s2	s2	s2	s2	s2	s2	s2	s2	s2	s2	s2
+m4	m3	s2	s2	s2	s2	s2	s2	s2	s2	s2	s2	s2	s2	s2	s2	s2	s2	s2	s2	s2	s2	s2	s2	s2	s2	s2	s2	s2	s2	s2
+m4	m3	s2	s2	s2	s2	s2	s2	s2	s2	s2	s2	s2	s2	s2	s2	s2	s2	s2	s2	s2	s2	s2	s2	s2	s2	s2	s2	s2	s2	s2
+m4	a5	m5	m5	m5	m5	m5	m5	m5	m5	m5	m5	m5	m5	m5	m5	m5	m5	m5	m5	m5	m5	m5	m5	m5	m5	m5	m5	m5	m5	m5
+a6	m6	m6	m6	m6	m6	m6	m6	m6	m6	m6	m6	m6	m6	m6	m6	m6	m6	m6	m6	m6	m6	m6	m6	m6	m6	m6	m6	m6	m6	m6

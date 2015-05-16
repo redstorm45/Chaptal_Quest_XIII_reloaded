@@ -1,0 +1,9 @@
+2,4,machine1
+7,12,machine2
+10,7,faille1H
+8,2,table2H
+6,2,table2H
+7,2,table1H
+8,3,chaise1H
+6,3,chaise1H
+7,3,chaise1H
