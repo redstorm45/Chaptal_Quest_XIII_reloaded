@@ -797,7 +797,7 @@ def drawATH(fenetre,player):
         fenetre.blit(sprites[player.capacite1 + "IconeCD"],(xEcran-2+64,yEcran-131))
         
     if player.capacite2timer == 0 and player.capacite2Lvl > 0:
-        fenetre.blit(sprites[player.capacite1 +"Icone"],(xEcran-2+52+12+64,yEcran-131))
+        fenetre.blit(sprites[player.capacite2 +"Icone"],(xEcran-2+52+12+64,yEcran-131))
     else :
         fenetre.blit(sprites[player.capacite2 + "IconeCD"],(xEcran-2+52+12+64,yEcran-131))
         

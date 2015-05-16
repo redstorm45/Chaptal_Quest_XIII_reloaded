@@ -189,7 +189,7 @@ def actionKeys(listPressed):
     elif keybinding.isKeyActive( "UPSORT3" , listPressed ) and player.pointbonus > 0:
         player.capacite3Lvl += 1
         player.pointbonus -=1
-    elif keybinding.isKeyActive( "ULTI" , listPressed ) and player.pointbonus > 0 and player.lvl/2 - player.ULTILvl-1 > 0:
+    elif keybinding.isKeyActive( "ULTI" , listPressed ) and player.pointbonus > 0 and (player.lvl-1)%5 == 0 and player.lvl > 5:
         player.ULTILvl += 1
         player.pointbonus -=1
         
