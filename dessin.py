@@ -582,6 +582,11 @@ def drawOption(fenetre):
     fenetre.blit( optionBack, (0,0) )
     fenetre.blit( optionTitle , (int(SCR_WIDTH*64/2-optionTitle.get_width()/2),0) )
     
+def drawGameOver(fenetre):
+    posX = (SCR_WIDTH*64-sprites["GameOver"].get_width())//2
+    posY = (SCR_HEIGHT*64-sprites["GameOver"].get_height())//2
+    fenetre.blit(sprites["GameOver"],(posX,posY) )
+    
 def drawNewGame(fenetre):
     fenetre.blit( newGameBack, (0,0) )
     fenetre.blit( newGameTitle , (int(SCR_WIDTH*64/2-newGameTitle.get_width()/2),20) )
@@ -832,11 +837,6 @@ def drawInventaire(player,fenetre):
         item = player.inventaire.listObjets[i]
         pos = posInv[i]
         drawObjetInventaire(item,xPos+pos[0],yPos+pos[1],fenetre)
-        
-        
-        
-def drawGameOver(fenetre):
-    fenetre.blit(sprites["GameOver"],(600,200))
         
         
         

@@ -38,8 +38,12 @@ inventaireOuvert = False
 #dialogue
 dialogueActif = [None,""]
 
+#fin du jeu
+gameOver = False
+
 #initialisation du jeu
 def init():
+    print("init game")
     global ennemiList
     
     #création des ennemis sur la map
@@ -56,6 +60,10 @@ def init():
     
     #initialisation de la liste d'ennemi
     ennemiList = map.theMap.regionList[ player.position[0] ].ennemiList[:]
+    
+    #fin du jeu
+    global gameOver
+    gameOver = False
 
 def quit():
     global ennemiList
@@ -103,12 +111,6 @@ def draw(fenetre):
     #inventaire
     if inventaireOuvert:
         dessin.drawInventaire(player,fenetre)
-    
-    #mort joueur
-    if player.hp < 0:
-        dessin.drawGameOver(fenetre)
-        state = 12
-        break
 
 #touches de mouvement
 def actionKeys(listPressed):
@@ -269,6 +271,12 @@ def tick():
     if player.spriteCapaciteTimer > 0:
         player.spriteCapaciteTimer -= 1
     
+    #mort joueur
+    if player.hp < 0:
+        global gameOver
+        gameOver = True
+        print("game over 1")
+        
     #avancement de projectiles
     for p in projectileList:
         p.avancer()

@@ -91,6 +91,7 @@ def load(name,player):
             player.position[2] = float(player.position[2])
             #infos du joueur
             player.lvl = int( saveFile.readline().strip().split(";")[0] )
+            player.hp = 100*player.lvl
             player.classe = saveFile.readline().strip().split(";")[0]
             player.capacite1 = saveFile.readline().strip().split(";")[0]
             player.capacite1Lvl = int( saveFile.readline().strip().split(";")[0] )

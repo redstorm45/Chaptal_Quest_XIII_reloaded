@@ -149,6 +149,8 @@ while running:
         dessin.drawOverlayMenu(fenetre)
     elif state == ETAT_QUIT:
         dessin.drawQuit(fenetre)
+    elif state == ETAT_GAME_OVER:
+        dessin.drawGameOver(fenetre)
     pygame.display.flip()
     
     #  ***  evenements  ***
@@ -291,6 +293,10 @@ while running:
                         elif b.name == "sauvegarder" and not dessin.overlaySaved:
                             save.save( game.player )
                             dessin.overlaySaved = True
+                elif state == ETAT_GAME_OVER:
+                    save.unload(game.joueur)
+                    game.quit()
+                    state = ETAT_MENU
                 elif state == ETAT_NOUVEAU_FAIL:
                     state = ETAT_NOUVEAU
                 elif state == ETAT_OVERLAY_Q:
@@ -336,6 +342,8 @@ while running:
     #  ***  update général  ***
     if state == ETAT_GAME:
         game.tick()
+        if game.gameOver:
+            state = ETAT_GAME_OVER
     #clock
     fps = clock.tick(60)
 
