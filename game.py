@@ -43,7 +43,6 @@ gameOver = False
 
 #initialisation du jeu
 def init():
-    print("init game")
     global ennemiList
     
     #création des ennemis sur la map
@@ -275,7 +274,6 @@ def tick():
     if player.hp < 0:
         global gameOver
         gameOver = True
-        print("game over 1")
         
     #avancement de projectiles
     for p in projectileList:

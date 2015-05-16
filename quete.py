@@ -46,7 +46,6 @@ class Quete:
                     self.data["current"][k] = 0
         except Exception as e:
             self.id = 0
-            print(e)
             return
     
     #donne une représentation de l'object sous forme de string

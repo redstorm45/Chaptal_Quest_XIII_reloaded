@@ -223,7 +223,6 @@ class Region:
     
     def setAt(self,x,y,val):
         tX,tY = x-self.readOffset[0] , y-self.readOffset[1]
-        #print("set (",x,y,") (",tX,tY,") to ",val)
         #try to expand data size
         if tX>=self.width or tX<0 or tY>=self.height or tY<0:
             if tX>=self.width:
