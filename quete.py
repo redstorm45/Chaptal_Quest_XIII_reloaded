@@ -169,11 +169,12 @@ def getTextRepr():
 def fromTextRepr(txt):
     list = txt[1:-1].split(";")
     for i in list:
-        [qID,statut] = i.split(",")
-        quest = getQuete( int(qID) )
-        quest.fromStatus(statut)
-        if quest.active:
-            listeQuetesActives.append(quest)
+        if i != "":
+            [qID,statut] = i.split(",")
+            quest = getQuete( int(qID) )
+            quest.fromStatus(statut)
+            if quest.active:
+                listeQuetesActives.append(quest)
         
 
 

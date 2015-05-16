@@ -192,8 +192,6 @@ while running:
             elif ( (event.unicode in string.ascii_lowercase) or (event.unicode in string.ascii_uppercase) ) and state in [ETAT_NOUVEAU,ETAT_CHARGE]:
                 if state == ETAT_NOUVEAU:
                     dessin.newGameName.appendTexte( event.unicode )
-                elif state == ETAT_CHARGE:
-                    dessin.chargeName.appendTexte( event.unicode )
             elif state == ETAT_GAME:
                 if event.key in keybinding.keys["QUETES"]:
                     dessin.interfaceQueteOn = not dessin.interfaceQueteOn

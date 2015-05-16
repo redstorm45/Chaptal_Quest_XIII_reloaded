@@ -28,7 +28,7 @@ yOffset = 0
 
 sprites = {}
 
-listStyleSprites =   ["v" ,"s" ,"s2","p"                         #vide , sol 1/2 , planches
+listStyleSprites =   ["v" ,"s" ,"s2","sc","p"        #vide , sol 1/2, sol collision , planches
                      ,"m1","m2","m3","m4","m5","m6","m7","m8"    #murs
                      ,"a1","a2","a3","a4","a5","a6","a7","a8"    #angles interieurs
                      ,"b1","b2","b3","b4","b5","b6","b7","b8"    #angles exterieurs
@@ -646,6 +646,8 @@ def drawCase(fenetre,region,x,y,activeOffset = True):
     if region.at(x,y) == "v":
         pass
     elif region.at(x,y) == "s":
+        fenetre.blit(sprites[drawStyle]["sol"] , (xEcran,yEcran))
+    elif region.at(x,y) == "sc":
         fenetre.blit(sprites[drawStyle]["sol"] , (xEcran,yEcran))
     elif region.at(x,y) == "s2":
         fenetre.blit(sprites[drawStyle]["sol2"] , (xEcran,yEcran))
