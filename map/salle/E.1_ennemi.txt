@@ -1,1 +1,1 @@
-4,4,dragon
+10,6,dragon

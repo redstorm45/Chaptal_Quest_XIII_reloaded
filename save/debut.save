@@ -1,0 +1,14 @@
+salle/2.V1.1,7.0,5.0
+1;   lvl joueur
+PTSI; classe
+RLC;    capacite 1
+0;   Lvl capacite 1 
+PFS;    capacite 2
+0;   Lvl capacite 2 
+RDM;    capacite 3
+0;   Lvl capacite 3 
+Laplace;    ulti
+0;   Lvl ulti 
+1;    point bonus
+[]
+[1,t;2,t;3,x]

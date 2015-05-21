@@ -499,7 +499,8 @@ def loadAllSprites():
     loadAnimSprite("PTSI"   ,"perso/"    )
     
     # *** charges les PNJ ***
-    sprites["chen"] = getLoaded("chen.png")
+    sprites["chen0"] = getLoaded("chen0.png")
+    sprites["chen1"] = getLoaded("chen1.png")
     
     # *** charges l'ATH ***
     sprites["ATH"] = getLoaded("ATH.bmp")
@@ -771,7 +772,7 @@ def drawPNG(player,fenetre):
     x,y = player.position[0] , player.position[1]
     xEcran = (x-0.5) * 64  + xOffset
     yEcran = (y-0.5) * 64  + yOffset
-    fenetre.blit(sprites[player.spriteName],(xEcran, yEcran))
+    fenetre.blit(sprites[player.spriteName + str(int(player.spriteTimer)%2)],(xEcran, yEcran))
 
 def drawATH(fenetre,player):
     xEcran = fenetre.get_width()//2 -214 +33

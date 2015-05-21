@@ -1,0 +1,14 @@
+cours/E,5.25,6.5
+30;   lvl joueur
+PTSI; classe
+RLC;    capacite 1
+7;   Lvl capacite 1 
+PFS;    capacite 2
+7;   Lvl capacite 2 
+RDM;    capacite 3
+7;   Lvl capacite 3 
+Laplace;    ulti
+1;   Lvl ulti 
+0;    point bonus
+[epee_en_bois,0;epee_en_bois,0]
+[1,c;2,c;3,t]

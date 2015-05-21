@@ -35,7 +35,9 @@ def stop():
 
 def loadMusiques():
     sons["pirate"] = pygame.mixer.Sound(file = "musique/pirate.wav")
+    sons["maccarena"] = pygame.mixer.Sound(file = "musique/maccarena.ogg")
     sons["mort"] = pygame.mixer.Sound(file = "musique/sparta.ogg")
+    sons["zen"] = pygame.mixer.Sound(file = "musique/zen.ogg")
 
 def setGlobalVolume(pourcent):
     for k in sons.keys():
@@ -43,10 +45,12 @@ def setGlobalVolume(pourcent):
 
 def play(name):
     if option.musiqueActive:
+        sons[name].set_volume(0.5)
         ch = sons[name].play()
         if not ch in channelsActives:
             channelsActives.append(ch)
         
 def playMusique(name):
     if option.musiqueActive:
+        background.stop()
         background.play(sons[name])

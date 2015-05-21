@@ -30,7 +30,7 @@ import pygame
 from pygame.locals import *
 
 #modules systèmes
-import math,string,ctypes
+import math,string,ctypes,time
 
 #modules du programme
 #E/S
@@ -67,6 +67,9 @@ ETAT_CHARGE       = 9  #selection invalide (nom de sauvagarde déjà utilisé)
 ETAT_QUIT         = 10 #fin du programme
 ETAT_EDIT         = 11 #edition des niveaux
 ETAT_GAME_OVER    = 12 #mort du joueur
+
+if option.debugMode:
+    timeStart = time.time()
 
 #trouve la vraie taille de l'écran
 user32 = ctypes.windll.user32
@@ -112,6 +115,10 @@ state = ETAT_MENU
 if option.editMode:
     editGame.init()
     state = ETAT_EDIT
+
+if option.debugMode:
+    print("finished loading:")
+    print("time :",time.time()-timeStart,"s")
 
 #démarre la musique!
 son.playMusique("pirate")
@@ -196,12 +203,7 @@ while running:
                 if state == ETAT_NOUVEAU:
                     dessin.newGameName.appendTexte( event.unicode )
             elif state == ETAT_GAME:
-                if event.key in keybinding.keys["QUETES"]:
-                    dessin.interfaceQueteOn = not dessin.interfaceQueteOn
-                elif event.key in keybinding.keys["DIALOGUE"]:
-                    game.findPNG()
-                elif event.key in keybinding.keys["INVENTAIRE"]:
-                    game.inventaireOuvert = not game.inventaireOuvert
+                game.keyPress(event.key)
             elif state == ETAT_EDIT:
                 editGame.keyPressed( event.unicode )
         #appui sur un bouton de souris
@@ -305,6 +307,8 @@ while running:
                         if b.name == "non":
                             state = ETAT_OVERLAY
                         elif b.name == "oui":
+                            save.unload(game.joueur)
+                            game.quit()
                             state = ETAT_QUIT
                 elif state == ETAT_OVERLAY_M:
                     b = mouse.getBoutonAt("overlayV",x,y)
@@ -312,6 +316,8 @@ while running:
                         if b.name == "non":
                             state = ETAT_OVERLAY
                         elif b.name == "oui":
+                            save.unload(game.joueur)
+                            game.quit()
                             state = ETAT_MENU
                 elif state == ETAT_QUIT:
                     running = False

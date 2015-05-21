@@ -11,7 +11,7 @@ class Projectile():
         self.unitX = (cible.position[1]-tireur.position[1])/distance
         self.unitY = (cible.position[2]-tireur.position[2])/distance
     
-        self.position = tireur.position[1] , tireur.position[2]
+        self.position = tireur.milieuHitbox()
         
         self.life = 100
         

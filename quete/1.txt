@@ -19,4 +19,4 @@ True
 #3 : objectif de monstres
 1
 #position à atteindre
-("base",-1,-1)
+("cours/E",-1,-1)

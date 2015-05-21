@@ -5,8 +5,8 @@ none;sprite projectile
 20;distance max d'agro
 1.5;distance min d'agro
 4;nb de sprites animes
-20;level
-30;damage
+5;level
+10;damage
 400;armor
 [ -3/4 , 2+3/4 , -3/4+2 , 3/4+2 ];hitbox
 20000;gain dexp

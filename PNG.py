@@ -3,6 +3,7 @@ import texte
 
 class PNG():
     def __init__(self,name,position):
+        self.spriteTimer = 0
         self.name = ""
         self.position = position
         self.spriteName = ""

@@ -295,7 +295,7 @@ class BoutonTexte(BoutonRempli):
                     #enlève 1 mot de la fin
                     pos = lines[current].rfind(" ")
                     if "\n" in lines[current][:pos]:
-                        pos = lines[current].lfind("\n")
+                        pos = lines[current].find("\n")
                         lines[current].replace("\n"," ",1)
                     if lastLine == "":
                         lastLine = lines[current][pos+1:]

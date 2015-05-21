@@ -37,13 +37,13 @@ def checkJoueur(joueur,dx,dy):
     return True
 
 def checkProjectile(projectile,joueur):
-    if projectile.position[0] < joueur.position[1] + joueur.hitbox[0]:
+    if projectile.position[0] < joueur.position[1] + joueur.hitbox[0] -0.5:
         return False
-    if projectile.position[0] > joueur.position[1] + joueur.hitbox[1]:
+    if projectile.position[0] > joueur.position[1] + joueur.hitbox[1] -0.5:
         return False
-    if projectile.position[1] < joueur.position[2] + joueur.hitbox[2]:
+    if projectile.position[1] < joueur.position[2] + joueur.hitbox[2] -0.5:
         return False
-    if projectile.position[1] > joueur.position[2] + joueur.hitbox[3]:
+    if projectile.position[1] > joueur.position[2] + joueur.hitbox[3] -0.5:
         return False
     return True
 
@@ -52,8 +52,6 @@ def checkCase(regionName,x,y):
     if map.theMap.regionList[regionName].at( int(x) , int(y) ) in collideList:
         return False
     return True
-    
-    
     
 def hitbox(player):
     x,y = player.position[1],player.position[2]

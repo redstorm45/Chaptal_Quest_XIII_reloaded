@@ -46,7 +46,12 @@ class Ennemi(joueurBase.JoueurBase):
      
     def __repr__(self):
         return self.name+" at("+str(self.position[1])+","+str(self.position[2])+")"
-     
+    
+    def milieuHitbox(self):
+        x = self.position[1] + (self.hitbox[0] + self.hitbox[1])/2 -0.5
+        y = self.position[2] + (self.hitbox[2] + self.hitbox[3])/2 -0.5
+        return x,y
+    
     def mouvement(self,x,y):
         if x> 0:
             self.direction = 4

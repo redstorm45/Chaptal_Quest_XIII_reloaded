@@ -19,8 +19,8 @@ debugSave = False
 affHitbox = False
 
 #musique
-musiqueActive = False
-musiqueVolume = 50
+musiqueActive = True
+musiqueVolume = 100
 
 #mode d'édition
 editMode = False

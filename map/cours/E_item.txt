@@ -1,1 +1,1 @@
-porte1B,0,0
+13,23,porte1B

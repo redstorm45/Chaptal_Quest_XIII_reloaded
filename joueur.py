@@ -45,7 +45,7 @@ class Joueur(joueurBase.JoueurBase):
         self.spriteCapacite = ""
         self.positionCapacite = [0,0]
         self.degatarme = int(self.arme.degatarme)
-        self.armure = int(self.casque.defense + self.armure.defense)
+        self.armure = int(self.casque.defense) + int(self.armure.defense)
         #timers
         self.capacite1timer = 0
         self.capacite2timer = 0

@@ -60,10 +60,17 @@ def init():
     #initialisation de la liste d'ennemi
     ennemiList = map.theMap.regionList[ player.position[0] ].ennemiList[:]
     
+    #musique de la région
+    if player.position[0] == "cours/E":
+        son.playMusique("maccarena")
+    elif player.position[0] == "salle/E.1":
+        son.playMusique("zen")
+    
     #fin du jeu
     global gameOver
     gameOver = False
 
+#décharge les ennemis des maps
 def quit():
     global ennemiList
     
@@ -143,6 +150,12 @@ def actionKeys(listPressed):
         if opt.debugMode:
             print("teleport",player.position)
         #change de region
+        if t[0].dest[0] == "cours/E":
+            son.playMusique("maccarena")
+        elif t[0].dest[0] == "salle/E.1":
+            son.playMusique("zen")
+        else:
+            son.playMusique("pirate")
         player.position = t[0].dest[:]
         #récupère les ennemis de la nouvelle région
         ennemiList = map.theMap.regionList[ player.position[0] ].ennemiList[:]
@@ -185,20 +198,7 @@ def actionKeys(listPressed):
         player.capacite2timer = player.capacite2timer + 60*3
     elif keybinding.isKeyActive( "ULTI" , listPressed ) and player.ULTITimer == 0 and player.ULTILvl > 0:
         capacite.capacite('Laplace',player,map.theMap.regionList[player.position[0]].ennemiList)
-        player.ULTITimer = player.ULTITimer + 60*3
-    
-    if keybinding.isKeyActive( "UPSORT1" , listPressed ) and player.pointbonus > 0:
-        player.capacite1Lvl += 1
-        player.pointbonus -=1
-    elif keybinding.isKeyActive( "UPSORT2" , listPressed ) and player.pointbonus > 0:
-        player.capacite2Lvl += 1
-        player.pointbonus -=1
-    elif keybinding.isKeyActive( "UPSORT3" , listPressed ) and player.pointbonus > 0:
-        player.capacite3Lvl += 1
-        player.pointbonus -=1
-    elif keybinding.isKeyActive( "ULTI" , listPressed ) and player.pointbonus > 0 and (player.lvl-1)%5 == 0 and player.lvl > 5:
-        player.ULTILvl += 1
-        player.pointbonus -=1
+        player.ULTITimer = player.ULTITimer + 60*10
         
     if player.capacite1timer > 0:
         player.capacite1timer -= 1
@@ -206,8 +206,30 @@ def actionKeys(listPressed):
         player.capacite2timer -= 1
     if player.ULTITimer > 0:
         player.ULTITimer -= 1
+
+#appui sur une touche
+def keyPress(key):
+    global inventaireOuvert
+    if key in keybinding.keys["QUETES"]:
+        dessin.interfaceQueteOn = not dessin.interfaceQueteOn
+    elif key in keybinding.keys["DIALOGUE"]:
+        findPNG()
+    elif key in keybinding.keys["INVENTAIRE"]:
+        inventaireOuvert = not inventaireOuvert
+    if key in keybinding.keys["UPSORT1"] and player.pointbonus > 0:
+        player.capacite1Lvl += 1
+        player.pointbonus -=1
+    elif key in keybinding.keys["UPSORT2"] and player.pointbonus > 0:
+        player.capacite2Lvl += 1
+        player.pointbonus -=1
+    elif key in keybinding.keys["UPSORT3"] and player.pointbonus > 0:
+        player.capacite3Lvl += 1
+        player.pointbonus -=1
+    elif key in keybinding.keys["ULTIUP"] and player.pointbonus > 0 and (player.lvl-1)%5 == 0 and player.lvl > 5:
+        player.ULTILvl += 1
+        player.pointbonus -=1
     
-    
+#trouve un pnj à proximité et le fait parler
 def findPNG():
     global dialogueActif
     region = map.theMap.regionList[player.position[0]]
@@ -274,7 +296,11 @@ def tick():
     if player.hp < 0:
         global gameOver
         gameOver = True
-        
+    
+    #pnj
+    for p in map.theMap.regionList[player.position[0]].PNGlist:
+        p.spriteTimer += 0.1
+    
     #avancement de projectiles
     for p in projectileList:
         p.avancer()
@@ -295,10 +321,7 @@ def tick():
             mortEnnemi(e)
         
         if e.aura == 'Laplace':
-            e.hp -= 0.1/60 * 100*2**e.lvl
-            
-        
-        
+            e.hp -= 0.1/60 * 100*e.lvl
         
         elif e.aura != "stun":
             #deplacement d'ennemi

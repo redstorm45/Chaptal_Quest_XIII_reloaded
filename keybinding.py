@@ -19,6 +19,7 @@ keys = {"UP"         : [K_UP    , K_w],
         "UPSORT1"    : [K_h] ,
         "UPSORT2"    : [K_j] ,
         "UPSORT3"    : [K_k] ,
+        "ULTIUP"     : [K_l],
         "QUETES"     : [K_e] }
 
 #vrai si toutes les touches demandées sont actives

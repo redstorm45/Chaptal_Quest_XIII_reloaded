@@ -6,7 +6,7 @@ none;sprite projectile
 0.5;distance min d'agro
 5;nb de sprites animes
 2;level
-5;damage
+20;damage
 100;armor
 [ -1/4 , 1/4 , -1/4 , 1/4 ];hitbox
 200;gain dexp
