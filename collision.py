@@ -46,6 +46,17 @@ def checkProjectile(projectile,joueur):
     if projectile.position[1] > joueur.position[2] + joueur.hitbox[3] -0.5:
         return False
     return True
+    
+def checkCharge(boss,joueur):
+    if joueur.position[1] < boss.position[1] + boss.hitbox[0]:
+        return False
+    if joueur.position[1] > boss.position[1] + boss.hitbox[1]:
+        return False
+    if joueur.position[2] < boss.position[2] + boss.hitbox[2]:
+        return False
+    if joueur.position[2] > boss.position[2] + boss.hitbox[3]:
+        return False
+    return True
 
 #retourne False si la position (x,y) contient une case non accessible
 def checkCase(regionName,x,y):

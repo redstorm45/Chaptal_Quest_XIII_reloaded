@@ -469,6 +469,10 @@ def loadAllSprites():
     
     sprites["eclair"] = getLoaded("eclair.bmp")
     sprites["stun"] = getLoaded("eclair.bmp")
+    sprites["ATT"] = getLoaded("eclair.bmp")
+    sprites["charge"] = getLoaded("eclair.bmp")
+    sprites["triple"] = getLoaded("eclair.bmp")
+    
     
     sprites["attackH"] = getLoaded("attackH.bmp")
     sprites["attackB"] = getLoaded("attackB.png")
@@ -708,10 +712,10 @@ def drawPlayer(fenetre,player):
         fenetre.blit(sprites[player.spriteName][player.direction-1], (xEcran,yEcran))
     
     #affiche l'aura
-    if player.auratimer > 0 and player.aura != "" :
+    if player.auratimer > 0 and player.aura != "":
         fenetre.blit(sprites[player.aura], (xEcran + player.auraoffset[0],yEcran + player.auraoffset[1]))
         player.auratimer -= 1
-    else:
+    elif player.aura != "charge" and player.auratimer <= 0:
         player.aura = ""
     
     if option.affHitbox:

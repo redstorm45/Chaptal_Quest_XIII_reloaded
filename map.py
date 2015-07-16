@@ -133,6 +133,8 @@ class Region:
         self.ennemiBaseList = []   #position de spawn des ennemis
         self.ennemiList     = []   #liste des ennemis sur la carte
         self.eventList      = []   #liste des points d'évenements
+        self.BossbaseList   = []   #position des boss
+        self.BossList       = []   #position des boss
         self.PNGbaseList    = []
         self.PNGlist        = []
         
@@ -189,6 +191,16 @@ class Region:
             pass
         else:
             fileEnnemi.close()
+        # charge les boss de la zone
+        try:
+            fileBoss = open("map/"+name+"_Boss.txt")
+            for l in fileBoss:
+                lineBoss = l.strip().split(",")
+                self.BossbaseList.append( ( lineBoss[2] , int(lineBoss[0]) , int(lineBoss[1]) ) )
+        except:
+            pass
+        else:
+            fileBoss.close()
         #chargement PNG
         try:
             filePNG = open("map/"+name+"_PNG.txt")

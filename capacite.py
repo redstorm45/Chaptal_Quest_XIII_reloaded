@@ -4,18 +4,18 @@
 
 
 
-def capacite(typecapacite,joueur,ennemis):
+def capacite(typecapacite,joueur,ennemis,boss):
     if typecapacite == 'RLC':
-        RLC(joueur,ennemis)
+        RLC(joueur,ennemis,boss)
     elif typecapacite == 'RDM':
-        RDM(joueur,ennemis)
+        RDM(joueur,ennemis,boss)
     elif typecapacite == 'PFS':
-        PFS(joueur,ennemis)
+        PFS(joueur,ennemis,boss)
     elif typecapacite == 'Laplace':
-        Laplace(joueur,ennemis)
+        Laplace(joueur,ennemis,boss)
     
 
-def RLC(joueur,ennemis):
+def RLC(joueur,ennemis,boss):
     
     posJ = [ joueur.position[1],joueur.position[2] ]
     if joueur.capacite1Lvl >= 5:
@@ -80,6 +80,35 @@ def RLC(joueur,ennemis):
         else:
             if d < 2**2:
                 degatRLC(ennemis[i],joueur.capacite1Lvl)
+                
+                
+    for i in range(len(boss)):
+        posE = [ boss[i].position[1],boss[i].position[2] ]
+    
+        d = (posE[0]-posJ[0])**2 + (posE[1]-posJ[1])**2
+        if joueur.capacite1Lvl >= 2:
+            if joueur.direction in [1,2]:
+                if d < 2**2 and abs(posE[0]-posJ[0]) <= (posE[1]-posJ[1]):
+                    degatRLC(boss[i],joueur.capacite1Lvl)
+            elif joueur.direction in [3,4]:
+                if d < 2**2 and abs(posE[1]-posJ[1]) <= (posE[0]-posJ[0]):
+                    degatRLC(boss[i],joueur.capacite1Lvl)
+            elif joueur.direction in [5,6]:
+                if d < 2**2 and abs(posE[0]-posJ[0]) <= -(posE[1]-posJ[1]):
+                    degatRLC(boss[i],joueur.capacite1Lvl)
+            elif joueur.direction in [7,8]:
+                if d < 2**2 and abs(posE[1]-posJ[1]) <= -(posE[0]-posJ[0]):
+                    degatRLC(boss[i],joueur.capacite1Lvl)
+        elif joueur.capacite1Lvl >= 4:
+            if joueur.direction in [1,2,5,6]:
+                if d < 2**2 and abs(posE[0]-posJ[0]) <= (posE[1]-posJ[1]) or d < 2**2 and abs(posE[0]-posJ[0]) <= -(posE[1]-posJ[1]):
+                    degatRLC(boss[i],joueur.capacite1Lvl)
+            elif joueur.direction in [3,4,7,8]:
+                if d < 2**2 and abs(posE[1]-posJ[1]) <= (posE[0]-posJ[0]) or d < 2**2 and abs(posE[1]-posJ[1]) <= -(posE[0]-posJ[0]):
+                   degatRLC(boss[i],joueur.capacite1Lvl) 
+        else:
+            if d < 2**2:
+                degatRLC(boss[i],joueur.capacite1Lvl)
 
 
 def degatRLC(ennemi,lvl):
@@ -94,7 +123,7 @@ def RDM(joueur,ennemi):
     else:
         ennemi.armure = 0
 
-def PFS(joueur,ennemis):
+def PFS(joueur,ennemis,boss):
     joueur.spriteCapacite = ''
     posJ = [ joueur.position[1],joueur.position[2] ]
     if joueur.direction in [1,2]:
@@ -135,12 +164,65 @@ def PFS(joueur,ennemis):
                     e.auraoffset = [0,0]
                     
                     
-def Laplace(joueur,ennemis):
+    for i in range(len(boss)):
+        posE = [ boss[i].position[1],boss[i].position[2] ]
+        d = (posE[0]-posJ[0])**2 + (posE[1]-posJ[1])**2
+        e = boss[i]
+        if joueur.capacite1Lvl == 1:
+            if joueur.direction in [1,2]:
+                if d < 2**2 and abs(posE[0]-posJ[0]) <= (posE[1]-posJ[1]):
+                    e.aura = 'stun'  
+                    e.auratimer = 60*3    
+                    e.auraoffset = [0,0]  
+        elif joueur.direction in [3,4]:
+                if d < 2**2 and abs(posE[1]-posJ[1]) <= (posE[0]-posJ[0]):
+                    e.aura = 'stun'
+                    e.auratimer = 60*3  
+                    e.auraoffset = [0,0]                  
+        elif joueur.direction in [5,6]:
+                if d < 2**2 and abs(posE[0]-posJ[0]) <= -(posE[1]-posJ[1]):
+                    e.aura = 'stun'  
+                    e.auratimer = 60*3  
+                    e.auraoffset = [0,0]                 
+        elif joueur.direction in [7,8]:
+                if d < 2**2 and abs(posE[1]-posJ[1]) <= -(posE[0]-posJ[0]):
+                    e.aura = 'stun'
+                    e.auratimer = 60*3 
+                    e.auraoffset = [0,0]
+                    
+                    
+def Laplace(joueur,ennemis,boss):
     posJ = [ joueur.position[1],joueur.position[2] ]
     for i in range(len(ennemis)):
         posE = [ ennemis[i].position[1],ennemis[i].position[2] ]
         d = (posE[0]-posJ[0])**2 + (posE[1]-posJ[1])**2
         e = ennemis[i]
+        if joueur.capacite1Lvl == 1:
+            if joueur.direction in [1,2]:
+                if d < 2**2 and abs(posE[0]-posJ[0]) <= (posE[1]-posJ[1]):
+                    e.aura = 'Laplace'  
+                    e.auratimer = 60*3*joueur.ULTILvl                          
+                    e.auraoffset = [-150,0]
+        elif joueur.direction in [3,4]:
+                if d < 2**2 and abs(posE[1]-posJ[1]) <= (posE[0]-posJ[0]):
+                    e.aura = 'Laplace'
+                    e.auratimer = 60*3*joueur.ULTILvl                
+                    e.auraoffset = [-150,0]                
+        elif joueur.direction in [5,6]:
+                if d < 2**2 and abs(posE[0]-posJ[0]) <= -(posE[1]-posJ[1]):
+                    e.aura = 'Laplace'  
+                    e.auratimer = 60*3*joueur.ULTILvl                         
+                    e.auraoffset = [-150,0]          
+        elif joueur.direction in [7,8]:
+                if d < 2**2 and abs(posE[1]-posJ[1]) <= -(posE[0]-posJ[0]):
+                    e.aura = 'Laplace'
+                    e.auratimer = 60*3*joueur.ULTILvl
+                    e.auraoffset = [-150,0]
+                    
+    for i in range(len(boss)):
+        posE = [ boss[i].position[1],boss[i].position[2] ]
+        d = (posE[0]-posJ[0])**2 + (posE[1]-posJ[1])**2
+        e = boss[i]
         if joueur.capacite1Lvl == 1:
             if joueur.direction in [1,2]:
                 if d < 2**2 and abs(posE[0]-posJ[0]) <= (posE[1]-posJ[1]):

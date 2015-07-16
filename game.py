@@ -20,6 +20,7 @@ import PNG
 import son
 import random
 import inventaire
+import boss
 
 
 
@@ -44,6 +45,7 @@ gameOver = False
 #initialisation du jeu
 def init():
     global ennemiList
+    global BossList
     
     #création des ennemis sur la map
     for k in map.theMap.regionList.keys():
@@ -54,11 +56,15 @@ def init():
         for e in r.PNGbaseList:
             type,posX,posY = e
             r.PNGlist.append( PNG.PNG(type,(posX,posY)))
+        for e in r.BossbaseList:
+            type,posX,posY = e
+            r.BossList.append(boss.boss(type,posX,posY))
     
     dessin.initInterface(quete.listeQuetesActives)
     
     #initialisation de la liste d'ennemi
     ennemiList = map.theMap.regionList[ player.position[0] ].ennemiList[:]
+    BossList = map.theMap.regionList[ player.position[0] ].BossList[:]
     
     #musique de la région
     if player.position[0] == "cours/E":
@@ -95,6 +101,9 @@ def draw(fenetre):
     for p in projectileList:
         dessin.drawProjectile(fenetre,p)
         
+    for b in BossList:
+        dessin.drawPlayer(fenetre,b)
+                
     if player.attackanim > 0:
         dessin.animAttack(fenetre,player)    
         player.attackanim -=1
@@ -120,7 +129,7 @@ def draw(fenetre):
 
 #touches de mouvement
 def actionKeys(listPressed):
-    global player,ennemiList,projectileList
+    global player,ennemiList,projectileList,BossList
     
     #mouvement du joueur
     if keybinding.areKeysActive(["LEFT","UP"],listPressed):
@@ -162,6 +171,10 @@ def actionKeys(listPressed):
         for e in ennemiList:
             if e.hp <= 0:
                 ennemiList.remove(e)
+        BossList = map.theMap.regionList[ player.position[0] ].BossList[:]
+        for b in BossList:
+            if b.hp <= 0:
+                BossList.remove(b)
         projectileList = []
         if opt.debugMode:
             print("teleport2",player.position)
@@ -183,7 +196,7 @@ def actionKeys(listPressed):
     #attaque
     if keybinding.isKeyActive( "ATTACK" , listPressed ):
         if player.attackTimer == 0:
-            attackJoueur.attack(player,map.theMap.regionList[player.position[0]].ennemiList)
+            attackJoueur.attack(player,map.theMap.regionList[player.position[0]].ennemiList,map.theMap.regionList[player.position[0]].BossList)
             player.attackTimer = 1
             player.attackanim  = 0.2*60
         else:
@@ -191,13 +204,13 @@ def actionKeys(listPressed):
     
     #sort
     if keybinding.isKeyActive( "SORT1" , listPressed ) and player.capacite1timer == 0 and player.capacite1Lvl > 0:
-        capacite.capacite('RLC',player,map.theMap.regionList[player.position[0]].ennemiList)
+        capacite.capacite('RLC',player,map.theMap.regionList[player.position[0]].ennemiList,map.theMap.regionList[player.position[0]].BossList)
         player.capacite1timer = player.capacite1timer + 60*3
     elif keybinding.isKeyActive( "SORT2" , listPressed ) and player.capacite2timer == 0 and player.capacite1Lvl > 0:
-        capacite.capacite('PFS',player,map.theMap.regionList[player.position[0]].ennemiList)
+        capacite.capacite('PFS',player,map.theMap.regionList[player.position[0]].ennemiList,map.theMap.regionList[player.position[0]].BossList)
         player.capacite2timer = player.capacite2timer + 60*3
     elif keybinding.isKeyActive( "ULTI" , listPressed ) and player.ULTITimer == 0 and player.ULTILvl > 0:
-        capacite.capacite('Laplace',player,map.theMap.regionList[player.position[0]].ennemiList)
+        capacite.capacite('Laplace',player,map.theMap.regionList[player.position[0]].ennemiList,map.theMap.regionList[player.position[0]].BossList)
         player.ULTITimer = player.ULTITimer + 60*10
         
     if player.capacite1timer > 0:
@@ -349,6 +362,57 @@ def tick():
         dessin.reloadInterface(quete.listeQuetesActives)
         for q in quete.listeQuetesActives:
             q.changed = False
+    
+    
+    #boss
+    for b in BossList:
+        
+        if ia.agro(player.position,b):
+            if b.aura == "": 
+                #si le boss ne fait rien on declenche un patterne
+                boss.patterne(b,player.position)
+            if b.aura == "charge":
+                if collision.checkJoueur(b,b.directionCharge[0],b.directionCharge[1]):  
+                #on regarde si le boss peut avanver
+                    b.position[1] += b.directionCharge[0]
+                    b.position[2] += b.directionCharge[1]
+                    b.anim += 0.25
+                    
+                else:                                                                   
+                #s'il ne peut pas il est stun
+                    b.aura = "stun"
+                    b.auratimer = 60*3
+                    
+                    
+                if collision.checkCharge(b,player):                      
+                 #on regarde si le boss rencontre le joueur
+                    player.hp -= b.damage
+                    player.aura= "stun"
+                    player.auratimer = 60
+                    b.aura = ""    
+                    #on arrete la charge du boss
+                
+            elif b.aura == "stun":
+                if b.auratimer > 0:
+                    b.auratimer -= 1
+                else:
+                    b.aura = ""
+                    b.auratimer = 0 
+            elif b.aura == "ATT":
+                if b.auratimer == 180:
+                    projectileList.append(projectile.Projectile(b,player,player.position))
+                elif b.auratimer > 0:
+                    b.auratimer -= 1
+                else:
+                    b.aura = ""
+            elif b.aura == "triple":
+                if b.auratimer == 180:
+                    projectile.tripleprojectile(b,player,projectileList)
+                elif b.auratimer > 0:
+                    b.auratimer -= 1
+                else:
+                    b.aura = ""
+            
         
     #levelup du joueur
     if player.levelup - (100*2**player.lvl) >= 0:

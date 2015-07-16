@@ -54,6 +54,7 @@ class Joueur(joueurBase.JoueurBase):
         self.levelup = 0
         self.spriteCapaciteTimer = 0
         self.combat = 0
+        self.auraoffset = [0,0]
         
     
     def mouvement(self,x,y,):
