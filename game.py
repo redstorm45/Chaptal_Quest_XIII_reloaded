@@ -132,24 +132,25 @@ def actionKeys(listPressed):
     global player,ennemiList,projectileList,BossList
     
     #mouvement du joueur
-    if keybinding.areKeysActive(["LEFT","UP"],listPressed):
-        player.mouvement( -opt.speedDiag , -opt.speedDiag )
-    elif keybinding.areKeysActive(["LEFT","DOWN"],listPressed):
-        player.mouvement( -opt.speedDiag ,  opt.speedDiag )
-    elif keybinding.areKeysActive(["RIGHT","DOWN"],listPressed):
-        player.mouvement(  opt.speedDiag ,  opt.speedDiag )
-    elif keybinding.areKeysActive(["RIGHT","UP"],listPressed):
-        player.mouvement(  opt.speedDiag , -opt.speedDiag )
-    elif keybinding.isKeyActive( "LEFT" , listPressed ):
-        player.mouvement( -opt.speed , 0 )
-    elif keybinding.isKeyActive( "DOWN" , listPressed ):
-        player.mouvement( 0 ,  opt.speed )
-    elif keybinding.isKeyActive( "RIGHT" , listPressed ):
-        player.mouvement( opt.speed ,  0 )
-    elif keybinding.isKeyActive( "UP" , listPressed ):
-        player.mouvement( 0 , -opt.speed )
-    else:
-        player.mouvement( 0 , 0 )
+    if player.aura != "stun":
+        if keybinding.areKeysActive(["LEFT","UP"],listPressed):
+            player.mouvement( -opt.speedDiag , -opt.speedDiag )
+        elif keybinding.areKeysActive(["LEFT","DOWN"],listPressed):
+            player.mouvement( -opt.speedDiag ,  opt.speedDiag )
+        elif keybinding.areKeysActive(["RIGHT","DOWN"],listPressed):
+            player.mouvement(  opt.speedDiag ,  opt.speedDiag )
+        elif keybinding.areKeysActive(["RIGHT","UP"],listPressed):
+            player.mouvement(  opt.speedDiag , -opt.speedDiag )
+        elif keybinding.isKeyActive( "LEFT" , listPressed ):
+            player.mouvement( -opt.speed , 0 )
+        elif keybinding.isKeyActive( "DOWN" , listPressed ):
+            player.mouvement( 0 ,  opt.speed )
+        elif keybinding.isKeyActive( "RIGHT" , listPressed ):
+            player.mouvement( opt.speed ,  0 )
+        elif keybinding.isKeyActive( "UP" , listPressed ):
+            player.mouvement( 0 , -opt.speed )
+        else:
+            player.mouvement( 0 , 0 )
         
     #test de teleportation
     t = map.theMap.regionList[ player.position[0] ].eventAt( player.position[1],player.position[2],"teleport" )
@@ -304,6 +305,8 @@ def tick():
         player.combat -= 1
     if player.spriteCapaciteTimer > 0:
         player.spriteCapaciteTimer -= 1
+    if player.auratimer > 0:
+        player.auratimer -= 1
     
     #mort joueur
     if player.hp < 0:
@@ -348,7 +351,6 @@ def tick():
             #attaque d'ennemi
             if e.attackTimer == 0:
                 ia.attackIA(player,e,projectileList)
-                
             else:
                 e.attackTimer = max( 0, e.attackTimer - 1/16)
         else:
@@ -401,6 +403,7 @@ def tick():
             elif b.aura == "ATT":
                 if b.auratimer == 180:
                     projectileList.append(projectile.Projectile(b,player,player.position))
+                    b.auratimer -= 1
                 elif b.auratimer > 0:
                     b.auratimer -= 1
                 else:
@@ -408,6 +411,7 @@ def tick():
             elif b.aura == "triple":
                 if b.auratimer == 180:
                     projectile.tripleprojectile(b,player,projectileList)
+                    b.auratimer -= 1
                 elif b.auratimer > 0:
                     b.auratimer -= 1
                 else:

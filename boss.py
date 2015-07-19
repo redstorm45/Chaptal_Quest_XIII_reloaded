@@ -42,8 +42,6 @@ class boss:
         #offset
         self.auraoffset = [0,0]
         
-        
-        
         #patterne du boss
         self.pattern = file.readline().strip().split(";")             
         #mais les different patterne ds une liste, attaque de base compte comme un patterne il apparait plusieurs fois
@@ -86,7 +84,7 @@ def charge(posJ,boss):
     posJ = position joueur
     """
     d = math.sqrt((posJ[1] - boss.position[1])**2 + (posJ[2] - boss.position[2])**2)
-    boss.directionCharge = [(posJ[1]-0.5 - boss.position[1]-0.75)/d*1/16,(posJ[2]-0.5 - boss.position[2]-0.75)/d*1/16] 
+    boss.directionCharge = [(posJ[1]-0.5 - boss.position[1])/d*1/16,(posJ[2]-0.5 - boss.position[2])/d*1/16] 
     #definit la direction de la charge
     boss.aura = "charge"
     boss.auratimer = 0
@@ -96,6 +94,7 @@ def ATT(boss):
     boss.auratimer = 180
 
 def tripleprojectile(boss):
+    
     boss.aura = "triple"
     boss.auratimer = 180
     

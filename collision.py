@@ -37,13 +37,13 @@ def checkJoueur(joueur,dx,dy):
     return True
 
 def checkProjectile(projectile,joueur):
-    if projectile.position[0] < joueur.position[1] + joueur.hitbox[0] -0.5:
+    if projectile.position[0] < joueur.position[1] + joueur.hitbox[0]:
         return False
-    if projectile.position[0] > joueur.position[1] + joueur.hitbox[1] -0.5:
+    if projectile.position[0] > joueur.position[1] + joueur.hitbox[1]:
         return False
-    if projectile.position[1] < joueur.position[2] + joueur.hitbox[2] -0.5:
+    if projectile.position[1] < joueur.position[2] + joueur.hitbox[2]:
         return False
-    if projectile.position[1] > joueur.position[2] + joueur.hitbox[3] -0.5:
+    if projectile.position[1] > joueur.position[2] + joueur.hitbox[3]:
         return False
     return True
     
