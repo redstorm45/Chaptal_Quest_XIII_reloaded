@@ -55,7 +55,7 @@ def attackIA(joueur,ennemi,projectileList):
             joueur.hp -= (ennemi.dammage*exp(-joueur.armure/600))
             joueur.combat = 3*60
         elif ennemi.typeAttaque == 1:
-            projectileList.append( projectile.Projectile(ennemi,joueur,joueur.position) )
+            projectileList.append( projectile.Projectile(ennemi,joueur) )
         ennemi.attackTimer = 2.5
     
         

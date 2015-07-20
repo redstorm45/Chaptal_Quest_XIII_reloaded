@@ -10,13 +10,13 @@ speed = 1/16
 speedDiag = speed
 
 #mode de débogguage
-debugMode = False
+debugMode = True
 
 #charge la sauvegarde de débogguage plutôt qu'une sauvegarde normale
 debugSave = False
 
 #affiche la hitbox des joueurs et ennemis
-affHitbox = False
+affHitbox = True
 
 #musique
 musiqueActive = True
@@ -26,3 +26,10 @@ musiqueVolume = 100
 editMode = False
 editRegion = "cours/D"
 
+
+"""
+1,2 bas
+3,4 droite
+5,6 haut
+7,8 gauche
+"""

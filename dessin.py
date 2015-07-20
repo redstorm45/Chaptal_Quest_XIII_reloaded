@@ -699,7 +699,7 @@ def drawPlayer(fenetre,player):
     x,y = player.position[1] , player.position[2]
     xEcran = (x-0.5) * 64  + xOffset
     yEcran = (y-0.5) * 64  + yOffset
-    
+        
     if player.direction == 4:
         fenetre.blit(sprites[player.spriteName + "D"][int(player.anim)%player.spriteNb], (xEcran,yEcran))
     elif player.direction == 8:
@@ -714,7 +714,6 @@ def drawPlayer(fenetre,player):
     #affiche l'aura
     if player.auratimer > 0 and player.aura != "":
         fenetre.blit(sprites[player.aura], (xEcran + player.auraoffset[0],yEcran + player.auraoffset[1]))
-        player.auratimer -= 1
     elif player.aura != "charge" and player.auratimer <= 0:
         player.aura = ""
     
@@ -733,6 +732,10 @@ def drawPlayer(fenetre,player):
     pygame.draw.rect( fenetre , (255,0,0) , (xEcran,yEcran-10,size,10) )
     pygame.draw.rect( fenetre , (0,255,0) , (xEcran,yEcran-10,size*player.hp/(100*player.lvl),10) )
 
+    if option.debugMode:
+        pygame.draw.rect( fenetre , (255,255,0) ,(xEcran-2 +32,yEcran-10+32,4,20) )
+        pygame.draw.rect( fenetre , (255,255,0) ,(xEcran-10+32,yEcran-2 +32,20,4) )
+        
 def drawXP(fenetre,player):
     x,y = player.position[1] , player.position[2]
     xEcran = (x-0.5) * 64  + xOffset
@@ -745,7 +748,6 @@ def drawXP(fenetre,player):
     fenetre.blit( player.surfLvl , (xEcran-player.surfLvl.get_width()-5, yEcran -player.surfLvl.get_height()) )
 
 def animAttack(fenetre,player):
-    
     x,y = player.position[1] , player.position[2]
     xEcran = (x-0.5) * 64  + xOffset
     yEcran = (y-0.5) * 64  + yOffset
@@ -759,14 +761,17 @@ def animAttack(fenetre,player):
     elif player.direction  in [5,6]:
         fenetre.blit(sprites["attack" + "H"], (xEcran,yEcran-1))
 
-
 def drawProjectile(fenetre,projectile):
     x,y = projectile.position
-    xEcran = x * 64  + xOffset
-    yEcran = y * 64  + yOffset
-    
+    xEcran = (x-0.5) * 64  + xOffset
+    yEcran = (y-0.5) * 64  + yOffset
+        
     fenetre.blit(sprites["projectile"][projectile.spriteName],(xEcran,yEcran))
 
+    if option.debugMode:
+        pygame.draw.rect( fenetre , (0,255,255) ,(xEcran-2 +32,yEcran-10+32,4,20) )
+        pygame.draw.rect( fenetre , (0,255,255) ,(xEcran-10+32,yEcran-2 +32,20,4) )
+        
 def drawCapacite(player,fenetre):
     xEcran = player.positionCapacite[0] * 64  + xOffset
     yEcran = player.positionCapacite[1] * 64  + yOffset

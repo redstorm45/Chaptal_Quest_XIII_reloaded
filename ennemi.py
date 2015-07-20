@@ -27,6 +27,7 @@ class Ennemi(joueurBase.JoueurBase):
         self.exp         = int(file.readline().strip().split(";")[0])
         self.drops       = eval(file.readline().strip().split(";")[0])
         self.degatarme = 0
+        self.projectileLife = 100
     
         #stats
         self.anim    = 0
